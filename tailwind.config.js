@@ -16,6 +16,13 @@ module.exports = {
       black: 900,
     },
     fontSize: {
+      "sm-custom": [
+        "16px",
+        {
+          lineHeight: "20px",
+          letterSpacing: "1px",
+        },
+      ],
       md: [
         "20px",
         {
@@ -24,10 +31,17 @@ module.exports = {
         },
       ],
     },
+    maxWidth: {
+      "460px": "460px",
+      "1440px": "1440px",
+    },
+    minHeight: {
+      "470px": "470px",
+    },
     colors: {
       dark: "#1A2A33",
       "semi-dark": "#1F3641",
-      silver: "##A8BFC9",
+      silver: "#A8BFC9",
       "silver-light": "#DBE8ED",
       blue: "#31C3BD",
       "blue-light": "#65E9E4",
@@ -43,24 +57,45 @@ module.exports = {
         144: "36rem",
       },
       borderRadius: {
-        15: "15px",
+        "10px": "10px",
+        "15px": "15px",
         "4xl": "2rem",
       },
       boxShadow: {
-        "orange-custom": "inset 0px -8px 0px #CC8B13",
-        "blue-custom": "inset 0px -8px 0px #118C87",
+        "sm-orange-custom": "inset 0px -4px 0px #CC8B13",
+        "md-orange-custom": "inset 0px -8px 0px #CC8B13",
+        "sm-blue-custom": "inset 0px -8px 0px #118C87",
+        "md-blue-custom": "inset 0px -8px 0px #118C87",
+        "sm-silver-custom": "inset 0px -4px 0px #6B8997",
+        "md-silver-custom": "inset 0px -8px 0px #6B8997",
+        "sm-semi-dark-custom": "inset 0px -4px 0px #10212A",
+        "md-semi-dark-custom": "inset 0px -8px 0px #10212A",
       },
       width: {
-        226: "226px",
-        410: "410px",
+        "52px": "52px",
+        "226px": "226px",
+        "410px": "410px",
+        "460px": "460px",
       },
       height: {
-        67: "67px",
-        52: "52px",
+        "52px": "52px",
+        "67px": "67px",
       },
       padding: {
-        17: "17px",
-        25: "25px",
+        "8px": "8px",
+        "9px": "9px",
+        "11px": "11px",
+        "15px": "15px",
+        "17px": "17px",
+        "24px": "24px",
+        "30px": "30px",
+      },
+      margin: {
+        "17px": "17px",
+        "20px": "20px",
+        "24px": "24px",
+        "25px": "25px",
+        "40px": "40px",
       },
     },
   },

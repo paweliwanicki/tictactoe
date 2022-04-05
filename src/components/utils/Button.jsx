@@ -1,21 +1,26 @@
 import React from "react";
 import propTypes from "prop-types";
+import classnames from "classnames";
 
 const Button = (props) => {
-  const colorPalleteClasses = {
-    bg: `bg-${props.color}`,
-    bgH: `bg-${props.color}-light`,
-    shadow: `shadow-${props.color}-custom`,
-  };
+  const typeClasses = props.primary
+    ? "text-md rounded-15px"
+    : props.icon
+    ? "p-4"
+    : "px-4 text-sm-custom rounded-10px";
 
-  const sizeClasses = props.primary ? "w-410 h-67" : "w-226 h-52";
+  const classStr = classnames(
+    "font-bold uppercase",
+    typeClasses,
+    props.classes
+  );
 
   return (
     <button
       type={props.type}
       onClick={props.onClick}
       disabled={props.disabled}
-      className={`bg-${props.color} hover:bg-${props.color}-light ${sizeClasses} font-bold uppercase rounded-15 pt-17 pb-25 text-md ${colorPalleteClasses.shadow}`}
+      className={classStr}
     >
       {props.text}
     </button>
@@ -23,11 +28,21 @@ const Button = (props) => {
 };
 
 Button.propTypes = {
+  text: propTypes.any.isRequired,
   type: propTypes.string.isRequired,
-  color: propTypes.string.isRequired,
+  classes: propTypes.string,
+  icon: propTypes.bool,
   primary: propTypes.bool,
   onClick: propTypes.func,
   disabled: propTypes.bool,
+};
+
+Button.defaultProps = {
+  classes: "",
+  icon: false,
+  primary: true,
+  onClick: null,
+  disabled: false,
 };
 
 export default Button;

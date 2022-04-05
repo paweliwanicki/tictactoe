@@ -1,15 +1,11 @@
-import Button from "./components/utils/Button";
+import Container from "./components/utils/Container";
+import Menu from "./components/Menu";
 
 function App() {
   return (
-    <div>
-      <Button
-        text="dawdasd"
-        type="button"
-        color="orange"
-        primary
-      />
-    </div>
+    <Container classes="max-w-full h-screen bg-dark">
+      <Menu />
+    </Container>
   );
 }
 
