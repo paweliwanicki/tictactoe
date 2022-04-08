@@ -6,7 +6,7 @@ import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
 
 const MarkSelector = (props) => {
-  const [mark, setMark] = useState("circle");
+  const [mark, setMark] = useState("x");
   return (
     <Container classes="bg-semi-dark flex-col rounded-10px shadow-md-semi-dark-custom my-40px pt-24px pb-30px px-24px w-full">
       <TextBox classes="text-sm-custom text-silver mb-24px">
@@ -31,9 +31,9 @@ const MarkSelector = (props) => {
         />
         <Button
           classes={`py-11px flex-1 ${
-            mark === "circle" ? "bg-silver" : "bg-transparent"
+            mark === "x" ? "bg-silver" : "bg-transparent"
           }`}
-          onClick={() => setMark("circle")}
+          onClick={() => setMark("x")}
           type="button"
           text={
             <Icon

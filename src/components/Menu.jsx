@@ -3,6 +3,7 @@ import Container from "./utils/Container";
 import Button from "./utils/Button";
 import Icon from "./utils/Icon";
 import MarkSelector from "./MarkSelector";
+import GameBoard from "./GameBoard";
 
 const Menu = (props) => {
   return (
@@ -21,6 +22,8 @@ const Menu = (props) => {
         primary
         type="button"
       />
+
+    <GameBoard />
     </Container>
   );
 };
