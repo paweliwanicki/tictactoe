@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-
+import React from "react";
 import Container from "./utils/Container";
 import Button from "./utils/Button";
 import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
+import { useSelector, useDispatch } from "react-redux";
+import { setPlayerMark, playerMark } from "../reducers/playerSlice";
 
 const MarkSelector = (props) => {
-  const [mark, setMark] = useState("x");
+  const mark = useSelector(playerMark);
+  const dispatch = useDispatch();
+
   return (
     <Container classes="bg-semi-dark flex-col rounded-10px shadow-md-semi-dark-custom my-40px pt-24px pb-30px px-24px w-full">
       <TextBox classes="text-sm-custom text-silver mb-24px">
@@ -15,9 +18,9 @@ const MarkSelector = (props) => {
       <Container classes="flex flex-row bg-dark py-9px px-8px rounded-10px mb-17px w-full">
         <Button
           classes={`py-11px flex-1 ${
-            mark === "cross" ? "bg-silver" : "bg-transparent"
+            mark === "x" ? "bg-silver" : "bg-transparent"
           }`}
-          onClick={() => setMark("cross")}
+          onClick={() => dispatch(setPlayerMark("x"))}
           type="button"
           text={
             <Icon
@@ -25,15 +28,15 @@ const MarkSelector = (props) => {
               classes="m-auto "
               width={32}
               height={32}
-              color={mark === "cross" ? "#1A2A33" : "#A8BFC9"}
+              color={mark === "x" ? "#1A2A33" : "#A8BFC9"}
             />
           }
         />
         <Button
           classes={`py-11px flex-1 ${
-            mark === "x" ? "bg-silver" : "bg-transparent"
+            mark === "o" ? "bg-silver" : "bg-transparent"
           }`}
-          onClick={() => setMark("x")}
+          onClick={() => dispatch(setPlayerMark("o"))}
           type="button"
           text={
             <Icon
@@ -41,7 +44,7 @@ const MarkSelector = (props) => {
               classes="m-auto"
               width={32}
               height={32}
-              color={mark === "circle" ? "#1A2A33" : "#A8BFC9"}
+              color={mark === "o" ? "#1A2A33" : "#A8BFC9"}
             />
           }
         />

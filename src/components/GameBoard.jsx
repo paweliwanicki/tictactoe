@@ -4,9 +4,13 @@ import Container from "./utils/Container";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 import TextBox from "./utils/TextBox";
-import Computer from "../models/Computer";
+import { useDispatch, useSelector } from "react-redux";
+import { activePlayer, setActivePlayer } from "../reducers/playerSlice";
+import { setGameMode, setIsPlaying } from "../reducers/gameSlice";
 
 const GameBoard = (props) => {
+  const dispatch = useDispatch();
+
   const [board, setBoard] = useState([
     "",
     "",
@@ -18,6 +22,8 @@ const GameBoard = (props) => {
     "",
     "", // 6, 7, 8
   ]);
+
+  const activePlayerMark = useSelector(activePlayer);
 
   const winCombinations = [
     [0, 1, 2],
@@ -32,19 +38,22 @@ const GameBoard = (props) => {
 
   const setMark = (index) => {
     const currentBoard = board;
-    currentBoard[index] = props.player.mark;
+    currentBoard[index] = activePlayerMark;
     setBoard(currentBoard);
   };
 
-  //console.log(Computer.move(board));
+  const backToMenuHandler = () => {
+    dispatch(setIsPlaying(false));
+    dispatch(setGameMode(null));
+    dispatch(setActivePlayer("x"));
+  };
 
   return (
     <Container classes="max-w-full flex-wrap h-460px w-460px max-w-460px">
       <Container classes="w-full justify-between mb-19px">
         <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
-        <TextBox classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom">
-          {" "}
-          X TURN
+        <TextBox classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom uppercase">
+          {activePlayerMark} TURN
         </TextBox>
         <Button
           classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-md-silver-custom"
@@ -59,6 +68,7 @@ const GameBoard = (props) => {
           }
           icon
           type="button"
+          onClick={backToMenuHandler}
         />
       </Container>
       <Container classes="w-full justify-between mb-19px flex-wrap gap-20px">
