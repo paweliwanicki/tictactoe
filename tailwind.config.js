@@ -16,6 +16,13 @@ module.exports = {
       black: 900,
     },
     fontSize: {
+      "s-custom": [
+        "14px",
+        {
+          lineHeight: "17.65px",
+          letterSpacing: "0.88px",
+        },
+      ],
       "sm-custom": [
         "16px",
         {
@@ -28,6 +35,13 @@ module.exports = {
         {
           lineHeight: "25px",
           letterSpacing: "1.25px",
+        },
+      ],
+      "md-custom": [
+        "24px",
+        {
+          lineHeight: "30.25px",
+          letterSpacing: "1.5px",
         },
       ],
     },
@@ -74,6 +88,7 @@ module.exports = {
         "sm-dark-custom": "inset 0px -4px 0px #10212A",
       },
       width: {
+        "43px": "43px",
         "52px": "52px",
         "140px": "140px",
         "226px": "226px",
@@ -81,10 +96,16 @@ module.exports = {
         "460px": "460px",
       },
       height: {
+        "48px": "48px",
         "52px": "52px",
         "67px": "67px",
+        "72px": "72px",
         "140px": "140px",
         "460px": "460px",
+        "623px": "623px",
+      },
+      minHeight: {
+        "screen" : "100vh",
       },
       padding: {
         "8px": "8px",

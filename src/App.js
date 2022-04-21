@@ -10,7 +10,7 @@ function App() {
   const results = useSelector(displayResult);
 
   return (
-    <Container classes="max-w-full h-screen bg-dark">
+    <Container classes="max-w-full min-h-screen bg-dark">
       {!play && <Menu />}
       {play && !results && <GameBoard />}
       {!play && results && <Results />}

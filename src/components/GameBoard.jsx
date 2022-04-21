@@ -5,8 +5,13 @@ import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 import TextBox from "./utils/TextBox";
 import { useDispatch, useSelector } from "react-redux";
-import { activePlayer, setActivePlayer } from "../reducers/playerSlice";
+import {
+  activePlayer,
+  setActivePlayer,
+  playerMark,
+} from "../reducers/playerSlice";
 import { setGameMode, setIsPlaying } from "../reducers/gameSlice";
+import ScoreBox from "./ScoreBox";
 
 const GameBoard = (props) => {
   const dispatch = useDispatch();
@@ -24,6 +29,8 @@ const GameBoard = (props) => {
   ]);
 
   const activePlayerMark = useSelector(activePlayer);
+  const player1Mark = useSelector(playerMark);
+  const player2Mark = player1Mark === 'x' ? 'o' : 'x';
 
   const winCombinations = [
     [0, 1, 2],
@@ -49,7 +56,7 @@ const GameBoard = (props) => {
   };
 
   return (
-    <Container classes="max-w-full flex-wrap h-460px w-460px max-w-460px">
+    <Container classes="max-w-full flex-wrap h-623px w-460px max-w-460px">
       <Container classes="w-full justify-between mb-19px">
         <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
         <TextBox classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom uppercase">
@@ -79,6 +86,12 @@ const GameBoard = (props) => {
             onClick={() => setMark(ix)}
           />
         ))}
+      </Container>
+
+      <Container classes="justify-between mx-0 w-full">
+        <ScoreBox bgColor="bg-blue-light" player={player1Mark} score={5}/>
+        <ScoreBox bgColor="bg-silver" score={5}/>
+        <ScoreBox bgColor="bg-orange" player={player2Mark} score={5}/>
       </Container>
     </Container>
   );
