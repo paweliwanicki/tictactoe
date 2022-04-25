@@ -30,18 +30,18 @@ const GameBoard = (props) => {
 
   const activePlayerMark = useSelector(activePlayer);
   const player1Mark = useSelector(playerMark);
-  const player2Mark = player1Mark === 'x' ? 'o' : 'x';
+  const player2Mark = player1Mark === "x" ? "o" : "x";
 
-  const winCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8], // rows
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8], // columns
-    [0, 4, 8],
-    [2, 4, 6], // diagonals
-  ];
+  // const winCombinations = [
+  //   [0, 1, 2],
+  //   [3, 4, 5],
+  //   [6, 7, 8], // rows
+  //   [0, 3, 6],
+  //   [1, 4, 7],
+  //   [2, 5, 8], // columns
+  //   [0, 4, 8],
+  //   [2, 4, 6], // diagonals
+  // ];
 
   const setMark = (index) => {
     const currentBoard = board;
@@ -57,13 +57,23 @@ const GameBoard = (props) => {
 
   return (
     <Container classes="max-w-full flex-wrap h-623px w-460px max-w-460px">
-      <Container classes="w-full justify-between mb-19px">
-        <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
-        <TextBox classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom uppercase">
-          {activePlayerMark} TURN
-        </TextBox>
+      <Container classes="w-full gap-20px mb-19px">
+        <Container classes="w-140px justify-start">
+          <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
+        </Container>
+        <Container classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom uppercase justify-center align-center">
+          <Icon
+            id={`icon-${activePlayerMark}`}
+            viewBox="0 0 20 20"
+            width={20}
+            height={20}
+            color="#A8BFC9"
+            classes="mr-13px"
+          />
+          <TextBox classes="font-bold">TURN</TextBox>
+        </Container>
         <Button
-          classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-md-silver-custom"
+          classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom ml-auto rounded-10px"
           text={
             <Icon
               id="icon-restart"
@@ -74,6 +84,7 @@ const GameBoard = (props) => {
             />
           }
           icon
+          primary={false}
           type="button"
           onClick={backToMenuHandler}
         />
@@ -89,9 +100,9 @@ const GameBoard = (props) => {
       </Container>
 
       <Container classes="justify-between mx-0 w-full">
-        <ScoreBox bgColor="bg-blue-light" player={player1Mark} score={5}/>
-        <ScoreBox bgColor="bg-silver" score={5}/>
-        <ScoreBox bgColor="bg-orange" player={player2Mark} score={5}/>
+        <ScoreBox bgColor="bg-blue-light" player={player1Mark} score={5} />
+        <ScoreBox bgColor="bg-silver" score={5} />
+        <ScoreBox bgColor="bg-orange" player={player2Mark} score={5} />
       </Container>
     </Container>
   );

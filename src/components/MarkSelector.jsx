@@ -12,7 +12,7 @@ const MarkSelector = (props) => {
 
   return (
     <Container classes="bg-semi-dark flex-col rounded-10px shadow-md-semi-dark-custom my-40px pt-24px pb-30px px-24px w-full">
-      <TextBox classes="text-sm-custom text-silver mb-24px">
+      <TextBox classes="text-sm-custom text-silver mb-24px font-bold">
         PICK PLAYER 1’S MARK
       </TextBox>
       <Container classes="flex flex-row bg-dark py-9px px-8px rounded-10px mb-17px w-full">

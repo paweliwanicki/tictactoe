@@ -3,12 +3,13 @@ import propTypes from "prop-types";
 import classnames from "classnames";
 
 const Container = (props) => {
-  const classStr = classnames(
-    "mx-auto flex justify-center items-center",
-    props.classes
-  );
+  const classStr = classnames("flex items-center", props.classes);
 
-  return <div className={classStr} onClick={props.onClick}>{props.children}</div>;
+  return (
+    <div className={classStr} onClick={props.onClick}>
+      {props.children}
+    </div>
+  );
 };
 
 Container.propTypes = {

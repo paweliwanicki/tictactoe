@@ -19,14 +19,14 @@ const Menu = (props) => {
       <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
       <MarkSelector />
       <Button
-        classes="py-11px w-full h-67px mb-20px bg-orange hover:bg-orange-light shadow-md-orange-custom"
+        classes="pt-11px pb-18px w-full h-67px mb-20px bg-orange hover:bg-orange-light shadow-md-orange-custom"
         text={"NEW GAME (VS CPU)"}
         primary
         type="button"
         onClick={() => startGameHandler("cpu")}
       />
       <Button
-        classes="py-11px w-full h-67px bg-blue hover:bg-blue-light shadow-md-blue-custom"
+        classes="pt-11px pb-18px w-full h-67px bg-blue hover:bg-blue-light shadow-md-blue-custom"
         text={"NEW GAME  (VS PLAYER)"}
         primary
         type="button"

@@ -44,6 +44,13 @@ module.exports = {
           letterSpacing: "1.5px",
         },
       ],
+      "xl-custom": [
+        "40px",
+        {
+          lineHeight: "50.4px",
+          letterSpacing: "2.5px",
+        },
+      ],
     },
     maxWidth: {
       "460px": "460px",
@@ -61,6 +68,7 @@ module.exports = {
       "blue-light": "#65E9E4",
       orange: "#F2B137",
       "orange-light": "#FFC860",
+      black: "#000000",
     },
     fontFamily: {
       sans: ["Outfit", "sans-serif"],
@@ -101,6 +109,7 @@ module.exports = {
         "67px": "67px",
         "72px": "72px",
         "140px": "140px",
+        "266px": "266px",
         "460px": "460px",
         "623px": "623px",
       },
@@ -114,11 +123,14 @@ module.exports = {
         "13px": "13px",
         "15px": "15px",
         "17px": "17px",
+        "18px": "18px",
         "19px": "19px",
         "24px": "24px",
         "30px": "30px",
       },
       margin: {
+        "13px": "13px",
+        "16px": "16px",
         "17px": "17px",
         "19px": "19px",
         "20px": "20px",
