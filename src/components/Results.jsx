@@ -5,9 +5,8 @@ import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 
 const Results = (props) => {
-  //const state = props.state;
-
   const winner = "x"; //test cases
+
   const color = winner === "x" ? "#31C3BD" : "#F2B137";
   const textColor = winner === "x" ? "text-blue" : "text-orange";
 
@@ -16,7 +15,7 @@ const Results = (props) => {
       <Container classes="w-screen fixed inset-0 opacity-50 bg-black" />
       <Container classes="w-screen h-266px bg-semi-dark fixed inset-0 justify-center align-center my-auto flex-col">
         <TextBox classes="text-sm-custom text-silver mb-16px font-bold flex ">
-          {props.win ? "YOU WON!" : "OH NO, YOU LOST…"}
+          {winner ? "YOU WON!" : "OH NO, YOU LOST…"}
         </TextBox>
         <Container
           classes={`text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center align-center`}

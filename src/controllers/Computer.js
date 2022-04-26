@@ -1,4 +1,4 @@
-import Controller from "../controllers/Controller";
+import Controller from "./Controller";
 
 class Computer extends Controller {
   moves = [];

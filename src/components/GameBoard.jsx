@@ -11,6 +11,7 @@ import {
   playerMark,
 } from "../reducers/playerSlice";
 import { setGameMode, setIsPlaying } from "../reducers/gameSlice";
+import { player1Score, player2Score, ties } from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
 
 const GameBoard = (props) => {
@@ -29,8 +30,12 @@ const GameBoard = (props) => {
   ]);
 
   const activePlayerMark = useSelector(activePlayer);
+  const p1Score = useSelector(player1Score);
+  const p2Score = useSelector(player2Score);
+  const tiesScore = useSelector(ties);
   const player1Mark = useSelector(playerMark);
-  const player2Mark = player1Mark === "x" ? "o" : "x";
+  const xScore = player1Mark === "x" ? p1Score : p2Score;
+  const oScore = player1Mark === "y" ? p1Score : p2Score;
 
   // const winCombinations = [
   //   [0, 1, 2],
@@ -100,9 +105,9 @@ const GameBoard = (props) => {
       </Container>
 
       <Container classes="justify-between mx-0 w-full">
-        <ScoreBox bgColor="bg-blue-light" player={player1Mark} score={5} />
-        <ScoreBox bgColor="bg-silver" score={5} />
-        <ScoreBox bgColor="bg-orange" player={player2Mark} score={5} />
+        <ScoreBox bgColor="bg-blue-light" mark={"x"} score={xScore} />
+        <ScoreBox bgColor="bg-silver" score={tiesScore} />
+        <ScoreBox bgColor="bg-orange" mark={"o"} score={oScore} />
       </Container>
     </Container>
   );

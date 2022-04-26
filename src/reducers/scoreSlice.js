@@ -27,6 +27,7 @@ export const scoreSlice = createSlice({
 
 export const player1Score = (state) => state.score.player1Score;
 export const player2Score = (state) => state.score.player2Score;
+export const ties = (state) => state.score.ties;
 export const { setPlayer1Score, setPlayer2Score, setTies, resetScores } =
   scoreSlice.actions;
 

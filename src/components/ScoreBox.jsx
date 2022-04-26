@@ -3,6 +3,8 @@ import Container from "./utils/Container";
 import classnames from "classnames";
 import { gameMode } from "../reducers/gameSlice";
 import { useSelector } from "react-redux";
+import { playerMark } from "../reducers/playerSlice";
+import propTypes from "prop-types";
 
 const ScoreBox = (props) => {
   const classStr = classnames(
@@ -10,10 +12,29 @@ const ScoreBox = (props) => {
     props.bgColor
   );
 
+  let playerInfo;
   const mode = useSelector(gameMode);
-  const playerInfo = mode === "cpu" ? "you" : "p1";
+  const player1Mark = useSelector(playerMark);
 
-  const text = props.player ? `${props.player} (${playerInfo})` : "ties";
+  if (props.mark) {
+    if (mode === "cpu") {
+      playerInfo =
+        props.mark === "x" && player1Mark === "x"
+          ? "you"
+          : props.mark === "o" && player1Mark === "o"
+          ? "you"
+          : "cpu";
+    } else {
+      playerInfo =
+        props.mark === "x" && player1Mark === "x"
+          ? "p1"
+          : props.mark === "o" && player1Mark === "o"
+          ? "p1"
+          : "p2";
+    }
+  }
+
+  const text = props.mark ? `${props.mark} (${playerInfo})` : "ties";
 
   return (
     <Container classes={classStr}>
@@ -24,4 +45,16 @@ const ScoreBox = (props) => {
     </Container>
   );
 };
+
+ScoreBox.propTypes = {
+  score: propTypes.number.isRequired,
+  mark: propTypes.string,
+  bgColor: propTypes.string,
+};
+
+ScoreBox.defaultProps = {
+  bgColor: "",
+  mark: "",
+};
+
 export default ScoreBox;
