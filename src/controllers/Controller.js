@@ -1,8 +1,5 @@
 class Controller {
-  pickedSym;
-  IDSplit;
-  fieldID;
-
+  
   winCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -13,14 +10,6 @@ class Controller {
     [0, 4, 8],
     [2, 4, 6], // diagonals
   ];
-
-  constructor() {
-    this.fieldID = 9;
-  }
-
-  static switchPlayer = (gameMode, activePlayer) => {
-    return activePlayer === "comp" ? "player" : "comp";
-  };
 
   static whoWin = (board, winCombinations) => {
     let winner;

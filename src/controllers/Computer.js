@@ -2,48 +2,32 @@ import Controller from "./Controller";
 
 class Computer extends Controller {
   moves = [];
-  s;
-  indexes;
   minimaxC = 0;
 
   constructor() {
     super();
-    this.name = "AI";
+    this.name = "Computer";
   }
 
   static move = (board) => {
+    console.log(board);
     let fieldID;
-    // DOMStrings.info.classList.toggle("loading");
-
-    let time;
-    const length = Computer.getPossibleMoves(board).length;
-
+    const possibleMoves = Computer.getPossibleMoves(board);
     // time for make move
-    length > 5 ? (time = 1000) : (time = 500);
-
+    //const time = possibleMoves.length > 5 ? 1000 : 500;
     //setTimeout(() => {
-    if (length === 9) {
+    if (possibleMoves.length === 9) {
       // First random item on the board full empty board
       const indexes = board
         .map((field, index) => (field === "" ? index : ""))
         .filter(String);
       fieldID = indexes[Math.floor(Math.random() * indexes.length)]; // Random item
+      console.log(indexes);
     } else {
       const field = Computer.minimax(board, "comp");
       fieldID = field.index;
     }
 
-    //   if (length > 0) {
-    //     board[this.fieldID] = this.name;
-    //     this.moves.push(this.fieldID);
-    //     document.querySelector(this.s).innerHTML = this.symbol;
-    //     Controller.whoWin(this.moves);
-    //   }
-    //   this.minimaxC = 0;
-
-    //   DOMStrings.info.classList.toggle("loading");
-    //   blockBoard = false;
-    //   Controller.switchPlayer();
     return fieldID;
     //}, time);
   };
@@ -53,14 +37,8 @@ class Computer extends Controller {
   };
 
   static getPossibleMoves = (board) => {
-    return board.map((cur, index) => (cur === "" ? index : "")).filter(String);
+    return board.map((cur, index) => (cur === "" ? index : ""));
   };
-
-  // getBoardForMove = (e, currentPlayer, array) => {
-  //   const copiedBoard = [...array];
-  //   copiedBoard[e] = currentPlayer.name;
-  //   return copiedBoard;
-  // };
 
   static getFieldIndexes = (array, currentPlayer) => {
     return array
@@ -70,7 +48,7 @@ class Computer extends Controller {
 
   static checkIfWin = (array, player, winCombinations) => {
     let board;
-    board = this.getFieldIndexes(array, player);
+    board = Computer.getFieldIndexes(array, player);
     for (let i = 0; i < winCombinations.length; i++) {
       var combination = winCombinations[i];
       if (combination.every((index) => board.indexOf(index) > -1)) {
@@ -82,13 +60,13 @@ class Computer extends Controller {
   };
 
   // // the main minimax function
-  minimax = (newBoard, actPlayer) => {
+  static minimax = (newBoard, actPlayer) => {
     this.minimaxC++;
     const possibleMoves = Computer.getPossibleMoves(newBoard);
 
-    if (Controller.checkIfWin(newBoard, "player")) {
+    if (Computer.checkIfWin(newBoard, "player")) {
       return { score: -10 };
-    } else if (Controller.checkIfWin(newBoard, "comp")) {
+    } else if (Computer.checkIfWin(newBoard, "comp")) {
       return { score: 10 };
     } else if (possibleMoves.length === 0) {
       return { score: 0 };

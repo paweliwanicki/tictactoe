@@ -10,24 +10,19 @@ import {
   setActivePlayer,
   playerMark,
 } from "../reducers/playerSlice";
-import { setGameMode, setIsPlaying } from "../reducers/gameSlice";
+import { setGameMode, setIsPlaying, gameBoard } from "../reducers/gameSlice";
 import { player1Score, player2Score, ties } from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
+import Computer from "../controllers/Computer";
+
 
 const GameBoard = (props) => {
   const dispatch = useDispatch();
 
-  const [board, setBoard] = useState([
-    "",
-    "",
-    "", // 0, 1, 2
-    "",
-    "",
-    "", // 3, 4, 5
-    "",
-    "",
-    "", // 6, 7, 8
-  ]);
+  const board = useSelector(gameBoard);
+
+  //console.log(board);
+  console.log(Computer.move(board));
 
   const activePlayerMark = useSelector(activePlayer);
   const p1Score = useSelector(player1Score);
@@ -48,11 +43,6 @@ const GameBoard = (props) => {
   //   [2, 4, 6], // diagonals
   // ];
 
-  const setMark = (index) => {
-    const currentBoard = board;
-    currentBoard[index] = activePlayerMark;
-    setBoard(currentBoard);
-  };
 
   const backToMenuHandler = () => {
     dispatch(setIsPlaying(false));
@@ -99,7 +89,7 @@ const GameBoard = (props) => {
           <GameField
             mark={field}
             key={`field_${ix}`}
-            onClick={() => setMark(ix)}
+            fieldIndex={ix}
           />
         ))}
       </Container>

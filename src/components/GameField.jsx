@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
 import { activePlayer, switchPlayer } from "../reducers/playerSlice";
+import { setBoard } from "../reducers/gameSlice";
 
 const GameField = (props) => {
   const acitvePlayerMark = useSelector(activePlayer);
@@ -13,7 +14,9 @@ const GameField = (props) => {
     const playerMark = acitvePlayerMark;
     if (!mark) {
       setMark(playerMark);
+      dispatch(setBoard({ index: props.fieldIndex, mark: playerMark }));
       dispatch(switchPlayer());
+
     }
   };
 
