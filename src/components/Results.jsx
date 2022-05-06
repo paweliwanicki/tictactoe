@@ -3,11 +3,12 @@ import Container from "./utils/Container";
 import TextBox from "./utils/TextBox";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
+import CssVariables from "./utils/cssVariables";
 
 const Results = (props) => {
   const winner = "x"; //test cases
 
-  const color = winner === "x" ? "#31C3BD" : "#F2B137";
+  const color = winner === "x" ? CssVariables.blue : CssVariables.orange;
   const textColor = winner === "x" ? "text-blue" : "text-orange";
 
   return (

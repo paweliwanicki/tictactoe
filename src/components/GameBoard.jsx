@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import GameField from "./GameField";
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
@@ -14,14 +14,12 @@ import { setGameMode, setIsPlaying, gameBoard } from "../reducers/gameSlice";
 import { player1Score, player2Score, ties } from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
 import Computer from "../controllers/Computer";
-
+import CssVariables from "./utils/cssVariables";
 
 const GameBoard = (props) => {
   const dispatch = useDispatch();
 
   const board = useSelector(gameBoard);
-
-  //console.log(board);
   console.log(Computer.move(board));
 
   const activePlayerMark = useSelector(activePlayer);
@@ -31,18 +29,6 @@ const GameBoard = (props) => {
   const player1Mark = useSelector(playerMark);
   const xScore = player1Mark === "x" ? p1Score : p2Score;
   const oScore = player1Mark === "y" ? p1Score : p2Score;
-
-  // const winCombinations = [
-  //   [0, 1, 2],
-  //   [3, 4, 5],
-  //   [6, 7, 8], // rows
-  //   [0, 3, 6],
-  //   [1, 4, 7],
-  //   [2, 5, 8], // columns
-  //   [0, 4, 8],
-  //   [2, 4, 6], // diagonals
-  // ];
-
 
   const backToMenuHandler = () => {
     dispatch(setIsPlaying(false));
@@ -62,7 +48,7 @@ const GameBoard = (props) => {
             viewBox="0 0 20 20"
             width={20}
             height={20}
-            color="#A8BFC9"
+            color={CssVariables.silver}
             classes="mr-13px"
           />
           <TextBox classes="font-bold">TURN</TextBox>

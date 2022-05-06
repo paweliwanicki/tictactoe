@@ -17,20 +17,20 @@ const ScoreBox = (props) => {
   const player1Mark = useSelector(playerMark);
 
   if (props.mark) {
+    const player1x = props.mark === "x" && player1Mark === "x";
+    const player1o = props.mark === "o" && player1Mark === "o";
     if (mode === "cpu") {
-      playerInfo =
-        props.mark === "x" && player1Mark === "x"
-          ? "you"
-          : props.mark === "o" && player1Mark === "o"
-          ? "you"
-          : "cpu";
+      if (player1x || player1o) {
+        playerInfo = "you";
+      } else {
+        playerInfo = "cpu";
+      }
     } else {
-      playerInfo =
-        props.mark === "x" && player1Mark === "x"
-          ? "p1"
-          : props.mark === "o" && player1Mark === "o"
-          ? "p1"
-          : "p2";
+      if (player1x || player1o) {
+        playerInfo = "p1";
+      } else {
+        playerInfo = "p2";
+      }
     }
   }
 

@@ -3,11 +3,14 @@ import propTypes from "prop-types";
 import classnames from "classnames";
 
 const Button = (props) => {
-  const typeClasses = props.primary
-    ? "text-md rounded-15px"
-    : props.icon
-    ? "p-4"
-    : "px-4 text-sm-custom rounded-10px";
+  let typeClasses = "px-4 text-sm-custom rounded-10px";
+
+  if (props.primary) {
+    typeClasses = "text-md rounded-15px";
+  }
+  if (props.icon) {
+    typeClasses = "p-4";
+  }
 
   const classStr = classnames(
     "font-bold uppercase",
