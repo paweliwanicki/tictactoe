@@ -13,6 +13,7 @@ import {
 import { setGameMode, setIsPlaying } from "../reducers/gameSlice";
 import { player1Score, player2Score, ties } from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
+import CssVariables from "./utils/cssVariables";
 
 const GameBoard = (props) => {
   const dispatch = useDispatch();
@@ -36,17 +37,6 @@ const GameBoard = (props) => {
   const player1Mark = useSelector(playerMark);
   const xScore = player1Mark === "x" ? p1Score : p2Score;
   const oScore = player1Mark === "y" ? p1Score : p2Score;
-
-  // const winCombinations = [
-  //   [0, 1, 2],
-  //   [3, 4, 5],
-  //   [6, 7, 8], // rows
-  //   [0, 3, 6],
-  //   [1, 4, 7],
-  //   [2, 5, 8], // columns
-  //   [0, 4, 8],
-  //   [2, 4, 6], // diagonals
-  // ];
 
   const setMark = (index) => {
     const currentBoard = board;
@@ -72,7 +62,7 @@ const GameBoard = (props) => {
             viewBox="0 0 20 20"
             width={20}
             height={20}
-            color="#A8BFC9"
+            color={CssVariables.silver}
             classes="mr-13px"
           />
           <TextBox classes="font-bold">TURN</TextBox>

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
 import { activePlayer, switchPlayer } from "../reducers/playerSlice";
+import CssVariables from "./utils/cssVariables";
 
 const GameField = (props) => {
   const acitvePlayerMark = useSelector(activePlayer);
@@ -17,7 +18,12 @@ const GameField = (props) => {
     }
   };
 
-  const markColor = mark ? (mark === "x" ? "#65E9E4" : "#FFC860") : "";
+  let markColor = "";
+  if (mark) {
+    markColor =
+      mark === "x" ? CssVariables.blueLight : CssVariables.orangeLight;
+  }
+
   const symbol = mark && (
     <Icon id={`icon-${mark}`} width={64} height={64} color={markColor} />
   );
