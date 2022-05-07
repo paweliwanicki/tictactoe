@@ -3,21 +3,27 @@ import React, { useState } from "react";
 import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
 import { activePlayer, switchPlayer } from "../reducers/playerSlice";
+import { gameMode, blockBoard } from "../reducers/gameSlice";
 import { setBoard } from "../reducers/gameSlice";
 import CssVariables from "./utils/cssVariables";
 
 const GameField = (props) => {
   const acitvePlayerMark = useSelector(activePlayer);
+  const mode = useSelector(gameMode);
+  const boardBlocked = useSelector(blockBoard);
   const dispatch = useDispatch();
   const [mark, setMark] = useState("");
 
   const setMarkHandler = () => {
     const playerMark = acitvePlayerMark;
-    if (!mark) {
+    if (!mark && !boardBlocked) {
       setMark(playerMark);
       dispatch(setBoard({ index: props.fieldIndex, mark: playerMark }));
       dispatch(switchPlayer());
 
+      if (mode === "cpu") {
+        props.makeComputerMove();
+      }
     }
   };
 

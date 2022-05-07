@@ -1,5 +1,6 @@
 import React from "react";
-import GameField from "./GameField";
+//import GameField from "./GameField";
+import GameFields from "./GameFields";
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
@@ -10,7 +11,13 @@ import {
   setActivePlayer,
   playerMark,
 } from "../reducers/playerSlice";
-import { setGameMode, setIsPlaying, gameBoard } from "../reducers/gameSlice";
+import {
+  setGameMode,
+  setIsPlaying,
+  gameBoard,
+  setBlockBoard,
+  setBoard,
+} from "../reducers/gameSlice";
 import { player1Score, player2Score, ties } from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
 import Computer from "../controllers/Computer";
@@ -20,20 +27,29 @@ const GameBoard = (props) => {
   const dispatch = useDispatch();
 
   const board = useSelector(gameBoard);
-  console.log(Computer.move(board));
-
   const activePlayerMark = useSelector(activePlayer);
   const p1Score = useSelector(player1Score);
   const p2Score = useSelector(player2Score);
   const tiesScore = useSelector(ties);
   const player1Mark = useSelector(playerMark);
+  const computerMark = player1Mark === "x" ? "o" : "x";
   const xScore = player1Mark === "x" ? p1Score : p2Score;
-  const oScore = player1Mark === "y" ? p1Score : p2Score;
+  const oScore = player1Mark === "o" ? p1Score : p2Score;
 
   const backToMenuHandler = () => {
     dispatch(setIsPlaying(false));
     dispatch(setGameMode(null));
     dispatch(setActivePlayer("x"));
+  };
+
+  const computerMoveHandler = () => {
+    dispatch(setBlockBoard(true));
+    const { fieldID, moveTime } = Computer.move(board, computerMark);
+    console.log(fieldID, moveTime);
+    setTimeout(() => {
+      dispatch(setBoard({ index: fieldID, mark: computerMark }));
+      dispatch(setBlockBoard(false));
+    }, moveTime);
   };
 
   return (
@@ -71,13 +87,15 @@ const GameBoard = (props) => {
         />
       </Container>
       <Container classes="w-full justify-between mb-19px flex-wrap gap-20px">
-        {board.map((field, ix) => (
+        {/* {board.map((field, ix) => (
           <GameField
             mark={field}
             key={`field_${ix}`}
             fieldIndex={ix}
+            makeComputerMove={computerMoveHandler}
           />
-        ))}
+        ))} */}
+        <GameFields computerMoveHandler={computerMoveHandler} board={board} activePlayerMark={activePlayerMark}/>
       </Container>
 
       <Container classes="justify-between mx-0 w-full">

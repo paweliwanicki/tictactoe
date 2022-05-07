@@ -1,7 +1,6 @@
 import Controller from "./Controller";
 
 class Computer extends Controller {
-  moves = [];
   minimaxC = 0;
 
   constructor() {
@@ -9,85 +8,71 @@ class Computer extends Controller {
     this.name = "Computer";
   }
 
-  static move = (board) => {
-    console.log(board);
+  static move = (board, computerMark) => {
     let fieldID;
+    const newBoard = [...board];
     const possibleMoves = Computer.getPossibleMoves(board);
+    //console.log(possibleMoves);
     // time for make move
-    //const time = possibleMoves.length > 5 ? 1000 : 500;
+    const moveTime = possibleMoves.length > 5 ? 1000 : 500;
     //setTimeout(() => {
     if (possibleMoves.length === 9) {
       // First random item on the board full empty board
-      const indexes = board
+      const indexes = newBoard
         .map((field, index) => (field === "" ? index : ""))
         .filter(String);
       fieldID = indexes[Math.floor(Math.random() * indexes.length)]; // Random item
-      console.log(indexes);
     } else {
-      const field = Computer.minimax(board, "comp");
+      //const minimaxMove = Computer.minimax(board, "comp");
+
+      const field = Computer.minimax(newBoard, computerMark, computerMark);
+      console.log(field);
       fieldID = field.index;
     }
 
-    return fieldID;
+    return {fieldID,moveTime};
     //}, time);
   };
 
-  static nextMovePossible = (array) => {
-    return array.filter((field) => field === "").length > 0;
-  };
-
   static getPossibleMoves = (board) => {
-    return board.map((cur, index) => (cur === "" ? index : ""));
-  };
-
-  static getFieldIndexes = (array, currentPlayer) => {
-    return array
-      .map((field, index) => (field === currentPlayer.name ? index : ""))
-      .filter(String);
-  };
-
-  static checkIfWin = (array, player, winCombinations) => {
-    let board;
-    board = Computer.getFieldIndexes(array, player);
-    for (let i = 0; i < winCombinations.length; i++) {
-      var combination = winCombinations[i];
-      if (combination.every((index) => board.indexOf(index) > -1)) {
-        return true;
-      } else {
-        continue;
-      }
-    }
+    return board.map((cur, index) => (cur === "" ? index : "")).filter(String);
   };
 
   // // the main minimax function
-  static minimax = (newBoard, actPlayer) => {
-    this.minimaxC++;
-    const possibleMoves = Computer.getPossibleMoves(newBoard);
+  static minimax = (newBoard, computerMark, actPlayer) => {
+    //let minimaxCounter = 0;
+    //return () => {
+    //minimaxCounter++;
 
-    if (Computer.checkIfWin(newBoard, "player")) {
+    //Computer.minimaxC++;
+    const possibleMoves = Computer.getPossibleMoves(newBoard);
+    const playerMark = computerMark === "x" ? "o" : "x";
+    if (Controller.checkIfWin(newBoard, playerMark)) {
       return { score: -10 };
-    } else if (Computer.checkIfWin(newBoard, "comp")) {
+    } else if (Controller.checkIfWin(newBoard, computerMark)) {
       return { score: 10 };
     } else if (possibleMoves.length === 0) {
       return { score: 0 };
     }
 
+
     // for collecting all moves
-    var minimoves = [];
+    const minimoves = [];
 
     for (let el of possibleMoves) {
       // create a move object to store move (index, score)
-      var move = {};
+      const move = {};
 
       move.index = el;
-
+      let result;
       //set index of newboard to actPlayer
-      newBoard[el] = actPlayer.name;
-      if (actPlayer == "comp") {
-        var result = Computer.minimax(newBoard, "player");
+      newBoard[el] = actPlayer;
+
+      if (actPlayer === "x") {
+        result = Computer.minimax(newBoard,computerMark, "o");
         move.score = result.score;
       } else {
-        var result = Computer.minimax(newBoard, "comp");
+        result = Computer.minimax(newBoard,computerMark, "x");
         move.score = result.score;
       }
 
@@ -96,27 +81,30 @@ class Computer extends Controller {
       minimoves.push(move);
     }
 
-    var bestMove;
+    let bestMove;
+    let bestScore;
     // Get a high score move
-    if (actPlayer === "comp") {
-      var bestScore = -100; // For checking if score is higher than this
-      for (var i = 0; i < minimoves.length; i++) {
+    if (actPlayer === computerMark) {
+      bestScore = -100; // For checking if score is higher than this
+      for (let i = 0; i < minimoves.length; i++) {
         if (minimoves[i].score > bestScore) {
           bestScore = minimoves[i].score;
           bestMove = i;
         }
       }
     } else {
-      var bestScore = 100;
-      for (var i = 0; i < minimoves.length; i++) {
+      bestScore = 100;
+      for (let i = 0; i < minimoves.length; i++) {
         if (minimoves[i].score < bestScore) {
           bestScore = minimoves[i].score;
           bestMove = i;
         }
       }
     }
+    //console.log(Computer.minimaxC);
     return minimoves[bestMove];
   };
+  //};
 }
 
 export default Computer;
