@@ -1,5 +1,5 @@
 import Container from "./utils/Container";
-import React, { useState } from "react";
+import React from "react";
 import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
 import { activePlayer, switchPlayer } from "../reducers/playerSlice";
@@ -13,13 +13,11 @@ const GameField = (props) => {
   const mode = useSelector(gameMode);
   const boardBlocked = useSelector(blockBoard);
   const dispatch = useDispatch();
-  const [mark, setMark] = useState(props.mark);
   const board = useSelector(gameBoard);
 
   const setMarkHandler = () => {
     const playerMark = acitvePlayerMark;
-    if (!mark && !boardBlocked) {
-      setMark(playerMark);
+    if (!props.mark && !boardBlocked) {
       dispatch(setBoard({ index: props.fieldIndex, mark: playerMark }));
       const newBoard = [...board];
       newBoard[props.fieldIndex] = playerMark;

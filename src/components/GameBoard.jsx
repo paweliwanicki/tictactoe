@@ -10,6 +10,7 @@ import {
   setActivePlayer,
   playerMark,
   switchPlayer,
+  setWinner,
 } from "../reducers/playerSlice";
 import {
   setGameMode,
@@ -18,7 +19,7 @@ import {
   setBlockBoard,
   setBoard,
   gameMode,
-  setDisplayResult
+  setDisplayResult,
 } from "../reducers/gameSlice";
 import { player1Score, player2Score, ties } from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
@@ -49,17 +50,17 @@ const GameBoard = (props) => {
     dispatch(setBlockBoard(true));
     const { fieldID, moveTime } = Computer.move(newBoard, computerMark);
     setTimeout(() => {
-      dispatch(setBlockBoard(false));
       dispatch(setBoard({ index: fieldID, mark: computerMark }));
       const tmpBoard = [...newBoard];
       tmpBoard[fieldID] = computerMark;
-      const win = Computer.checkIfWin(tmpBoard);
-      console.log(win);
-      if(win) {
+      const win = Computer.checkIfWin(tmpBoard, computerMark);
+      if (win) {
         dispatch(setDisplayResult(true));
+        dispatch(setWinner(computerMark));
       } else {
         dispatch(switchPlayer());
       }
+      dispatch(setBlockBoard(false));
     }, moveTime);
   };
 

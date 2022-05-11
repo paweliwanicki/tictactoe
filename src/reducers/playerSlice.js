@@ -5,6 +5,7 @@ export const playerSlice = createSlice({
   initialState: {
     playerMark: "x",
     activePlayer: "x",
+    winnerMark: null,
   },
   reducers: {
     switchPlayer: (state) => {
@@ -16,13 +17,16 @@ export const playerSlice = createSlice({
     setActivePlayer: (state, action) => {
       state.activePlayer = action.payload;
     },
-
+    setWinner: (state, action) => {
+      state.winnerMark = action.payload;
+    },
   },
 });
 
 export const playerMark = (state) => state.player.playerMark;
 export const activePlayer = (state) => state.player.activePlayer;
-export const { switchPlayer, setPlayerMark, setActivePlayer } =
+export const winnerMark = (state) => state.player.winnerMark;
+export const { switchPlayer, setPlayerMark, setActivePlayer, setWinner } =
   playerSlice.actions;
 
 export default playerSlice.reducer;
