@@ -12,10 +12,8 @@ class Computer extends Controller {
     let fieldID;
     const newBoard = [...board];
     const possibleMoves = Computer.getPossibleMoves(board);
-    //console.log(possibleMoves);
     // time for make move
     const moveTime = possibleMoves.length > 5 ? 1000 : 500;
-    //setTimeout(() => {
     if (possibleMoves.length === 9) {
       // First random item on the board full empty board
       const indexes = newBoard
@@ -23,15 +21,10 @@ class Computer extends Controller {
         .filter(String);
       fieldID = indexes[Math.floor(Math.random() * indexes.length)]; // Random item
     } else {
-      //const minimaxMove = Computer.minimax(board, "comp");
-
       const field = Computer.minimax(newBoard, computerMark, computerMark);
-      console.log(field);
       fieldID = field.index;
     }
-
-    return {fieldID,moveTime};
-    //}, time);
+    return { fieldID, moveTime };
   };
 
   static getPossibleMoves = (board) => {
@@ -55,7 +48,6 @@ class Computer extends Controller {
       return { score: 0 };
     }
 
-
     // for collecting all moves
     const minimoves = [];
 
@@ -69,10 +61,10 @@ class Computer extends Controller {
       newBoard[el] = actPlayer;
 
       if (actPlayer === "x") {
-        result = Computer.minimax(newBoard,computerMark, "o");
+        result = Computer.minimax(newBoard, computerMark, "o");
         move.score = result.score;
       } else {
-        result = Computer.minimax(newBoard,computerMark, "x");
+        result = Computer.minimax(newBoard, computerMark, "x");
         move.score = result.score;
       }
 

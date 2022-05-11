@@ -16,6 +16,7 @@ export const playerSlice = createSlice({
     setActivePlayer: (state, action) => {
       state.activePlayer = action.payload;
     },
+
   },
 });
 

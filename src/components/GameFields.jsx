@@ -3,8 +3,6 @@ import GameField from "./GameField";
 import propTypes from "prop-types";
 
 const GameFields = (props) => {
-  console.log(props.board);
-  
   return props.board.map((field, ix) => (
     <GameField
       mark={field}

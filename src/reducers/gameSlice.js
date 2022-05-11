@@ -17,10 +17,14 @@ export const gameSlice = createSlice({
       state.gameMode = action.payload;
     },
     setDisplayResult: (state, action) => {
-      state.displayResult = action.payload;
+      const display = action.payload;
+      state.displayResult = display;
+      state.isPlaying = display ? false : true;
     },
     setBoard: (state, action) => {
-      state.gameBoard[action.payload.index] = action.payload.mark;
+      const newGameBoard = [...state.gameBoard];
+      newGameBoard[action.payload.index] = action.payload.mark
+      state.gameBoard = newGameBoard;
     },
     setBlockBoard: (state, action) => {
       state.blockBoard = action.payload;
@@ -33,7 +37,7 @@ export const isPlaying = (state) => state.game.isPlaying;
 export const displayResult = (state) => state.game.displayResult;
 export const gameBoard = (state) => state.game.gameBoard;
 export const blockBoard = (state) => state.game.blockBoard;
-export const { setIsPlaying, setDisplayResult, setGameMode, setBoard, setBlockBoard } =
+export const { setIsPlaying, setDisplayResult, setGameMode, setBoard, setBlockBoard, computerMove } =
   gameSlice.actions;
 
 export default gameSlice.reducer;

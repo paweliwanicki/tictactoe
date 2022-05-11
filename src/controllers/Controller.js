@@ -30,6 +30,7 @@ class Controller {
         continue;
       }
     }
+    return false;
   };
 
   static getFieldIndexes = (board, mark) => {

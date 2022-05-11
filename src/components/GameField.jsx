@@ -3,38 +3,41 @@ import React, { useState } from "react";
 import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
 import { activePlayer, switchPlayer } from "../reducers/playerSlice";
-import { gameMode, blockBoard } from "../reducers/gameSlice";
+import { gameMode, blockBoard, gameBoard } from "../reducers/gameSlice";
 import { setBoard } from "../reducers/gameSlice";
 import CssVariables from "./utils/cssVariables";
+import propTypes from "prop-types";
 
 const GameField = (props) => {
   const acitvePlayerMark = useSelector(activePlayer);
   const mode = useSelector(gameMode);
   const boardBlocked = useSelector(blockBoard);
   const dispatch = useDispatch();
-  const [mark, setMark] = useState("");
+  const [mark, setMark] = useState(props.mark);
+  const board = useSelector(gameBoard);
 
   const setMarkHandler = () => {
     const playerMark = acitvePlayerMark;
     if (!mark && !boardBlocked) {
       setMark(playerMark);
       dispatch(setBoard({ index: props.fieldIndex, mark: playerMark }));
+      const newBoard = [...board];
+      newBoard[props.fieldIndex] = playerMark;
       dispatch(switchPlayer());
-
       if (mode === "cpu") {
-        props.makeComputerMove();
+        props.makeComputerMove(newBoard);
       }
     }
   };
 
   let markColor = "";
-  if (mark) {
+  if (props.mark) {
     markColor =
-      mark === "x" ? CssVariables.blueLight : CssVariables.orangeLight;
+      props.mark === "x" ? CssVariables.blueLight : CssVariables.orangeLight;
   }
 
-  const symbol = mark && (
-    <Icon id={`icon-${mark}`} width={64} height={64} color={markColor} />
+  const symbol = props.mark && (
+    <Icon id={`icon-${props.mark}`} width={64} height={64} color={markColor} />
   );
   return (
     <Container
@@ -44,6 +47,12 @@ const GameField = (props) => {
       {symbol}
     </Container>
   );
+};
+
+GameField.propTypes = {
+  makeComputerMove: propTypes.func.isRequired,
+  fieldIndex: propTypes.number.isRequired,
+  mark: propTypes.string,
 };
 
 export default GameField;
