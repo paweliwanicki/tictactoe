@@ -21,7 +21,13 @@ import {
   gameMode,
   setDisplayResult,
 } from "../reducers/gameSlice";
-import { player1Score, player2Score, ties } from "../reducers/scoreSlice";
+import {
+  xScore,
+  oScore,
+  totalTies,
+  setScore,
+  setTie,
+} from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
 import Computer from "../controllers/Computer";
 import CssVariables from "./utils/cssVariables";
@@ -31,17 +37,16 @@ const GameBoard = (props) => {
 
   const board = useSelector(gameBoard, shallowEqual);
   const activePlayerMark = useSelector(activePlayer);
-  const p1Score = useSelector(player1Score);
-  const p2Score = useSelector(player2Score);
-  const tiesScore = useSelector(ties);
+  const tiesScore = useSelector(totalTies);
   const player1Mark = useSelector(playerMark);
   const computerMark = player1Mark === "x" ? "o" : "x";
-  const xScore = player1Mark === "x" ? p1Score : p2Score;
-  const oScore = player1Mark === "o" ? p1Score : p2Score;
+  const xTotalScore = useSelector(xScore);
+  const oTotalScore = useSelector(oScore);
   const mode = useSelector(gameMode);
 
   const backToMenuHandler = () => {
     dispatch(setIsPlaying(false));
+    dispatch(setBoard({clear: true}));
     dispatch(setGameMode(null));
     dispatch(setActivePlayer("x"));
   };
@@ -54,9 +59,15 @@ const GameBoard = (props) => {
       const tmpBoard = [...newBoard];
       tmpBoard[fieldID] = computerMark;
       const win = Computer.checkIfWin(tmpBoard, computerMark);
-      if (win) {
+      if (win === "tie") {
+        dispatch(setTie());
+        dispatch(setIsPlaying(false));
+        dispatch(setDisplayResult(true));
+      } else if (win) {
+        dispatch(setIsPlaying(false));
         dispatch(setDisplayResult(true));
         dispatch(setWinner(computerMark));
+        dispatch(setScore(computerMark));
       } else {
         dispatch(switchPlayer());
       }
@@ -113,9 +124,9 @@ const GameBoard = (props) => {
       </Container>
 
       <Container classes="justify-between mx-0 w-full">
-        <ScoreBox bgColor="bg-blue-light" mark={"x"} score={xScore} />
+        <ScoreBox bgColor="bg-blue-light" mark={"x"} score={xTotalScore} />
         <ScoreBox bgColor="bg-silver" score={tiesScore} />
-        <ScoreBox bgColor="bg-orange" mark={"o"} score={oScore} />
+        <ScoreBox bgColor="bg-orange" mark={"o"} score={oTotalScore} />
       </Container>
     </Container>
   );

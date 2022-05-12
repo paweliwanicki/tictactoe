@@ -4,7 +4,8 @@ import Button from "./utils/Button";
 import Icon from "./utils/Icon";
 import MarkSelector from "./MarkSelector";
 import { useDispatch } from "react-redux";
-import { setGameMode, setIsPlaying } from "../reducers/gameSlice";
+import { setGameMode, setIsPlaying,setBoard } from "../reducers/gameSlice";
+import { resetScores } from "../reducers/scoreSlice";
 
 const Menu = (props) => {
   const dispatch = useDispatch();
@@ -12,6 +13,8 @@ const Menu = (props) => {
   const startGameHandler = (mode) => {
     dispatch(setGameMode(mode));
     dispatch(setIsPlaying(true));
+    dispatch(setBoard({clear:true}));
+    dispatch(resetScores());
   };
 
   return (

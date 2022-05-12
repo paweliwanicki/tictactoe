@@ -2,11 +2,19 @@ import Container from "./utils/Container";
 import React from "react";
 import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
-import { activePlayer, switchPlayer } from "../reducers/playerSlice";
-import { gameMode, blockBoard, gameBoard } from "../reducers/gameSlice";
+import { activePlayer, switchPlayer, setWinner } from "../reducers/playerSlice";
+import {
+  gameMode,
+  blockBoard,
+  gameBoard,
+  setDisplayResult,
+  setIsPlaying,
+} from "../reducers/gameSlice";
+import { setScore, setTie } from "../reducers/scoreSlice";
 import { setBoard } from "../reducers/gameSlice";
 import CssVariables from "./utils/cssVariables";
 import propTypes from "prop-types";
+import Controller from "../controllers/Controller";
 
 const GameField = (props) => {
   const acitvePlayerMark = useSelector(activePlayer);
@@ -21,7 +29,19 @@ const GameField = (props) => {
       dispatch(setBoard({ index: props.fieldIndex, mark: playerMark }));
       const newBoard = [...board];
       newBoard[props.fieldIndex] = playerMark;
-      dispatch(switchPlayer());
+      const win = Controller.checkIfWin(newBoard, playerMark);
+      if (win === "tie") {
+        dispatch(setTie());
+        dispatch(setDisplayResult(true));
+        dispatch(setIsPlaying(false));
+      } else if (win) {
+        dispatch(setDisplayResult(true));
+        dispatch(setIsPlaying(false));
+        dispatch(setWinner(playerMark));
+        dispatch(setScore(playerMark));
+      } else {
+        dispatch(switchPlayer());
+      }
       if (mode === "cpu") {
         props.makeComputerMove(newBoard);
       }

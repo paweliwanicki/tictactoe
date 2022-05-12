@@ -17,14 +17,16 @@ export const gameSlice = createSlice({
       state.gameMode = action.payload;
     },
     setDisplayResult: (state, action) => {
-      const display = action.payload;
-      state.displayResult = display;
-      state.isPlaying = display ? false : true;
+      state.displayResult = action.payload;
     },
     setBoard: (state, action) => {
-      const newGameBoard = [...state.gameBoard];
-      newGameBoard[action.payload.index] = action.payload.mark;
-      state.gameBoard = newGameBoard;
+      if(action.payload.clear) {
+        state.gameBoard = ["", "", "", "", "", "", "", "", ""];
+      } else {
+        const newGameBoard = [...state.gameBoard];
+        newGameBoard[action.payload.index] = action.payload.mark;
+        state.gameBoard = newGameBoard;
+      }
     },
     setBlockBoard: (state, action) => {
       state.blockBoard = action.payload;

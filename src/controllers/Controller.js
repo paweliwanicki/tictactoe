@@ -30,6 +30,9 @@ class Controller {
         continue;
       }
     }
+    if(Controller.getPossibleMoves(board).length === 0) {
+      return 'tie';
+    }
     return false;
   };
 
@@ -37,6 +40,10 @@ class Controller {
     return board
       .map((field, index) => (field === mark ? index : ""))
       .filter(String);
+  };
+
+  static getPossibleMoves = (board) => {
+    return board.map((cur, index) => (cur === "" ? index : "")).filter(String);
   };
 }
 

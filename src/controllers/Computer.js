@@ -11,7 +11,7 @@ class Computer extends Controller {
   static move = (board, computerMark) => {
     let fieldID;
     const newBoard = [...board];
-    const possibleMoves = Computer.getPossibleMoves(board);
+    const possibleMoves = Controller.getPossibleMoves(board);
     // time for make move
     const moveTime = possibleMoves.length > 5 ? 1000 : 500;
     if (possibleMoves.length === 9) {
@@ -38,7 +38,7 @@ class Computer extends Controller {
     //minimaxCounter++;
 
     //Computer.minimaxC++;
-    const possibleMoves = Computer.getPossibleMoves(newBoard);
+    const possibleMoves = Controller.getPossibleMoves(newBoard);
     const playerMark = computerMark === "x" ? "o" : "x";
     if (Controller.checkIfWin(newBoard, playerMark)) {
       return { score: -10 };

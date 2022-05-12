@@ -3,32 +3,40 @@ import { createSlice } from "@reduxjs/toolkit";
 export const scoreSlice = createSlice({
   name: "score",
   initialState: {
-    player1Score: 0,
-    player2Score: 0,
-    ties: 0,
+    x: 0,
+    o: 0,
+    totalTies: 0,
   },
   reducers: {
-    setPlayer1Score: (state) => {
-      state.player1Score = state.player1Score++;
+    setScore: (state, action) => {
+      let score = state[action.payload];
+      if (action.payload === "x") {
+        state.x = ++score;
+      }
+      if (action.payload === "o") {
+        state.o = ++score;
+      }
     },
-    setPlayer2Score: (state) => {
-      state.player1Score = state.player2Score++;
-    },
-    setTies: (state) => {
+    setTie: (state) => {
       state.ties = state.ties++;
     },
     resetScores: (state) => {
-      state.player1Score = 0;
-      state.player2Score = 0;
+      state.x = 0;
+      state.o = 0;
       state.ties = 0;
     },
   },
 });
 
-export const player1Score = (state) => state.score.player1Score;
-export const player2Score = (state) => state.score.player2Score;
-export const ties = (state) => state.score.ties;
-export const { setPlayer1Score, setPlayer2Score, setTies, resetScores } =
-  scoreSlice.actions;
+export const xScore = (state) => state.score.x;
+export const oScore = (state) => state.score.o;
+export const totalTies = (state) => state.score.totalTies;
+export const {
+  setPlayer1Score,
+  setPlayer2Score,
+  setTie,
+  resetScores,
+  setScore,
+} = scoreSlice.actions;
 
 export default scoreSlice.reducer;
