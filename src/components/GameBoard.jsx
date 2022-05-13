@@ -46,7 +46,7 @@ const GameBoard = (props) => {
 
   const backToMenuHandler = () => {
     dispatch(setIsPlaying(false));
-    dispatch(setBoard({clear: true}));
+    dispatch(setBoard({ clear: true }));
     dispatch(setGameMode(null));
     dispatch(setActivePlayer("x"));
   };

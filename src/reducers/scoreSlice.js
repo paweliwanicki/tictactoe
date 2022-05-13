@@ -18,12 +18,13 @@ export const scoreSlice = createSlice({
       }
     },
     setTie: (state) => {
-      state.ties = state.ties++;
+      let tieCounter = state.totalTies;
+      state.totalTies = tieCounter + 1;
     },
     resetScores: (state) => {
       state.x = 0;
       state.o = 0;
-      state.ties = 0;
+      state.totalTies = 0;
     },
   },
 });

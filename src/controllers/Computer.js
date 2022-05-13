@@ -39,13 +39,15 @@ class Computer extends Controller {
 
     //Computer.minimaxC++;
     const possibleMoves = Controller.getPossibleMoves(newBoard);
+    if (possibleMoves.length === 0) {
+      return { score: 0 };
+    }
+
     const playerMark = computerMark === "x" ? "o" : "x";
     if (Controller.checkIfWin(newBoard, playerMark)) {
       return { score: -10 };
     } else if (Controller.checkIfWin(newBoard, computerMark)) {
       return { score: 10 };
-    } else if (possibleMoves.length === 0) {
-      return { score: 0 };
     }
 
     // for collecting all moves
@@ -59,44 +61,59 @@ class Computer extends Controller {
       let result;
       //set index of newboard to actPlayer
       newBoard[el] = actPlayer;
-
-      if (actPlayer === "x") {
-        result = Computer.minimax(newBoard, computerMark, "o");
-        move.score = result.score;
+      if (actPlayer === computerMark) {
+        result = Computer.minimax(newBoard, computerMark, playerMark);
       } else {
-        result = Computer.minimax(newBoard, computerMark, "x");
-        move.score = result.score;
+        result = Computer.minimax(newBoard, computerMark, computerMark);
       }
+      move.score = result.score;
 
       //reset the spot to empty
       newBoard[el] = "";
       minimoves.push(move);
     }
 
+    let bestScore = actPlayer === computerMark ? -100 : 100;
     let bestMove;
-    let bestScore;
-    // Get a high score move
-    if (actPlayer === computerMark) {
-      bestScore = -100; // For checking if score is higher than this
-      for (let i = 0; i < minimoves.length; i++) {
-        if (minimoves[i].score > bestScore) {
-          bestScore = minimoves[i].score;
-          bestMove = i;
-        }
-      }
-    } else {
-      bestScore = 100;
+    if (bestScore > 0) {
       for (let i = 0; i < minimoves.length; i++) {
         if (minimoves[i].score < bestScore) {
           bestScore = minimoves[i].score;
           bestMove = i;
         }
       }
+    } else {
+      for (let i = 0; i < minimoves.length; i++) {
+        if (minimoves[i].score > bestScore) {
+          bestScore = minimoves[i].score;
+          bestMove = i;
+        }
+      }
     }
-    //console.log(Computer.minimaxC);
+
     return minimoves[bestMove];
   };
-  //};
+
+  static getBestComputerMove = (moves, bestScore) => {
+    let move;
+    let currentBestScore = bestScore;
+    return () => {
+      moves.forEach((el) => {
+        if (bestScore > 0) {
+          if (el.score < currentBestScore) {
+            currentBestScore = el.score;
+            move = el;
+          }
+        } else {
+          if (el.score > currentBestScore) {
+            currentBestScore = el.score;
+            move = el;
+          }
+        }
+      });
+      return move;
+    };
+  };
 }
 
 export default Computer;
