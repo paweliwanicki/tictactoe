@@ -2,6 +2,8 @@ import CssVariables from "./cssVariables";
 
 // enums
 export const GAME_STATE_TIE = 'tie';
+export const CPU = 'cpu';
+export const PLAYER = 'player';
 
 export const getMarkColor = (mark = "", dark = false) => {
   let markColor = "";

@@ -3,21 +3,13 @@ import Container from "./utils/Container";
 import TextBox from "./utils/TextBox";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
-import {
-  winnerMark,
-  playerMark,
-  setActivePlayer,
-  setWinner,
-} from "../reducers/playerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   gameMode,
-  setBlockBoard,
-  setBoard,
-  setGameMode,
-  setIsPlaying,
+  playerMark,
+  startNewGame,
+  winnerMark,
 } from "../reducers/gameSlice";
-import { resetScores } from "../reducers/scoreSlice";
 import { getMarkColor } from "../utils/mixin";
 import propTypes from "prop-types";
 
@@ -34,20 +26,12 @@ const Results = (props) => {
   }
 
   const quitGameHandler = () => {
-    dispatch(resetScores());
-    dispatch(setIsPlaying(false));
-    dispatch(setBoard({ clear: true }));
-    dispatch(setGameMode(null));
-    dispatch(setWinner(null));
+    dispatch(startNewGame({ isPlaying: false, resetScores: true }));
     props.onCancel();
   };
 
   const nextRoundHandler = () => {
-    dispatch(setBoard({ clear: true }));
-    dispatch(setWinner(null));
-    dispatch(setActivePlayer("x"));
-    dispatch(setBlockBoard(false));
-    dispatch(setGameMode(mode));
+    dispatch(startNewGame({ isPlaying: true, resetScores: false }));
     props.onConfirm();
   };
 

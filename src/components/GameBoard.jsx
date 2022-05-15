@@ -9,8 +9,6 @@ import {
   activePlayer,
   setActivePlayer,
   playerMark,
-  switchPlayer,
-  setWinner,
   winnerMark,
 } from "../reducers/playerSlice";
 import {
@@ -20,14 +18,20 @@ import {
   setBlockBoard,
   setBoard,
   gameMode,
-} from "../reducers/gameSlice";
-import {
+  showResults,
+  setShowResults,
   xScore,
   oScore,
   totalTies,
-  setScore,
-  setTie,
-} from "../reducers/scoreSlice";
+  startNewGame
+} from "../reducers/gameSlice";
+// import {
+//   // xScore,
+//   // oScore,
+//   //totalTies,
+//   setScore,
+//   setTie,
+// } from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
 import Computer from "../controllers/Computer";
 import CssVariables from "../utils/cssVariables";
@@ -49,52 +53,36 @@ const GameBoard = (props) => {
   const computerMark = player1Mark === "x" ? "o" : "x";
 
   const [showRestartMenu, setShowRestartMenu] = useState(false);
-  const [showResults, setShowResults] = useState(false);
+  const showResultsState = useSelector(showResults);
 
   const backToMenuHandler = () => {
-    setShowRestartMenu(false);
-    dispatch(setIsPlaying(false));
-    dispatch(setBoard({ clear: true }));
-    dispatch(setGameMode(null));
-    dispatch(setActivePlayer(null));
+    dispatch(startNewGame({isPlaying: false,resetScores: true}))
   };
 
-  const setGameWinnerHandler = (win, winnerMark) => {
-    if (win === GAME_STATE_TIE) {
-      dispatch(setTie());
-      setShowResults(true);
-      setBlockBoard(true);
-    } else if (win) {
-      setShowResults(true);
-      setBlockBoard(true);
-      dispatch(setWinner(winnerMark));
-      dispatch(setScore(winnerMark));
-    } else {
-      dispatch(switchPlayer());
-    }
-  };
 
-  const computerMoveHandler = (newBoard) => {
-    dispatch(setBlockBoard(true));
-    
-    const { fieldID, moveTime } = Computer.move(newBoard, computerMark);
-    if (!winner) {
-      setTimeout(() => {
-        dispatch(setBoard({ index: fieldID, mark: computerMark }));
-        const tmpBoard = [...newBoard];
-        tmpBoard[fieldID] = computerMark;
-        const win = Computer.checkIfWin(tmpBoard, computerMark);
-        setGameWinnerHandler(win, computerMark);
-        dispatch(setBlockBoard(false));
-      }, moveTime);
-    }
-  };
+  // const computerMoveHandler = (newBoard) => {
+  //   dispatch(setBlockBoard(true));
 
-  useEffect(() => {
-    if (mode === "cpu" && computerMark === "x" && winner === null) {
-      computerMoveHandler(board);
-    }
-  }, []);
+  //   const { fieldID, moveTime } = Computer.move(newBoard, computerMark);
+  //   if (!winner) {
+  //     setTimeout(() => {
+  //       dispatch(setBoard({ index: fieldID, mark: computerMark }));
+  //       const tmpBoard = [...newBoard];
+  //       tmpBoard[fieldID] = computerMark;
+  //       const win = Computer.checkIfWin(tmpBoard, computerMark);
+  //       setGameWinnerHandler(win, computerMark);
+  //       dispatch(setBlockBoard(false));
+  //     }, moveTime);
+  //   }
+  // };
+
+   //computerMoveHandler(board);
+
+  // useEffect(() => {
+  //   if (mode === "cpu" && computerMark === "x" && winner === null) {
+  //     computerMoveHandler(board);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -133,8 +121,7 @@ const GameBoard = (props) => {
         </Container>
         <Container classes="w-full justify-between mb-19px flex-wrap gap-20px">
           <GameFields
-            computerMoveHandler={computerMoveHandler}
-            setGameWinnerHandler={setGameWinnerHandler}
+            //computerMoveHandler={computerMoveHandler}
             board={board}
             activePlayerMark={activePlayerMark}
           />
@@ -153,10 +140,10 @@ const GameBoard = (props) => {
           onCancel={() => setShowRestartMenu(false)}
         />
       )}
-      {(showResults || winner) && (
+      {(showResultsState || winner) && (
         <Results
-          onCancel={() => setShowResults(false)}
-          onConfirm={() => setShowResults(false)}
+          onCancel={() => dispatch(setShowResults(false))}
+          onConfirm={() => dispatch(setShowResults(false))}
         />
       )}
     </>

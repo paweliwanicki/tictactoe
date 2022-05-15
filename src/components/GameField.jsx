@@ -3,32 +3,20 @@ import React from "react";
 import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
 import { activePlayer } from "../reducers/playerSlice";
-import { gameMode, blockBoard, gameBoard } from "../reducers/gameSlice";
+import { blockBoard } from "../reducers/gameSlice";
 import { setBoard } from "../reducers/gameSlice";
 import propTypes from "prop-types";
-import Controller from "../controllers/Controller";
 import { getMarkColor } from "../utils/mixin";
 
 const GameField = (props) => {
   const dispatch = useDispatch();
   const acitvePlayerMark = useSelector(activePlayer);
-  const mode = useSelector(gameMode);
   const boardBlocked = useSelector(blockBoard);
-  const board = useSelector(gameBoard);
-
   const markColor = getMarkColor(props.mark);
 
   const setMarkHandler = () => {
-    const playerMark = acitvePlayerMark;
     if (!props.mark && !boardBlocked) {
-      dispatch(setBoard({ index: props.fieldIndex, mark: playerMark }));
-      const newBoard = [...board];
-      newBoard[props.fieldIndex] = playerMark;
-      const win = Controller.checkIfWin(newBoard, playerMark);
-      props.setGameWinnerHandler(win, playerMark);
-      if (mode === "cpu" && !win) {
-        props.makeComputerMove(newBoard);
-      }
+      dispatch(setBoard({ index: props.fieldIndex, mark: acitvePlayerMark }));
     }
   };
 
@@ -52,7 +40,7 @@ GameField.propTypes = {
 };
 
 GameField.defaultProps = {
-  mark: '',
+  mark: "",
 };
 
 export default GameField;

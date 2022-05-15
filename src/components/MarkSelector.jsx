@@ -4,7 +4,7 @@ import Button from "./utils/Button";
 import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
 import { useSelector, useDispatch } from "react-redux";
-import { setPlayerMark, playerMark } from "../reducers/playerSlice";
+import { setPlayerMark, playerMark } from "../reducers/gameSlice";
 import { getMarkColor } from "../utils/mixin";
 
 const MarkSelector = (props) => {
