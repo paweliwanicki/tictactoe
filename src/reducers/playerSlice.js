@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const PLAYER_REDUCER_NAME = 'player';
+
 export const playerSlice = createSlice({
-  name: "player",
+  name: PLAYER_REDUCER_NAME,
   initialState: {
     playerMark: "x",
     activePlayer: "x",

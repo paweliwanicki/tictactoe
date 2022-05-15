@@ -2,26 +2,21 @@ import Container from "./utils/Container";
 import React from "react";
 import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
-import { activePlayer, switchPlayer, setWinner } from "../reducers/playerSlice";
-import {
-  gameMode,
-  blockBoard,
-  gameBoard,
-  setDisplayResult,
-  setIsPlaying,
-} from "../reducers/gameSlice";
-import { setScore, setTie } from "../reducers/scoreSlice";
+import { activePlayer } from "../reducers/playerSlice";
+import { gameMode, blockBoard, gameBoard } from "../reducers/gameSlice";
 import { setBoard } from "../reducers/gameSlice";
-import CssVariables from "./utils/cssVariables";
 import propTypes from "prop-types";
 import Controller from "../controllers/Controller";
+import { getMarkColor } from "../utils/mixin";
 
 const GameField = (props) => {
+  const dispatch = useDispatch();
   const acitvePlayerMark = useSelector(activePlayer);
   const mode = useSelector(gameMode);
   const boardBlocked = useSelector(blockBoard);
-  const dispatch = useDispatch();
   const board = useSelector(gameBoard);
+
+  const markColor = getMarkColor(props.mark);
 
   const setMarkHandler = () => {
     const playerMark = acitvePlayerMark;
@@ -30,29 +25,12 @@ const GameField = (props) => {
       const newBoard = [...board];
       newBoard[props.fieldIndex] = playerMark;
       const win = Controller.checkIfWin(newBoard, playerMark);
-      if (win === "tie") {
-        dispatch(setTie());
-        dispatch(setDisplayResult(true));
-        dispatch(setIsPlaying(false));
-      } else if (win) {
-        dispatch(setDisplayResult(true));
-        dispatch(setIsPlaying(false));
-        dispatch(setWinner(playerMark));
-        dispatch(setScore(playerMark));
-      } else {
-        dispatch(switchPlayer());
-      }
-      if (mode === "cpu") {
+      props.setGameWinnerHandler(win, playerMark);
+      if (mode === "cpu" && !win) {
         props.makeComputerMove(newBoard);
       }
     }
   };
-
-  let markColor = "";
-  if (props.mark) {
-    markColor =
-      props.mark === "x" ? CssVariables.blueLight : CssVariables.orangeLight;
-  }
 
   const symbol = props.mark && (
     <Icon id={`icon-${props.mark}`} width={64} height={64} color={markColor} />
@@ -71,6 +49,10 @@ GameField.propTypes = {
   makeComputerMove: propTypes.func.isRequired,
   fieldIndex: propTypes.number.isRequired,
   mark: propTypes.string,
+};
+
+GameField.defaultProps = {
+  mark: '',
 };
 
 export default GameField;

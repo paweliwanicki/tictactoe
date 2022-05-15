@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const GAME_REDUCER_NAME = "game";
+
 export const gameSlice = createSlice({
-  name: "game",
+  name: GAME_REDUCER_NAME,
   initialState: {
     isPlaying: false,
-    displayResult: false,
     gameMode: null,
     gameBoard: ["", "", "", "", "", "", "", "", ""],
     blockBoard: false,
@@ -16,11 +17,8 @@ export const gameSlice = createSlice({
     setGameMode: (state, action) => {
       state.gameMode = action.payload;
     },
-    setDisplayResult: (state, action) => {
-      state.displayResult = action.payload;
-    },
     setBoard: (state, action) => {
-      if(action.payload.clear) {
+      if (action.payload.clear) {
         state.gameBoard = ["", "", "", "", "", "", "", "", ""];
       } else {
         const newGameBoard = [...state.gameBoard];
@@ -36,7 +34,6 @@ export const gameSlice = createSlice({
 
 export const gameMode = (state) => state.game.gameMode;
 export const isPlaying = (state) => state.game.isPlaying;
-export const displayResult = (state) => state.game.displayResult;
 export const gameBoard = (state) => state.game.gameBoard;
 export const blockBoard = (state) => state.game.blockBoard;
 export const {

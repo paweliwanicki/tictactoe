@@ -36,7 +36,6 @@ class Computer extends Controller {
     //let minimaxCounter = 0;
     //return () => {
     //minimaxCounter++;
-
     //Computer.minimaxC++;
     const possibleMoves = Controller.getPossibleMoves(newBoard);
     if (possibleMoves.length === 0) {

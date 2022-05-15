@@ -5,7 +5,7 @@ import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
 import { useSelector, useDispatch } from "react-redux";
 import { setPlayerMark, playerMark } from "../reducers/playerSlice";
-import CssVariables from "./utils/cssVariables";
+import { getMarkColor } from "../utils/mixin";
 
 const MarkSelector = (props) => {
   const mark = useSelector(playerMark);
@@ -29,7 +29,9 @@ const MarkSelector = (props) => {
               classes="m-auto "
               width={32}
               height={32}
-              color={mark === "x" ? CssVariables.dark : CssVariables.silver}
+              color={
+                mark === "x" ? getMarkColor("x", true) : getMarkColor("o", true)
+              }
             />
           }
         />
@@ -45,7 +47,9 @@ const MarkSelector = (props) => {
               classes="m-auto"
               width={32}
               height={32}
-              color={mark === "o" ? CssVariables.dark : CssVariables.silver}
+              color={
+                mark === "o" ? getMarkColor("x", true) : getMarkColor("o", true)
+              }
             />
           }
         />

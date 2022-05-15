@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GameFields from "./GameFields";
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
@@ -11,6 +11,7 @@ import {
   playerMark,
   switchPlayer,
   setWinner,
+  winnerMark,
 } from "../reducers/playerSlice";
 import {
   setGameMode,
@@ -19,7 +20,6 @@ import {
   setBlockBoard,
   setBoard,
   gameMode,
-  setDisplayResult,
 } from "../reducers/gameSlice";
 import {
   xScore,
@@ -30,105 +30,136 @@ import {
 } from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
 import Computer from "../controllers/Computer";
-import CssVariables from "./utils/cssVariables";
+import CssVariables from "../utils/cssVariables";
+import SubMenu from "./SubMenu";
+import Results from "./Results";
+import { GAME_STATE_TIE } from "../utils/mixin";
 
 const GameBoard = (props) => {
   const dispatch = useDispatch();
 
   const board = useSelector(gameBoard, shallowEqual);
   const activePlayerMark = useSelector(activePlayer);
+  const winner = useSelector(winnerMark);
   const tiesScore = useSelector(totalTies);
   const player1Mark = useSelector(playerMark);
-  const computerMark = player1Mark === "x" ? "o" : "x";
   const xTotalScore = useSelector(xScore);
   const oTotalScore = useSelector(oScore);
   const mode = useSelector(gameMode);
+  const computerMark = player1Mark === "x" ? "o" : "x";
+
+  const [showRestartMenu, setShowRestartMenu] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const backToMenuHandler = () => {
+    setShowRestartMenu(false);
     dispatch(setIsPlaying(false));
     dispatch(setBoard({ clear: true }));
     dispatch(setGameMode(null));
-    dispatch(setActivePlayer("x"));
+    dispatch(setActivePlayer(null));
+  };
+
+  const setGameWinnerHandler = (win, winnerMark) => {
+    if (win === GAME_STATE_TIE) {
+      dispatch(setTie());
+      setShowResults(true);
+      setBlockBoard(true);
+    } else if (win) {
+      setShowResults(true);
+      setBlockBoard(true);
+      dispatch(setWinner(winnerMark));
+      dispatch(setScore(winnerMark));
+    } else {
+      dispatch(switchPlayer());
+    }
   };
 
   const computerMoveHandler = (newBoard) => {
     dispatch(setBlockBoard(true));
+    
     const { fieldID, moveTime } = Computer.move(newBoard, computerMark);
-    setTimeout(() => {
-      dispatch(setBoard({ index: fieldID, mark: computerMark }));
-      const tmpBoard = [...newBoard];
-      tmpBoard[fieldID] = computerMark;
-      const win = Computer.checkIfWin(tmpBoard, computerMark);
-      if (win === "tie") {
-        dispatch(setTie());
-        dispatch(setIsPlaying(false));
-        dispatch(setDisplayResult(true));
-      } else if (win) {
-        dispatch(setIsPlaying(false));
-        dispatch(setDisplayResult(true));
-        dispatch(setWinner(computerMark));
-        dispatch(setScore(computerMark));
-      } else {
-        dispatch(switchPlayer());
-      }
-      dispatch(setBlockBoard(false));
-    }, moveTime);
+    if (!winner) {
+      setTimeout(() => {
+        dispatch(setBoard({ index: fieldID, mark: computerMark }));
+        const tmpBoard = [...newBoard];
+        tmpBoard[fieldID] = computerMark;
+        const win = Computer.checkIfWin(tmpBoard, computerMark);
+        setGameWinnerHandler(win, computerMark);
+        dispatch(setBlockBoard(false));
+      }, moveTime);
+    }
   };
 
   useEffect(() => {
-    if (mode === "cpu" && computerMark === "x") {
+    if (mode === "cpu" && computerMark === "x" && winner === null) {
       computerMoveHandler(board);
     }
   }, []);
 
   return (
-    <Container classes="max-w-full flex-wrap h-623px w-460px max-w-460px">
-      <Container classes="w-full gap-20px mb-19px">
-        <Container classes="w-140px justify-start">
-          <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
-        </Container>
-        <Container classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom uppercase justify-center align-center">
-          <Icon
-            id={`icon-${activePlayerMark}`}
-            viewBox="0 0 20 20"
-            width={20}
-            height={20}
-            color={CssVariables.silver}
-            classes="mr-13px"
-          />
-          <TextBox classes="font-bold">TURN</TextBox>
-        </Container>
-        <Button
-          classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom ml-auto rounded-10px"
-          text={
+    <>
+      <Container classes="max-w-full flex-wrap h-623px w-460px max-w-460px">
+        <Container classes="w-full gap-20px mb-19px">
+          <Container classes="w-140px justify-start">
+            <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
+          </Container>
+          <Container classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom uppercase justify-center align-center">
             <Icon
-              id="icon-restart"
+              id={`icon-${activePlayerMark}`}
               viewBox="0 0 20 20"
               width={20}
               height={20}
-              classes="mx-auto"
+              color={CssVariables.silver}
+              classes="mr-13px"
             />
-          }
-          icon
-          primary={false}
-          type="button"
-          onClick={backToMenuHandler}
-        />
-      </Container>
-      <Container classes="w-full justify-between mb-19px flex-wrap gap-20px">
-        <GameFields
-          computerMoveHandler={computerMoveHandler}
-          board={board}
-          activePlayerMark={activePlayerMark}
-        />
-      </Container>
+            <TextBox classes="font-bold">TURN</TextBox>
+          </Container>
+          <Button
+            classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom ml-auto rounded-10px"
+            text={
+              <Icon
+                id="icon-restart"
+                viewBox="0 0 20 20"
+                width={20}
+                height={20}
+                classes="mx-auto"
+              />
+            }
+            icon
+            primary={false}
+            type="button"
+            onClick={() => setShowRestartMenu(true)}
+          />
+        </Container>
+        <Container classes="w-full justify-between mb-19px flex-wrap gap-20px">
+          <GameFields
+            computerMoveHandler={computerMoveHandler}
+            setGameWinnerHandler={setGameWinnerHandler}
+            board={board}
+            activePlayerMark={activePlayerMark}
+          />
+        </Container>
 
-      <Container classes="justify-between mx-0 w-full">
-        <ScoreBox bgColor="bg-blue-light" mark={"x"} score={xTotalScore} />
-        <ScoreBox bgColor="bg-silver" score={tiesScore} />
-        <ScoreBox bgColor="bg-orange" mark={"o"} score={oTotalScore} />
+        <Container classes="justify-between mx-0 w-full">
+          <ScoreBox bgColor="bg-blue" mark={"x"} score={xTotalScore} />
+          <ScoreBox bgColor="bg-silver" score={tiesScore} />
+          <ScoreBox bgColor="bg-orange" mark={"o"} score={oTotalScore} />
+        </Container>
       </Container>
-    </Container>
+      {showRestartMenu && (
+        <SubMenu
+          header="RESTART GAME?"
+          onConfirm={() => backToMenuHandler()}
+          onCancel={() => setShowRestartMenu(false)}
+        />
+      )}
+      {(showResults || winner) && (
+        <Results
+          onCancel={() => setShowResults(false)}
+          onConfirm={() => setShowResults(false)}
+        />
+      )}
+    </>
   );
 };
 

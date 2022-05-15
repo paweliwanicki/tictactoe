@@ -3,7 +3,6 @@ import Container from "./utils/Container";
 import TextBox from "./utils/TextBox";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
-import CssVariables from "./utils/cssVariables";
 import {
   winnerMark,
   playerMark,
@@ -13,36 +12,43 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   gameMode,
+  setBlockBoard,
   setBoard,
-  setDisplayResult,
+  setGameMode,
   setIsPlaying,
 } from "../reducers/gameSlice";
 import { resetScores } from "../reducers/scoreSlice";
+import { getMarkColor } from "../utils/mixin";
+import propTypes from "prop-types";
 
 const Results = (props) => {
   const dispatch = useDispatch();
   const winner = useSelector(winnerMark);
   const player1Mark = useSelector(playerMark);
-  const color = winner === "x" ? CssVariables.blue : CssVariables.orange;
+  const mode = useSelector(gameMode);
+  const markColor = winner === "x" ? getMarkColor("x") : getMarkColor("o");
+
   let textColor = "text-silver";
   if (winner) {
     textColor = winner === "x" ? "text-blue" : "text-orange";
   }
-  const mode = useSelector(gameMode);
 
   const quitGameHandler = () => {
-    dispatch(setDisplayResult(false));
     dispatch(resetScores());
+    dispatch(setIsPlaying(false));
     dispatch(setBoard({ clear: true }));
+    dispatch(setGameMode(null));
+    dispatch(setWinner(null));
+    props.onCancel();
   };
 
   const nextRoundHandler = () => {
-    dispatch(setDisplayResult(false));
     dispatch(setBoard({ clear: true }));
     dispatch(setWinner(null));
-    dispatch(setIsPlaying(false));
     dispatch(setActivePlayer("x"));
-    dispatch(setIsPlaying(true));
+    dispatch(setBlockBoard(false));
+    dispatch(setGameMode(mode));
+    props.onConfirm();
   };
 
   let playerInfoText = "";
@@ -67,22 +73,20 @@ const Results = (props) => {
           classes={`text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center align-center`}
         >
           {winner && (
-           
-              <Icon
-                id={`icon-${winner}`}
-                viewBox="0 0 64 64"
-                width={64}
-                height={64}
-                color={color}
-                classes="mr-24px"
-              />
+            <Icon
+              id={`icon-${winner}`}
+              viewBox="0 0 64 64"
+              width={64}
+              height={64}
+              color={markColor}
+              classes="mr-24px"
+            />
           )}
-              <TextBox
-                classes={`text-sm-custom mb-24px font-bold text-xl-custom ${textColor} mb-0`}
-              >
-                {!winner ? 'ROUND TIED' : 'TAKES THE ROUND'}
-              </TextBox>
-      
+          <TextBox
+            classes={`text-sm-custom mb-24px font-bold text-xl-custom ${textColor} mb-0`}
+          >
+            {!winner ? "ROUND TIED" : "TAKES THE ROUND"}
+          </TextBox>
         </Container>
 
         <Container classes="flex justify-center align-center ">
@@ -104,6 +108,11 @@ const Results = (props) => {
       </Container>
     </Container>
   );
+};
+
+Results.propTypes = {
+  onCancel: propTypes.func.isRequired,
+  onConfirm: propTypes.func.isRequired,
 };
 
 export default Results;

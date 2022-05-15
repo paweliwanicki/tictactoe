@@ -9,6 +9,7 @@ const GameFields = (props) => {
       key={`field_${ix}`}
       fieldIndex={ix}
       makeComputerMove={props.computerMoveHandler}
+      setGameWinnerHandler={props.setGameWinnerHandler}
     />
   ));
 };

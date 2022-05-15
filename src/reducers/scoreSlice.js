@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const SCORE_REDUCER_NAME = "score";
+
 export const scoreSlice = createSlice({
-  name: "score",
+  name: SCORE_REDUCER_NAME,
   initialState: {
     x: 0,
     o: 0,

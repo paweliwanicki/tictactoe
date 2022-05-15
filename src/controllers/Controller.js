@@ -30,8 +30,8 @@ class Controller {
         continue;
       }
     }
-    if(Controller.getPossibleMoves(board).length === 0) {
-      return 'tie';
+    if (Controller.getPossibleMoves(board).length === 0) {
+      return "tie";
     }
     return false;
   };
