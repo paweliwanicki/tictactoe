@@ -34,7 +34,6 @@ const GameField = (props) => {
 };
 
 GameField.propTypes = {
-  makeComputerMove: propTypes.func.isRequired,
   fieldIndex: propTypes.number.isRequired,
   mark: propTypes.string,
 };

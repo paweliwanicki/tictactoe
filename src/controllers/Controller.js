@@ -1,4 +1,5 @@
-import { GAME_STATE_TIE } from "../utils/mixin";
+import { GAME_STATE_TIE, CPU } from "../utils/mixin";
+import Computer from "./Computer";
 
 class Controller {
   static winCombinations = [
@@ -42,29 +43,62 @@ class Controller {
     return board;
   };
 
-  static getNewState = (state, action) => {
+  static switchPlayer(activePlayer) {
+    return activePlayer === "x" ? "o" : "x";
+  }
+
+  static getClearBoard() {
+    return ["", "", "", "", "", "", "", "", ""];
+  }
+
+  static makeMove(move, state) {
     const newState = { ...state };
-    switch (action.type){
-      // case 'game\setBoard' : {
-      // const move = action.payload;
-      // state.gameBoard = newBoard;
-      // if (win) {
-      //   if (win === GAME_STATE_TIE) {
-      //     let ties = state.score.totalTies;
-      //     state.score.totalTies = ties++;
-      //   } else {
-      //     const currentScore = {...state.score};
-      //     const markScore = currentScore[move.mark];
-      //     currentScore[move.mark] = markScore + 1;
-      //     state.score = currentScore;
-      //     state.winnerMark = move.mark;
-      //   }
-      //   state.showResults = true;
-      //   state.blockBoard = true;
-      // }
-     
+    const newBoard = Controller.setBoard(move, newState.gameBoard);
+    const win = Controller.checkIfWin(newBoard, move.mark);
+
+    if (win) {
+      const currentScore = { ...state.score };
+      if (win === GAME_STATE_TIE) {
+        currentScore.totalTies++;
+        state.score = currentScore;
+      } else {
+        const markScore = currentScore[move.mark];
+        currentScore[move.mark] = markScore + 1;
+        newState.score = currentScore;
+        newState.winnerMark = move.mark;
+      }
+      newState.showResults = true;
+      newState.blockBoard = true;
+    } else {
+      const nextPlayer = Controller.switchPlayer(move.mark);
+      newState.activePlayer = nextPlayer;
+      // computer move
+      if (
+        newState.gameMode === CPU &&
+        !win &&
+        newState.activePlayer !== newState.playerMark
+      ) {
+        const { fieldID, moveTime } = Computer.move(
+          newBoard,
+          newState.activePlayer
+        );
+        const move = {
+          index: fieldID,
+          mark: newState.activePlayer,
+        };
+
+        // setTimeout(() => {
+        newBoard[fieldID] = newState.activePlayer;
+        newState.gameBoard = newBoard;
+        newState.activePlayer = newState.playerMark;
+        newState.blockBoard = false;
+        let cpuState = Computer.makeMove(move, newState);
+        return { ...state, ...cpuState };
+        //  }, moveTime);
+      }
     }
-  };
+    return newState;
+  }
 }
 
 export default Controller;

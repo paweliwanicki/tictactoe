@@ -5,8 +5,6 @@ import Button from "./utils/Button";
 import propTypes from "prop-types";
 
 const SubMenu = (props) => {
-  let textColor = "text-silver";
-
   const okBtnHandler = () => {
     props.onConfirm();
   };
@@ -23,7 +21,7 @@ const SubMenu = (props) => {
           classes={`text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center align-center`}
         >
           <TextBox
-            classes={`text-sm-custom mb-24px font-bold text-xl-custom ${textColor} mb-0`}
+            classes={`text-sm-custom mb-24px font-bold text-xl-custom text-silver mb-0`}
           >
             {props.header}
           </TextBox>

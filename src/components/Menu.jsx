@@ -10,7 +10,7 @@ const Menu = (props) => {
   const dispatch = useDispatch();
 
   const startGameHandler = (mode) => {
-    dispatch(startNewGame({mode: mode, isPlaying: true}));
+    dispatch(startNewGame({ mode: mode, isPlaying: true }));
   };
 
   return (

@@ -11,7 +11,6 @@ import {
   winnerMark,
 } from "../reducers/gameSlice";
 import { getMarkColor } from "../utils/mixin";
-import propTypes from "prop-types";
 
 const Results = (props) => {
   const dispatch = useDispatch();
@@ -27,12 +26,10 @@ const Results = (props) => {
 
   const quitGameHandler = () => {
     dispatch(startNewGame({ isPlaying: false, resetScores: true }));
-    props.onCancel();
   };
 
   const nextRoundHandler = () => {
-    dispatch(startNewGame({ isPlaying: true, resetScores: false }));
-    props.onConfirm();
+    dispatch(startNewGame({ isPlaying: true, resetScores: false, mode: mode }));
   };
 
   let playerInfoText = "";
@@ -92,11 +89,6 @@ const Results = (props) => {
       </Container>
     </Container>
   );
-};
-
-Results.propTypes = {
-  onCancel: propTypes.func.isRequired,
-  onConfirm: propTypes.func.isRequired,
 };
 
 export default Results;

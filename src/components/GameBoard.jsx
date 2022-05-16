@@ -1,43 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import GameFields from "./GameFields";
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 import TextBox from "./utils/TextBox";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { activePlayer, winnerMark } from "../reducers/playerSlice";
 import {
-  activePlayer,
-  setActivePlayer,
-  playerMark,
-  winnerMark,
-} from "../reducers/playerSlice";
-import {
-  setGameMode,
-  setIsPlaying,
   gameBoard,
-  setBlockBoard,
-  setBoard,
-  gameMode,
   showResults,
-  setShowResults,
   xScore,
   oScore,
   totalTies,
-  startNewGame
+  startNewGame,
 } from "../reducers/gameSlice";
-// import {
-//   // xScore,
-//   // oScore,
-//   //totalTies,
-//   setScore,
-//   setTie,
-// } from "../reducers/scoreSlice";
 import ScoreBox from "./ScoreBox";
-import Computer from "../controllers/Computer";
 import CssVariables from "../utils/cssVariables";
 import SubMenu from "./SubMenu";
 import Results from "./Results";
-import { GAME_STATE_TIE } from "../utils/mixin";
 
 const GameBoard = (props) => {
   const dispatch = useDispatch();
@@ -46,43 +26,15 @@ const GameBoard = (props) => {
   const activePlayerMark = useSelector(activePlayer);
   const winner = useSelector(winnerMark);
   const tiesScore = useSelector(totalTies);
-  const player1Mark = useSelector(playerMark);
   const xTotalScore = useSelector(xScore);
   const oTotalScore = useSelector(oScore);
-  const mode = useSelector(gameMode);
-  const computerMark = player1Mark === "x" ? "o" : "x";
 
   const [showRestartMenu, setShowRestartMenu] = useState(false);
-  const showResultsState = useSelector(showResults);
+  const showGameResults = useSelector(showResults);
 
   const backToMenuHandler = () => {
-    dispatch(startNewGame({isPlaying: false,resetScores: true}))
+    dispatch(startNewGame({ isPlaying: false, resetScores: true }));
   };
-
-
-  // const computerMoveHandler = (newBoard) => {
-  //   dispatch(setBlockBoard(true));
-
-  //   const { fieldID, moveTime } = Computer.move(newBoard, computerMark);
-  //   if (!winner) {
-  //     setTimeout(() => {
-  //       dispatch(setBoard({ index: fieldID, mark: computerMark }));
-  //       const tmpBoard = [...newBoard];
-  //       tmpBoard[fieldID] = computerMark;
-  //       const win = Computer.checkIfWin(tmpBoard, computerMark);
-  //       setGameWinnerHandler(win, computerMark);
-  //       dispatch(setBlockBoard(false));
-  //     }, moveTime);
-  //   }
-  // };
-
-   //computerMoveHandler(board);
-
-  // useEffect(() => {
-  //   if (mode === "cpu" && computerMark === "x" && winner === null) {
-  //     computerMoveHandler(board);
-  //   }
-  // }, []);
 
   return (
     <>
@@ -120,11 +72,7 @@ const GameBoard = (props) => {
           />
         </Container>
         <Container classes="w-full justify-between mb-19px flex-wrap gap-20px">
-          <GameFields
-            //computerMoveHandler={computerMoveHandler}
-            board={board}
-            activePlayerMark={activePlayerMark}
-          />
+          <GameFields board={board} activePlayerMark={activePlayerMark} />
         </Container>
 
         <Container classes="justify-between mx-0 w-full">
@@ -140,12 +88,7 @@ const GameBoard = (props) => {
           onCancel={() => setShowRestartMenu(false)}
         />
       )}
-      {(showResultsState || winner) && (
-        <Results
-          onCancel={() => dispatch(setShowResults(false))}
-          onConfirm={() => dispatch(setShowResults(false))}
-        />
-      )}
+      {(showGameResults || winner) && <Results />}
     </>
   );
 };

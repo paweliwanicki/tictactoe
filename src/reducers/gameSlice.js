@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Computer from "../controllers/Computer";
 import Controller from "../controllers/Controller";
-import { CPU, GAME_STATE_TIE } from "../utils/mixin";
+import { CPU } from "../utils/mixin";
 
 const GAME_REDUCER_NAME = "game";
-const EMPTY_BOARD = ["", "", "", "", "", "", "", "", ""];
+const EMPTY_BOARD = Controller.getClearBoard;
 
 export const gameSlice = createSlice({
   name: GAME_REDUCER_NAME,
   initialState: {
     isPlaying: false,
     gameMode: null,
-    gameBoard: EMPTY_BOARD,
+    gameBoard: EMPTY_BOARD(),
     blockBoard: false,
     playerMark: "x",
     activePlayer: "x",
@@ -32,7 +32,7 @@ export const gameSlice = createSlice({
     },
     setBoard: (state, action) => {
       if (action.payload.clear) {
-        state.gameBoard = EMPTY_BOARD;
+        state.gameBoard = EMPTY_BOARD();
         return;
       }
 
@@ -41,45 +41,19 @@ export const gameSlice = createSlice({
         mark: action.payload.mark,
       };
 
-      const tmpBoard = [...state.gameBoard];
-      const newBoard = Controller.setBoard(move, tmpBoard);
-      const win = Controller.checkIfWin(newBoard, move.mark);
-
-      state.gameBoard = newBoard;
-      if (win) {
-        const currentScore = { ...state.score };
-        if (win === GAME_STATE_TIE) {
-          currentScore.totalTies++;
-          state.score = currentScore;
-        } else {
-          const markScore = currentScore[move.mark];
-          currentScore[move.mark] = markScore + 1;
-          state.score = currentScore;
-          state.winnerMark = move.mark;
-        }
-        state.showResults = true;
-        state.blockBoard = true;
-      } else {
-        const nextPlayer = move.mark === "x" ? "o" : "x";
-        state.activePlayer = nextPlayer;
-
-        // computer move
-        if (state.gameMode === CPU && !win) {
-          const { fieldID, moveTime } = Computer.move(
-            newBoard,
-            state.activePlayer
-          );
-          // setTimeout(() => {
-          newBoard[fieldID] = state.activePlayer;
-          state.activePlayer = state.activePlayer === "x" ? "o" : "x";
-          state.gameBoard = newBoard;
-          state.blockBoard = false;
-          //  }, moveTime);
-        }
+      const newState = Controller.makeMove(move, state);
+      if (newState.winnerMark) {
+        state.winnerMark = newState.winnerMark;
       }
+      state.gameBoard = newState.gameBoard;
+      state.blockBoard = newState.blockBoard;
+      state.activePlayer = newState.activePlayer;
+      state.score = newState.score;
+      state.showResults = newState.showResults;
+      //state = {...newState};
+      console.log({ ...state });
     },
     setBlockBoard: (state, action) => {
-      console.log("setBlockBoard");
       state.blockBoard = action.payload;
     },
     setShowResults: (state, action) => {
@@ -90,7 +64,9 @@ export const gameSlice = createSlice({
       state.isPlaying = action.payload.isPlaying;
       state.activePlayer = "x";
       state.blockBoard = false;
-      state.gameBoard = EMPTY_BOARD;
+      state.gameBoard = EMPTY_BOARD();
+      state.showResults = false;
+      state.winnerMark = null;
 
       if (action.payload.resetScores) {
         const score = {
@@ -99,6 +75,21 @@ export const gameSlice = createSlice({
           totalTies: 0,
         };
         state.score = score;
+      }
+
+      // start computer move
+      if (state.gameMode === CPU && state.activePlayer !== state.playerMark) {
+        const newBoard = [...state.gameBoard];
+        const { fieldID, moveTime } = Computer.move(
+          [...state.gameBoard],
+          state.activePlayer
+        );
+        // setTimeout(() => {
+        newBoard[fieldID] = state.activePlayer;
+        state.activePlayer = Controller.switchPlayer();
+        state.gameBoard = newBoard;
+        state.blockBoard = false;
+        //  }, moveTime);
       }
     },
     setPlayerMark: (state, action) => {
