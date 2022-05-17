@@ -5,7 +5,6 @@ import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 import TextBox from "./utils/TextBox";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { activePlayer, winnerMark } from "../reducers/playerSlice";
 import {
   gameBoard,
   showResults,
@@ -13,10 +12,11 @@ import {
   oScore,
   totalTies,
   startNewGame,
+  activePlayer,
 } from "../reducers/gameSlice";
 import ScoreBox from "./ScoreBox";
 import CssVariables from "../utils/cssVariables";
-import SubMenu from "./SubMenu";
+import SubMenu from "./utils/SubMenu";
 import Results from "./Results";
 
 const GameBoard = (props) => {
@@ -24,7 +24,6 @@ const GameBoard = (props) => {
 
   const board = useSelector(gameBoard, shallowEqual);
   const activePlayerMark = useSelector(activePlayer);
-  const winner = useSelector(winnerMark);
   const tiesScore = useSelector(totalTies);
   const xTotalScore = useSelector(xScore);
   const oTotalScore = useSelector(oScore);
@@ -84,11 +83,13 @@ const GameBoard = (props) => {
       {showRestartMenu && (
         <SubMenu
           header="RESTART GAME?"
+          cancelBtnText="NO, CANCEL"
+          confirmBtnText="YES, RESTART"
           onConfirm={() => backToMenuHandler()}
           onCancel={() => setShowRestartMenu(false)}
         />
       )}
-      {(showGameResults || winner) && <Results />}
+      {showGameResults && <Results />}
     </>
   );
 };

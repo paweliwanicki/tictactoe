@@ -2,21 +2,19 @@ import Container from "./utils/Container";
 import React from "react";
 import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
-import { activePlayer } from "../reducers/playerSlice";
-import { blockBoard } from "../reducers/gameSlice";
-import { setBoard } from "../reducers/gameSlice";
+import { blockBoard, activePlayer, setBoard } from "../reducers/gameSlice";
 import propTypes from "prop-types";
 import { getMarkColor } from "../utils/mixin";
 
 const GameField = (props) => {
   const dispatch = useDispatch();
-  const acitvePlayerMark = useSelector(activePlayer);
+  const activePlayerMark = useSelector(activePlayer);
   const boardBlocked = useSelector(blockBoard);
   const markColor = getMarkColor(props.mark);
 
   const setMarkHandler = () => {
     if (!props.mark && !boardBlocked) {
-      dispatch(setBoard({ index: props.fieldIndex, mark: acitvePlayerMark }));
+      dispatch(setBoard({ index: props.fieldIndex, mark: activePlayerMark }));
     }
   };
 

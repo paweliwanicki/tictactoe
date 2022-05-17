@@ -1,9 +1,8 @@
 import React from "react";
 import Container from "./utils/Container";
 import classnames from "classnames";
-import { gameMode } from "../reducers/gameSlice";
+import { gameMode, playerMark } from "../reducers/gameSlice";
 import { useSelector } from "react-redux";
-import { playerMark } from "../reducers/playerSlice";
 import propTypes from "prop-types";
 
 const ScoreBox = (props) => {

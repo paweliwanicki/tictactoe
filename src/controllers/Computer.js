@@ -9,9 +9,10 @@ class Computer extends Controller {
   }
 
   static move = (board, computerMark) => {
+  
     let fieldID;
     const newBoard = [...board];
-    const possibleMoves = Controller.getPossibleMoves(board);
+    const possibleMoves = Computer.getPossibleMoves(board);
     // time for make move
     const moveTime = possibleMoves.length > 5 ? 1000 : 500;
     if (possibleMoves.length === 9) {
@@ -27,91 +28,55 @@ class Computer extends Controller {
     return { fieldID, moveTime };
   };
 
-  static getPossibleMoves = (board) => {
-    return board.map((cur, index) => (cur === "" ? index : "")).filter(String);
-  };
+  // static makeMove = (board,state) => {
+  //   const move = Computer.move(board, state.activePlayer);
+  //   return Controller.makeMove(move, state);
+  // }
 
-  // // the main minimax function
+  // the main minimax function
   static minimax = (newBoard, computerMark, actPlayer) => {
-    //let minimaxCounter = 0;
-    //return () => {
-    //minimaxCounter++;
-    //Computer.minimaxC++;
-    const possibleMoves = Controller.getPossibleMoves(newBoard);
-    if (possibleMoves.length === 0) {
-      return { score: 0 };
-    }
+    const possibleMoves = Computer.getPossibleMoves(newBoard);
+    if (possibleMoves.length === 0) return { score: 0 };
 
+    const miniMoves = [];
     const playerMark = computerMark === "x" ? "o" : "x";
-    if (Controller.checkIfWin(newBoard, playerMark)) {
-      return { score: -10 };
-    } else if (Controller.checkIfWin(newBoard, computerMark)) {
-      return { score: 10 };
-    }
+    if (Computer.checkIfWin(newBoard, playerMark)) return { score: -10 };
+    if (Computer.checkIfWin(newBoard, computerMark)) return { score: 10 };
 
-    // for collecting all moves
-    const minimoves = [];
-
-    for (let el of possibleMoves) {
-      // create a move object to store move (index, score)
+    possibleMoves.reduce((acc, val) => {
       const move = {};
-
-      move.index = el;
-      let result;
-      //set index of newboard to actPlayer
-      newBoard[el] = actPlayer;
-      if (actPlayer === computerMark) {
-        result = Computer.minimax(newBoard, computerMark, playerMark);
-      } else {
-        result = Computer.minimax(newBoard, computerMark, computerMark);
-      }
+      move.index = val;
+      newBoard[val] = actPlayer;
+      const nextPlayerMark = Computer.switchPlayer(actPlayer);
+      const result = Computer.minimax(newBoard, computerMark, nextPlayerMark);
       move.score = result.score;
-
-      //reset the spot to empty
-      newBoard[el] = "";
-      minimoves.push(move);
-    }
+      newBoard[val] = "";
+      miniMoves.push(move);
+      return acc;
+    }, miniMoves);
 
     let bestScore = actPlayer === computerMark ? -100 : 100;
-    let bestMove;
-    if (bestScore > 0) {
-      for (let i = 0; i < minimoves.length; i++) {
-        if (minimoves[i].score < bestScore) {
-          bestScore = minimoves[i].score;
-          bestMove = i;
-        }
-      }
-    } else {
-      for (let i = 0; i < minimoves.length; i++) {
-        if (minimoves[i].score > bestScore) {
-          bestScore = minimoves[i].score;
-          bestMove = i;
-        }
-      }
-    }
-
-    return minimoves[bestMove];
+    return Computer.getBestComputerMove(miniMoves, bestScore);
   };
 
   static getBestComputerMove = (moves, bestScore) => {
     let move;
     let currentBestScore = bestScore;
-    return () => {
-      moves.forEach((el) => {
-        if (bestScore > 0) {
-          if (el.score < currentBestScore) {
-            currentBestScore = el.score;
-            move = el;
-          }
-        } else {
-          if (el.score > currentBestScore) {
-            currentBestScore = el.score;
-            move = el;
-          }
+
+    moves.forEach((el) => {
+      if (bestScore > 0) {
+        if (el.score < currentBestScore) {
+          currentBestScore = el.score;
+          move = el;
         }
-      });
-      return move;
-    };
+      } else {
+        if (el.score > currentBestScore) {
+          currentBestScore = el.score;
+          move = el;
+        }
+      }
+    });
+    return move;
   };
 }
 

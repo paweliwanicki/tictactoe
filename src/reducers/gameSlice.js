@@ -41,7 +41,7 @@ export const gameSlice = createSlice({
         mark: action.payload.mark,
       };
 
-      const newState = Controller.makeMove(move, state);
+      const newState = Controller.makeMove(move,state);
       if (newState.winnerMark) {
         state.winnerMark = newState.winnerMark;
       }
@@ -50,8 +50,6 @@ export const gameSlice = createSlice({
       state.activePlayer = newState.activePlayer;
       state.score = newState.score;
       state.showResults = newState.showResults;
-      //state = {...newState};
-      console.log({ ...state });
     },
     setBlockBoard: (state, action) => {
       state.blockBoard = action.payload;
@@ -81,14 +79,17 @@ export const gameSlice = createSlice({
       if (state.gameMode === CPU && state.activePlayer !== state.playerMark) {
         const newBoard = [...state.gameBoard];
         const { fieldID, moveTime } = Computer.move(
-          [...state.gameBoard],
+          newBoard,
           state.activePlayer
         );
+
+        const newState = Controller.makeMove(newBoard,state);
+        // console.log(newState);
         // setTimeout(() => {
         newBoard[fieldID] = state.activePlayer;
-        state.activePlayer = Controller.switchPlayer();
-        state.gameBoard = newBoard;
-        state.blockBoard = false;
+        state.activePlayer = newState.activePlayer;
+        state.gameBoard = newState.gameBoard;
+        state.blockBoard = newState.blockBoard;
         //  }, moveTime);
       }
     },
@@ -108,6 +109,7 @@ export const playerMark = (state) => state.game.playerMark;
 export const xScore = (state) => state.game.score.x;
 export const oScore = (state) => state.game.score.o;
 export const totalTies = (state) => state.game.score.totalTies;
+export const activePlayer = (state) => state.game.activePlayer;
 export const {
   setIsPlaying,
   setDisplayResult,
