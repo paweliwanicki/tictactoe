@@ -1,4 +1,4 @@
-import { GAME_STATE_TIE, CPU } from "../utils/mixin";
+import { GAME_STATE_TIE } from "../utils/mixin";
 import Computer from "./Computer";
 
 class Controller {
@@ -51,7 +51,7 @@ class Controller {
     return ["", "", "", "", "", "", "", "", ""];
   }
 
-  static makeMove(move, state) {
+  static move(move, state) {
     const newState = { ...state };
     const newBoard = Controller.setBoard(move, newState.gameBoard);
     const win = Controller.checkIfWin(newBoard, move.mark);
@@ -73,28 +73,9 @@ class Controller {
       const nextPlayer = Controller.switchPlayer(move.mark);
       newState.activePlayer = nextPlayer;
       // computer move
-      if (
-        newState.gameMode === CPU &&
-        !win &&
-        newState.activePlayer !== newState.playerMark
-      ) {
-        const { fieldID, moveTime } = Computer.move(
-          newBoard,
-          newState.activePlayer
-        );
-        const move = {
-          index: fieldID,
-          mark: newState.activePlayer,
-        };
-
-        // setTimeout(() => {
-        newBoard[fieldID] = newState.activePlayer;
-        newState.gameBoard = newBoard;
-        newState.activePlayer = newState.playerMark;
-        newState.blockBoard = false;
-        let cpuState = Computer.makeMove(move, newState);
+      let cpuState = Computer.makeMove(newState);
+      if (cpuState) {
         return { ...state, ...cpuState };
-        //  }, moveTime);
       }
     }
     return newState;

@@ -1,4 +1,5 @@
 import Controller from "./Controller";
+import { CPU } from "../utils/mixin";
 
 class Computer extends Controller {
   minimaxC = 0;
@@ -8,8 +9,7 @@ class Computer extends Controller {
     this.name = "Computer";
   }
 
-  static move = (board, computerMark) => {
-  
+  static getBestMove = (board, computerMark) => {
     let fieldID;
     const newBoard = [...board];
     const possibleMoves = Computer.getPossibleMoves(board);
@@ -28,10 +28,25 @@ class Computer extends Controller {
     return { fieldID, moveTime };
   };
 
-  // static makeMove = (board,state) => {
-  //   const move = Computer.move(board, state.activePlayer);
-  //   return Controller.makeMove(move, state);
-  // }
+  static makeMove = (state) => {
+    let newState = { ...state };
+    if (state.gameMode === CPU && state.activePlayer !== state.playerMark) {
+      const mark = state.activePlayer;
+      const newBoard = [...state.gameBoard];
+      const { fieldID } = Computer.getBestMove(newBoard, state.activePlayer);
+      const move = {
+        index: fieldID,
+        mark: mark,
+      };
+      newBoard[move.fieldID] = mark;
+      newState.gameBoard = newBoard;
+      newState.activePlayer = newState.playerMark;
+      newState.blockBoard = false;
+
+      return Controller.move(move, newState);
+    }
+    return newState;
+  };
 
   // the main minimax function
   static minimax = (newBoard, computerMark, actPlayer) => {
@@ -77,6 +92,10 @@ class Computer extends Controller {
       }
     });
     return move;
+  };
+
+  static getComputerMark = (playerMark) => {
+    return playerMark === "x" ? "o" : "x";
   };
 }
 

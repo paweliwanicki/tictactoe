@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Computer from "../controllers/Computer";
 import Controller from "../controllers/Controller";
-import { CPU } from "../utils/mixin";
+import { GAME_REDUCER_NAME } from "../utils/mixin";
 
-const GAME_REDUCER_NAME = "game";
 const EMPTY_BOARD = Controller.getClearBoard;
 
 export const gameSlice = createSlice({
@@ -41,7 +40,7 @@ export const gameSlice = createSlice({
         mark: action.payload.mark,
       };
 
-      const newState = Controller.makeMove(move,state);
+      const newState = Controller.move(move, state);
       if (newState.winnerMark) {
         state.winnerMark = newState.winnerMark;
       }
@@ -75,22 +74,12 @@ export const gameSlice = createSlice({
         state.score = score;
       }
 
-      // start computer move
-      if (state.gameMode === CPU && state.activePlayer !== state.playerMark) {
-        const newBoard = [...state.gameBoard];
-        const { fieldID, moveTime } = Computer.move(
-          newBoard,
-          state.activePlayer
-        );
-
-        const newState = Controller.makeMove(newBoard,state);
-        // console.log(newState);
-        // setTimeout(() => {
-        newBoard[fieldID] = state.activePlayer;
-        state.activePlayer = newState.activePlayer;
-        state.gameBoard = newState.gameBoard;
-        state.blockBoard = newState.blockBoard;
-        //  }, moveTime);
+      // computer first?
+      const computerMove = Computer.makeMove(state);
+      if (computerMove) {
+        state.activePlayer = computerMove.activePlayer;
+        state.gameBoard = computerMove.gameBoard;
+        state.blockBoard = computerMove.blockBoard;
       }
     },
     setPlayerMark: (state, action) => {

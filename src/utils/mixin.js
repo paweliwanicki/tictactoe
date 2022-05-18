@@ -4,6 +4,8 @@ import CssVariables from "./cssVariables";
 export const GAME_STATE_TIE = 'tie';
 export const CPU = 'cpu';
 export const PLAYER = 'player';
+export const GAME_REDUCER_NAME = "game";
+
 
 export const getMarkColor = (mark = "", dark = false) => {
   let markColor = "";
@@ -18,3 +20,4 @@ export const getMarkColor = (mark = "", dark = false) => {
 
   return markColor;
 };
+
