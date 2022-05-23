@@ -29,4 +29,5 @@ body {
   -webkit-font-smoothing: antialiased;
   font-family: "Outfit", sans-serif;
   height: 100%;
+  text-transform: uppercase;
 }

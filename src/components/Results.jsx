@@ -1,16 +1,17 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Container from "./utils/Container";
 import TextBox from "./utils/TextBox";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { CPU, getMarkColor } from "../utils/mixin";
 import {
   gameMode,
   playerMark,
   startNewGame,
   winnerMark,
 } from "../reducers/gameSlice";
-import { getMarkColor } from "../utils/mixin";
+import langs from "../langs/langs";
 
 const Results = (props) => {
   const dispatch = useDispatch();
@@ -34,10 +35,13 @@ const Results = (props) => {
 
   let playerInfoText = "";
   if (winner) {
-    if (mode === "cpu") {
-      playerInfoText = player1Mark === winner ? "YOU WON!" : "OH NO, YOU LOST…";
+    if (mode === CPU) {
+      playerInfoText =
+        player1Mark === winner ? langs.en.youWon : langs.en.youLost;
     } else {
-      playerInfoText = `PLAYER ${player1Mark === winner ? "1" : "2"} WINS!`;
+      playerInfoText = `${langs.en.player} ${
+        player1Mark === winner ? "1" : "2"
+      } ${langs.en.wins}!`;
     }
   }
 
@@ -66,7 +70,7 @@ const Results = (props) => {
           <TextBox
             classes={`text-sm-custom mb-24px font-bold text-xl-custom ${textColor} mb-0`}
           >
-            {!winner ? "ROUND TIED" : "TAKES THE ROUND"}
+            {!winner ? langs.en.roundTied : langs.en.takesRound}
           </TextBox>
         </Container>
 
@@ -75,14 +79,14 @@ const Results = (props) => {
             classes={`w-76px h-52px bg-silver hover:bg-silver-light text-dark mr-16px shadow-sm-silver-custom`}
             primary={false}
             type="button"
-            text="QUIT"
+            text={langs.en.quit}
             onClick={quitGameHandler}
           />
           <Button
             classes={`w-146px h-52px bg-orange hover:bg-orange-light text-dark shadow-sm-orange-custom`}
             primary={false}
             type="button"
-            text="NEXT ROUND"
+            text={langs.en.nextRound}
             onClick={nextRoundHandler}
           />
         </Container>

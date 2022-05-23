@@ -1,8 +1,8 @@
 import React from "react";
+import propTypes from "prop-types";
 import Container from "./Container";
 import TextBox from "./TextBox";
 import Button from "./Button";
-import propTypes from "prop-types";
 
 const SubMenu = (props) => {
   const confirmBtnHandler = () => {

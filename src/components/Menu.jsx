@@ -1,10 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import MarkSelector from "./MarkSelector";
 import Container from "./utils/Container";
 import Button from "./utils/Button";
 import Icon from "./utils/Icon";
-import MarkSelector from "./MarkSelector";
-import { useDispatch } from "react-redux";
+import { CPU, PLAYER } from "../utils/mixin";
 import { startNewGame } from "../reducers/gameSlice";
+import langs from '../langs/langs';
 
 const Menu = (props) => {
   const dispatch = useDispatch();
@@ -19,17 +21,17 @@ const Menu = (props) => {
       <MarkSelector />
       <Button
         classes="pt-11px pb-18px w-full h-67px mb-20px bg-orange hover:bg-orange-light shadow-md-orange-custom"
-        text={"NEW GAME (VS CPU)"}
+        text={langs.en.vsCpu}
         primary
         type="button"
-        onClick={() => startGameHandler("cpu")}
+        onClick={() => startGameHandler(CPU)}
       />
       <Button
         classes="pt-11px pb-18px w-full h-67px bg-blue hover:bg-blue-light shadow-md-blue-custom"
-        text={"NEW GAME  (VS PLAYER)"}
+        text={langs.en.vsPlayer}
         primary
         type="button"
-        onClick={() => startGameHandler("player")}
+        onClick={() => startGameHandler(PLAYER)}
       />
     </Container>
   );

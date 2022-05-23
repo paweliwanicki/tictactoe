@@ -1,10 +1,10 @@
-import Container from "./utils/Container";
 import React from "react";
-import Icon from "./utils/Icon";
 import { useDispatch, useSelector } from "react-redux";
-import { blockBoard, activePlayer, setBoard } from "../reducers/gameSlice";
 import propTypes from "prop-types";
 import { getMarkColor } from "../utils/mixin";
+import Container from "./utils/Container";
+import Icon from "./utils/Icon";
+import { blockBoard, activePlayer, setBoard } from "../reducers/gameSlice";
 
 const GameField = (props) => {
   const dispatch = useDispatch();

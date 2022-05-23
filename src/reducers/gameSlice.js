@@ -23,12 +23,6 @@ export const gameSlice = createSlice({
     },
   },
   reducers: {
-    setIsPlaying: (state, action) => {
-      state.isPlaying = action.payload;
-    },
-    setGameMode: (state, action) => {
-      state.gameMode = action.payload;
-    },
     setBoard: (state, action) => {
       if (action.payload.clear) {
         state.gameBoard = EMPTY_BOARD();
@@ -49,12 +43,6 @@ export const gameSlice = createSlice({
       state.activePlayer = newState.activePlayer;
       state.score = newState.score;
       state.showResults = newState.showResults;
-    },
-    setBlockBoard: (state, action) => {
-      state.blockBoard = action.payload;
-    },
-    setShowResults: (state, action) => {
-      state.showResults = action.payload;
     },
     startNewGame: (state, action) => {
       state.gameMode = action.payload.mode;
@@ -100,10 +88,8 @@ export const oScore = (state) => state.game.score.o;
 export const totalTies = (state) => state.game.score.totalTies;
 export const activePlayer = (state) => state.game.activePlayer;
 export const {
-  setIsPlaying,
   setDisplayResult,
   startNewGame,
-  setGameMode,
   setBoard,
   setBlockBoard,
   setShowResults,

@@ -1,9 +1,11 @@
 import React from "react";
-import Container from "./utils/Container";
-import classnames from "classnames";
-import { gameMode, playerMark } from "../reducers/gameSlice";
 import { useSelector } from "react-redux";
+import classnames from "classnames";
 import propTypes from "prop-types";
+import Container from "./utils/Container";
+import { CPU } from "../utils/mixin";
+import { gameMode, playerMark } from "../reducers/gameSlice";
+import langs from "../langs/langs";
 
 const ScoreBox = (props) => {
   const classStr = classnames(
@@ -18,11 +20,11 @@ const ScoreBox = (props) => {
   if (props.mark) {
     const player1x = props.mark === "x" && player1Mark === "x";
     const player1o = props.mark === "o" && player1Mark === "o";
-    if (mode === "cpu") {
+    if (mode === CPU) {
       if (player1x || player1o) {
-        playerInfo = "you";
+        playerInfo = langs.en.you;
       } else {
-        playerInfo = "cpu";
+        playerInfo = langs.en.cpu;
       }
     } else {
       if (player1x || player1o) {
@@ -38,7 +40,7 @@ const ScoreBox = (props) => {
   return (
     <Container classes={classStr}>
       <Container classes="w-fit h-48px flex-col justify-between ">
-        <p className="text-s-custom uppercase">{text}</p>
+        <p className="text-s-custom">{text}</p>
         <p className="text-md-custom text-dark font-bold">{props.score}</p>
       </Container>
     </Container>

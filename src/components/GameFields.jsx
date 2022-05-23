@@ -1,6 +1,6 @@
 import React from "react";
-import GameField from "./GameField";
 import propTypes from "prop-types";
+import GameField from "./GameField";
 
 const GameFields = (props) => {
   return props.board.map((field, ix) => (

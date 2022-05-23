@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GameFields from "./GameFields";
+import ScoreBox from "./ScoreBox";
+import Results from "./Results";
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 import TextBox from "./utils/TextBox";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import SubMenu from "./utils/SubMenu";
+import CssVariables from "../utils/cssVariables";
 import {
   gameBoard,
   showResults,
@@ -14,10 +18,7 @@ import {
   startNewGame,
   activePlayer,
 } from "../reducers/gameSlice";
-import ScoreBox from "./ScoreBox";
-import CssVariables from "../utils/cssVariables";
-import SubMenu from "./utils/SubMenu";
-import Results from "./Results";
+import langs from "../langs/langs";
 
 const GameBoard = (props) => {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const GameBoard = (props) => {
           <Container classes="w-140px justify-start">
             <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
           </Container>
-          <Container classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom uppercase justify-center align-center">
+          <Container classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom justify-center align-center">
             <Icon
               id={`icon-${activePlayerMark}`}
               viewBox="0 0 20 20"
@@ -51,7 +52,7 @@ const GameBoard = (props) => {
               color={CssVariables.silver}
               classes="mr-13px"
             />
-            <TextBox classes="font-bold">TURN</TextBox>
+            <TextBox classes="font-bold">{langs.en.turn}</TextBox>
           </Container>
           <Button
             classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom ml-auto rounded-10px"
@@ -82,9 +83,9 @@ const GameBoard = (props) => {
       </Container>
       {showRestartMenu && (
         <SubMenu
-          header="RESTART GAME?"
-          cancelBtnText="NO, CANCEL"
-          confirmBtnText="YES, RESTART"
+          header={langs.en.restartGame}
+          cancelBtnText={langs.en.noCancel}
+          confirmBtnText={langs.en.yesRestart}
           onConfirm={() => backToMenuHandler()}
           onCancel={() => setShowRestartMenu(false)}
         />
