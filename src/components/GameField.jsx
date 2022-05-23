@@ -1,0 +1,40 @@
+import Container from "./utils/Container";
+import React, { useState } from "react";
+import Icon from "./utils/Icon";
+import { useDispatch, useSelector } from "react-redux";
+import { activePlayer, switchPlayer } from "../reducers/playerSlice";
+import CssVariables from "./utils/cssVariables";
+
+const GameField = (props) => {
+  const acitvePlayerMark = useSelector(activePlayer);
+  const dispatch = useDispatch();
+  const [mark, setMark] = useState("");
+
+  const setMarkHandler = () => {
+    const playerMark = acitvePlayerMark;
+    if (!mark) {
+      setMark(playerMark);
+      dispatch(switchPlayer());
+    }
+  };
+
+  let markColor = "";
+  if (mark) {
+    markColor =
+      mark === "x" ? CssVariables.blueLight : CssVariables.orangeLight;
+  }
+
+  const symbol = mark && (
+    <Icon id={`icon-${mark}`} width={64} height={64} color={markColor} />
+  );
+  return (
+    <Container
+      classes="w-140px h-140px bg-semi-dark shadow-md-dark-custom rounded-15px mx-0 justify-center"
+      onClick={() => setMarkHandler()}
+    >
+      {symbol}
+    </Container>
+  );
+};
+
+export default GameField;
