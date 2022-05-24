@@ -11,10 +11,10 @@ class Computer extends Controller {
     this.name = "Computer";
   }
 
-  static getBestMove = (board: Array<string>, computerMark: string): Move => {
+  static getBestMove = (board: string[], computerMark: string): Move => {
     let fieldID: number;
-    const newBoard: Array<string> = [...board];
-    const possibleMoves: Array<number> = Computer.getPossibleMoves(board);
+    const newBoard: string[] = [...board];
+    const possibleMoves: number[] = Computer.getPossibleMoves(board);
     // time for make move
     // const moveTime = possibleMoves.length > 5 ? 1000 : 500; -> simulate computer move @TODO with async redux
     if (possibleMoves.length === 9) {
@@ -44,19 +44,19 @@ class Computer extends Controller {
 
   // the main minimax function
   static minimax = (
-    newBoard: Array<string>,
+    newBoard: string[],
     computerMark: string,
     actPlayer: string
   ): Score | Move => {
     const possibleMoves = Computer.getPossibleMoves(newBoard);
     if (possibleMoves.length === 0) return { score: 0 };
 
-    const miniMoves: Array<Move> = [];
+    const miniMoves: Move[] = [];
     const playerMark = computerMark === "x" ? "o" : "x";
     if (Computer.checkIfWin(newBoard, playerMark)) return { score: -10 };
     if (Computer.checkIfWin(newBoard, computerMark)) return { score: 10 };
 
-    possibleMoves.reduce((acc: Array<string>, val: number) => {
+    possibleMoves.reduce((acc: Move[], val: number) => {
       newBoard[val] = actPlayer;
       const nextPlayerMark = Computer.switchPlayer(actPlayer);
       const result = Computer.minimax(newBoard, computerMark, nextPlayerMark);
@@ -75,7 +75,7 @@ class Computer extends Controller {
   };
 
   static getBestComputerMove = (
-    moves: Array<Move>,
+    moves: Move[],
     bestScore: number
   ): Move => {
     let move: Move;

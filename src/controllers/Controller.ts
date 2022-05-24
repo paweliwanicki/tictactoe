@@ -1,8 +1,9 @@
+import Move from "../types/Move";
 import { GAME_STATE_TIE } from "../utils/mixin";
 import Computer from "./Computer";
 
 class Controller {
-  static winCombinations = [
+  static winCombinations: Array<Array<number>> = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8], // rows
@@ -13,10 +14,13 @@ class Controller {
     [2, 4, 6], // diagonals
   ];
 
-  static checkIfWin = (board, player) => {
-    const playerBoard = Controller.getFieldIndexes(board, player);
+  static checkIfWin = (
+    board: string[],
+    player: string
+  ): typeof GAME_STATE_TIE | boolean => {
+    const playerBoard: number[] = Controller.getFieldIndexes(board, player);
     for (let i = 0; i < Controller.winCombinations.length; i++) {
-      const combination = Controller.winCombinations[i];
+      const combination: number[] = Controller.winCombinations[i];
       if (combination.every((index) => playerBoard.indexOf(index) > -1)) {
         return true;
       }
@@ -27,31 +31,33 @@ class Controller {
     return false;
   };
 
-  static getFieldIndexes = (board, mark) => {
+  static getFieldIndexes = (board: string[], mark: string): number[] => {
     return board
-      .map((field, index) => (field === mark ? index : ""))
-      .filter(String);
+      .map((field, index) => (field === mark ? index : null))
+      .filter((el) => el !== null);
   };
 
-  static getPossibleMoves = (board) => {
-    return board.map((field, index) => (field === "" ? index : null)).filter(el => el !== null);
+  static getPossibleMoves = (board: string[]): number[] => {
+    return board
+      .map((field, index) => (field === "" ? index : null))
+      .filter((el) => el !== null);
   };
 
-  static setBoard = (move, board) => {
+  static setBoard = (move: Move, board: string[]): string[] => {
     const playerMark = move.mark;
     board[move.index] = playerMark;
     return board;
   };
 
-  static switchPlayer(activePlayer) {
+  static switchPlayer(activePlayer: string): string {
     return activePlayer === "x" ? "o" : "x";
   }
 
-  static getClearBoard() {
+  static getClearBoard(): string[] {
     return ["", "", "", "", "", "", "", "", ""];
   }
 
-  static move(move, state) {
+  static move(move: Move, state: any): object {
     const newState = { ...state };
     const newBoard = Controller.setBoard(move, newState.gameBoard);
     const win = Controller.checkIfWin(newBoard, move.mark);
