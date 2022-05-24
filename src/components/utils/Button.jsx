@@ -5,6 +5,7 @@ import classnames from "classnames";
 const Button = (props) => {
   let typeClasses = "px-4 text-sm-custom rounded-10px";
 
+
   if (props.primary) {
     typeClasses = "text-md rounded-15px";
   }
@@ -13,7 +14,7 @@ const Button = (props) => {
   }
 
   const classStr = classnames(
-    "font-bold",
+    "font-bold uppercase",
     typeClasses,
     props.classes
   );

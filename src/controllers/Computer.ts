@@ -1,44 +1,38 @@
 import Controller from "./Controller";
+import Move from "../types/Move";
+import Score from "../types/Score";
 import { CPU } from "../utils/mixin";
 
 class Computer extends Controller {
-  minimaxC = 0;
+  name: string;
 
   constructor() {
     super();
     this.name = "Computer";
   }
 
-  static getBestMove = (board, computerMark) => {
-    let fieldID;
-    const newBoard = [...board];
-    const possibleMoves = Computer.getPossibleMoves(board);
+  static getBestMove = (board: Array<string>, computerMark: string): Move => {
+    let fieldID: number;
+    const newBoard: Array<string> = [...board];
+    const possibleMoves: Array<number> = Computer.getPossibleMoves(board);
     // time for make move
-    const moveTime = possibleMoves.length > 5 ? 1000 : 500;
+    // const moveTime = possibleMoves.length > 5 ? 1000 : 500; -> simulate computer move @TODO with async redux
     if (possibleMoves.length === 9) {
       // First random item on the board full empty board
-      const indexes = newBoard
-        .map((field, index) => (field === "" ? index : ""))
-        .filter(String);
-      fieldID = indexes[Math.floor(Math.random() * indexes.length)]; // Random item
+      fieldID = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]; // Random item
     } else {
       const field = Computer.minimax(newBoard, computerMark, computerMark);
       fieldID = field.index;
     }
-    return { fieldID, moveTime };
+    return { index: fieldID, mark: computerMark };
   };
 
-  static makeMove = (state) => {
+  static makeMove = (state: any): object => {
     let newState = { ...state };
     if (state.gameMode === CPU && state.activePlayer !== state.playerMark) {
-      const mark = state.activePlayer;
       const newBoard = [...state.gameBoard];
-      const { fieldID } = Computer.getBestMove(newBoard, state.activePlayer);
-      const move = {
-        index: fieldID,
-        mark: mark,
-      };
-      newBoard[move.fieldID] = mark;
+      const move: Move = Computer.getBestMove(newBoard, state.activePlayer);
+      newBoard[move.index] = move.mark;
       newState.gameBoard = newBoard;
       newState.activePlayer = newState.playerMark;
       newState.blockBoard = false;
@@ -49,22 +43,28 @@ class Computer extends Controller {
   };
 
   // the main minimax function
-  static minimax = (newBoard, computerMark, actPlayer) => {
+  static minimax = (
+    newBoard: Array<string>,
+    computerMark: string,
+    actPlayer: string
+  ): Score | Move => {
     const possibleMoves = Computer.getPossibleMoves(newBoard);
     if (possibleMoves.length === 0) return { score: 0 };
 
-    const miniMoves = [];
+    const miniMoves: Array<Move> = [];
     const playerMark = computerMark === "x" ? "o" : "x";
     if (Computer.checkIfWin(newBoard, playerMark)) return { score: -10 };
     if (Computer.checkIfWin(newBoard, computerMark)) return { score: 10 };
 
-    possibleMoves.reduce((acc, val) => {
-      const move = {};
-      move.index = val;
+    possibleMoves.reduce((acc: Array<string>, val: number) => {
       newBoard[val] = actPlayer;
       const nextPlayerMark = Computer.switchPlayer(actPlayer);
       const result = Computer.minimax(newBoard, computerMark, nextPlayerMark);
-      move.score = result.score;
+      const move: Move = {
+        index: val,
+        mark: actPlayer,
+        score: result.score,
+      };
       newBoard[val] = "";
       miniMoves.push(move);
       return acc;
@@ -74,9 +74,12 @@ class Computer extends Controller {
     return Computer.getBestComputerMove(miniMoves, bestScore);
   };
 
-  static getBestComputerMove = (moves, bestScore) => {
-    let move;
-    let currentBestScore = bestScore;
+  static getBestComputerMove = (
+    moves: Array<Move>,
+    bestScore: number
+  ): Move => {
+    let move: Move;
+    let currentBestScore: number = bestScore;
 
     moves.forEach((el) => {
       if (bestScore > 0) {
@@ -94,7 +97,7 @@ class Computer extends Controller {
     return move;
   };
 
-  static getComputerMark = (playerMark) => {
+  static getComputerMark = (playerMark: string): string => {
     return playerMark === "x" ? "o" : "x";
   };
 }

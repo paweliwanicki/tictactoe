@@ -34,7 +34,7 @@ class Controller {
   };
 
   static getPossibleMoves = (board) => {
-    return board.map((cur, index) => (cur === "" ? index : "")).filter(String);
+    return board.map((field, index) => (field === "" ? index : null)).filter(el => el !== null);
   };
 
   static setBoard = (move, board) => {
