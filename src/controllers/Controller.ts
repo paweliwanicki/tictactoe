@@ -1,4 +1,6 @@
+import GameState from "../types/GameState";
 import Move from "../types/Move";
+import Score from "../types/Score";
 import { GAME_STATE_TIE } from "../utils/mixin";
 import Computer from "./Computer";
 
@@ -57,29 +59,33 @@ class Controller {
     return ["", "", "", "", "", "", "", "", ""];
   }
 
-  static move(move: Move, state: any): object {
+  static move(move: Move, state: GameState): GameState {
     const newState = { ...state };
-    const newBoard = Controller.setBoard(move, newState.gameBoard);
-    const win = Controller.checkIfWin(newBoard, move.mark);
+    const newBoard: string[] = Controller.setBoard(move, newState.gameBoard);
+    const win: boolean | typeof GAME_STATE_TIE = Controller.checkIfWin(
+      newBoard,
+      move.mark
+    );
 
     if (win) {
-      const currentScore = { ...state.score };
+      const currentScore: Score = { ...state.score };
       if (win === GAME_STATE_TIE) {
         currentScore.totalTies++;
-        state.score = currentScore;
+        newState.score = currentScore;
       } else {
-        const markScore = currentScore[move.mark];
-        currentScore[move.mark] = markScore + 1;
+        const markKey = move.mark as keyof typeof currentScore;
+        const markScore = currentScore[markKey];
+        currentScore[markKey] = markScore + 1;
         newState.score = currentScore;
         newState.winnerMark = move.mark;
       }
       newState.showResults = true;
       newState.blockBoard = true;
     } else {
-      const nextPlayer = Controller.switchPlayer(move.mark);
+      const nextPlayer: string = Controller.switchPlayer(move.mark);
       newState.activePlayer = nextPlayer;
       // computer move
-      let cpuState = Computer.makeMove(newState);
+      let cpuState: GameState = Computer.makeMove(newState);
       if (cpuState) {
         return { ...state, ...cpuState };
       }
