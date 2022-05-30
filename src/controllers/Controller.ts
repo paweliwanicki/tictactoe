@@ -1,11 +1,23 @@
 import GameState from "../types/GameState";
 import Move from "../types/Move";
 import Score from "../types/Score";
-import { GAME_STATE_TIE } from "../utils/mixin";
+import { Mark } from "../utils/mixin";
 import Computer from "./Computer";
+import { GAME_STATE_TIE } from "../utils/mixin";
+
+// enum GameState {
+//  Player1Win,
+//  CPU,
+//  Tie,
+// }
+//return GameState.CPU;
+
+/*
+  type GameState = string | boolean;
+*/
 
 class Controller {
-  static winCombinations: Array<Array<number>> = [
+  static winCombinations: number[][] = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8], // rows
@@ -18,7 +30,7 @@ class Controller {
 
   static checkIfWin = (
     board: string[],
-    player: string
+    player: Mark
   ): typeof GAME_STATE_TIE | boolean => {
     const playerBoard: number[] = Controller.getFieldIndexes(board, player);
     for (let i = 0; i < Controller.winCombinations.length; i++) {
@@ -33,15 +45,15 @@ class Controller {
     return false;
   };
 
-  static getFieldIndexes = (board: string[], mark: string): number[] => {
+  static getFieldIndexes = (board: string[], mark: Mark): number[] => {
     return board
-      .map((field, index) => (field === mark ? index : null))
+      .map((field: string, index: number) => (field === mark ? index : null))
       .filter((el) => el !== null);
   };
 
   static getPossibleMoves = (board: string[]): number[] => {
     return board
-      .map((field, index) => (field === "" ? index : null))
+      .map((field: string, index: number) => (field === "" ? index : null))
       .filter((el) => el !== null);
   };
 
@@ -51,8 +63,8 @@ class Controller {
     return board;
   };
 
-  static switchPlayer(activePlayer: string): string {
-    return activePlayer === "x" ? "o" : "x";
+  static switchPlayer(activePlayer: Mark): Mark {
+    return activePlayer === Mark.x ? Mark.o : Mark.x;
   }
 
   static getClearBoard(): string[] {
@@ -62,10 +74,7 @@ class Controller {
   static move(move: Move, state: GameState): GameState {
     const newState = { ...state };
     const newBoard: string[] = Controller.setBoard(move, newState.gameBoard);
-    const win: boolean | typeof GAME_STATE_TIE = Controller.checkIfWin(
-      newBoard,
-      move.mark
-    );
+    const win: boolean | string = Controller.checkIfWin(newBoard, move.mark);
 
     if (win) {
       const currentScore: Score = { ...state.score };
@@ -82,7 +91,7 @@ class Controller {
       newState.showResults = true;
       newState.blockBoard = true;
     } else {
-      const nextPlayer: string = Controller.switchPlayer(move.mark);
+      const nextPlayer: Mark = Controller.switchPlayer(move.mark);
       newState.activePlayer = nextPlayer;
       // computer move
       let cpuState: GameState = Computer.makeMove(newState);

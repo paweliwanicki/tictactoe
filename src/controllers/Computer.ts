@@ -1,7 +1,7 @@
 import Controller from "./Controller";
 import Move from "../types/Move";
 import Score from "../types/Score";
-import { CPU } from "../utils/mixin";
+import { CPU, Mark } from "../utils/mixin";
 import GameState from "../types/GameState";
 
 class Computer extends Controller {
@@ -9,10 +9,10 @@ class Computer extends Controller {
 
   constructor() {
     super();
-    this.name = "Computer";
+    this.name = CPU;
   }
 
-  static getBestMove = (board: string[], computerMark: string): Move => {
+  static getBestMove = (board: string[], computerMark: Mark): Move => {
     let fieldID: number;
     const newBoard: string[] = [...board];
     const possibleMoves: number[] = Computer.getPossibleMoves(board);
@@ -46,14 +46,14 @@ class Computer extends Controller {
   // the main minimax function
   static minimax = (
     newBoard: string[],
-    computerMark: string,
-    actPlayer: string
+    computerMark: Mark,
+    actPlayer: Mark
   ): Score | Move => {
     const possibleMoves = Computer.getPossibleMoves(newBoard);
     if (possibleMoves.length === 0) return { score: 0 };
 
     const miniMoves: Move[] = [];
-    const playerMark = computerMark === "x" ? "o" : "x";
+    const playerMark = computerMark === Mark.x ? Mark.o : Mark.x;
     if (Computer.checkIfWin(newBoard, playerMark)) return { score: -10 };
     if (Computer.checkIfWin(newBoard, computerMark)) return { score: 10 };
 
@@ -95,8 +95,8 @@ class Computer extends Controller {
     return move;
   };
 
-  static getComputerMark = (playerMark: string): string => {
-    return playerMark === "x" ? "o" : "x";
+  static getComputerMark = (playerMark: Mark): string => {
+    return playerMark === Mark.x ? Mark.o : Mark.x;
   };
 }
 

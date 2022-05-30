@@ -1,6 +1,8 @@
+import { Mark } from "../utils/mixin";
+
 export default interface Move {
-  index: number,
-  mark: string,
-  score?: number,
-  moveTime?: number
+  index: number;
+  mark: Mark;
+  score?: number;
+  moveTime?: number;
 }
