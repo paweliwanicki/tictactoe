@@ -1,7 +1,9 @@
 import Controller from "./Controller";
 import Move from "../types/Move";
 import Score from "../types/Score";
-import { CPU, Mark } from "../utils/mixin";
+import { CPU } from "../utils/mixin";
+import { GameMode } from "../types/GameMode";
+import { Mark } from "../types/Mark";
 import GameState from "../types/GameState";
 
 class Computer extends Controller {
@@ -30,7 +32,10 @@ class Computer extends Controller {
 
   static makeMove = (state: GameState): GameState => {
     let newState = { ...state };
-    if (state.gameMode === CPU && state.activePlayer !== state.playerMark) {
+    if (
+      state.gameMode === GameMode.CPU &&
+      state.activePlayer !== state.playerMark
+    ) {
       const newBoard = [...state.gameBoard];
       const move: Move = Computer.getBestMove(newBoard, state.activePlayer);
       newBoard[move.index] = move.mark;

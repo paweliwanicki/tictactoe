@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Computer from "../controllers/Computer";
 import Controller from "../controllers/Controller";
-import { Mark } from "../utils/mixin";
+import { Mark } from "../types/Mark";
 import GameState from "../types/GameState";
 import Score from "../types/Score";
 import Move from "../types/Move";
@@ -41,6 +41,7 @@ export const gameSlice = createSlice({
         mark: action.payload.mark,
       };
 
+      // do computer move if gameMode === CPU
       const newState: GameState = Controller.move(move, state);
 
       if (newState.winnerMark) {

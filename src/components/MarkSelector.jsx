@@ -5,10 +5,11 @@ import Button from "./utils/Button";
 import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
 import { getMarkColor } from "../utils/mixin";
+import { Mark } from "../types/Mark";
 import { setPlayerMark, playerMark } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 
-const MarkSelector = (props) => {
+const MarkSelector = () => {
   const mark = useSelector(playerMark);
   const dispatch = useDispatch();
 
@@ -20,27 +21,25 @@ const MarkSelector = (props) => {
       <Container classes="flex flex-row bg-dark py-9px px-8px rounded-10px mb-17px w-full">
         <Button
           classes={`py-11px flex-1 ${
-            mark === "x" ? "bg-silver" : "bg-transparent"
+            mark === Mark.x ? "bg-silver" : "bg-transparent"
           }`}
-          onClick={() => dispatch(setPlayerMark("x"))}
+          onClick={() => dispatch(setPlayerMark(Mark.x))}
           type="button"
           text={
             <Icon
               id="icon-x"
-              classes="m-auto "
+              classes="m-auto"
               width={32}
               height={32}
-              color={
-                mark === "x" ? getMarkColor("x", true) : getMarkColor("o", true)
-              }
+              color={getMarkColor(Mark.x, true, mark)}
             />
           }
         />
         <Button
           classes={`py-11px flex-1 ${
-            mark === "o" ? "bg-silver" : "bg-transparent"
+            mark === Mark.o ? "bg-silver" : "bg-transparent"
           }`}
-          onClick={() => dispatch(setPlayerMark("o"))}
+          onClick={() => dispatch(setPlayerMark(Mark.o))}
           type="button"
           text={
             <Icon
@@ -48,9 +47,7 @@ const MarkSelector = (props) => {
               classes="m-auto"
               width={32}
               height={32}
-              color={
-                mark === "o" ? getMarkColor("x", true) : getMarkColor("o", true)
-              }
+              color={getMarkColor(Mark.o, true, mark)}
             />
           }
         />

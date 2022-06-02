@@ -1,10 +1,10 @@
-import { Mark } from "../utils/mixin";
+import { Mark } from "./Mark";
 import Score from "./Score";
 
 export default interface GameState {
+  gameBoard: string[];
   isPlaying?: boolean;
   gameMode?: string;
-  gameBoard: string[];
   blockBoard?: boolean;
   playerMark?: Mark;
   activePlayer?: Mark;

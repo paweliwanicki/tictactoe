@@ -1,20 +1,10 @@
 import GameState from "../types/GameState";
 import Move from "../types/Move";
 import Score from "../types/Score";
-import { Mark } from "../utils/mixin";
+import { Mark } from "../types/Mark";
+import { GameResults } from "../types/GameResults";
 import Computer from "./Computer";
 import { GAME_STATE_TIE } from "../utils/mixin";
-
-// enum GameState {
-//  Player1Win,
-//  CPU,
-//  Tie,
-// }
-//return GameState.CPU;
-
-/*
-  type GameState = string | boolean;
-*/
 
 class Controller {
   static winCombinations: number[][] = [
@@ -28,10 +18,7 @@ class Controller {
     [2, 4, 6], // diagonals
   ];
 
-  static checkIfWin = (
-    board: string[],
-    player: Mark
-  ): typeof GAME_STATE_TIE | boolean => {
+  static checkIfWin = (board: string[], player: Mark): GameResults => {
     const playerBoard: number[] = Controller.getFieldIndexes(board, player);
     for (let i = 0; i < Controller.winCombinations.length; i++) {
       const combination: number[] = Controller.winCombinations[i];

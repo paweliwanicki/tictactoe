@@ -20,7 +20,7 @@ import {
 } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 
-const GameBoard = (props) => {
+const GameBoard = () => {
   const dispatch = useDispatch();
 
   const board = useSelector(gameBoard, shallowEqual);

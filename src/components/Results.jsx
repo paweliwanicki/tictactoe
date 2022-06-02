@@ -13,7 +13,7 @@ import {
 } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 
-const Results = (props) => {
+const Results = () => {
   const dispatch = useDispatch();
   const winner = useSelector(winnerMark);
   const player1Mark = useSelector(playerMark);
