@@ -18,6 +18,8 @@ class Controller {
     [2, 4, 6], // diagonals
   ];
 
+  static CLEAR_BOARD: string[] = ["", "", "", "", "", "", "", "", ""];
+
   static checkIfWin = (board: string[], player: Mark): GameResults => {
     const playerBoard: number[] = Controller.getFieldIndexes(board, player);
     for (let i = 0; i < Controller.winCombinations.length; i++) {
@@ -54,14 +56,10 @@ class Controller {
     return activePlayer === Mark.x ? Mark.o : Mark.x;
   }
 
-  static getClearBoard(): string[] {
-    return ["", "", "", "", "", "", "", "", ""];
-  }
-
   static move(move: Move, state: GameState): GameState {
     const newState = { ...state };
     const newBoard: string[] = Controller.setBoard(move, newState.gameBoard);
-    const win: boolean | string = Controller.checkIfWin(newBoard, move.mark);
+    const win: GameResults = Controller.checkIfWin(newBoard, move.mark);
 
     if (win) {
       const currentScore: Score = { ...state.score };

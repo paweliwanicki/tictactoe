@@ -8,30 +8,20 @@ import { gameMode, playerMark } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 
 const ScoreBox = (props) => {
+  let playerInfo;
   const classStr = classnames(
     "rounded-15px w-140px h-72px mx-0 justify-center",
     props.bgColor
   );
 
-  let playerInfo;
   const mode = useSelector(gameMode);
   const player1Mark = useSelector(playerMark);
 
   if (props.mark) {
-    const player1x = props.mark === "x" && player1Mark === "x";
-    const player1o = props.mark === "o" && player1Mark === "o";
     if (mode === CPU) {
-      if (player1x || player1o) {
-        playerInfo = langs.en.you;
-      } else {
-        playerInfo = langs.en.cpu;
-      }
+      playerInfo = props.mark === player1Mark ? langs.en.you : langs.en.cpu;
     } else {
-      if (player1x || player1o) {
-        playerInfo = "p1";
-      } else {
-        playerInfo = "p2";
-      }
+      playerInfo = props.mark === player1Mark ? "p1" : "p2";
     }
   }
 

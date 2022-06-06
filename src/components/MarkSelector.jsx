@@ -5,7 +5,7 @@ import Button from "./utils/Button";
 import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
 import { getMarkColor } from "../utils/mixin";
-import { Mark } from "../types/Mark";
+import { Mark, MarkComponents } from "../types/Mark";
 import { setPlayerMark, playerMark } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 
@@ -31,7 +31,7 @@ const MarkSelector = () => {
               classes="m-auto"
               width={32}
               height={32}
-              color={getMarkColor(Mark.x, true, mark)}
+              color={getMarkColor(Mark.x, MarkComponents.Menu, mark)}
             />
           }
         />
@@ -47,7 +47,7 @@ const MarkSelector = () => {
               classes="m-auto"
               width={32}
               height={32}
-              color={getMarkColor(Mark.o, true, mark)}
+              color={getMarkColor(Mark.o, MarkComponents.Menu, mark)}
             />
           }
         />

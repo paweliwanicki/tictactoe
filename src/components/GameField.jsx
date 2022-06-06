@@ -5,12 +5,13 @@ import { getMarkColor } from "../utils/mixin";
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
 import { blockBoard, activePlayer, setBoard } from "../reducers/gameSlice";
+import { MarkComponents } from "../types/Mark";
 
 const GameField = (props) => {
   const dispatch = useDispatch();
   const activePlayerMark = useSelector(activePlayer);
   const boardBlocked = useSelector(blockBoard);
-  const markColor = getMarkColor(props.mark);
+  const markColor = getMarkColor(props.mark, MarkComponents.Field);
 
   const setMarkHandler = () => {
     if (!props.mark && !boardBlocked) {

@@ -7,14 +7,12 @@ import Score from "../types/Score";
 import Move from "../types/Move";
 import { RootState } from "../store/store";
 
-const EMPTY_BOARD = Controller.getClearBoard;
-
 const GAME_REDUCER_NAME: string = "game";
 
 const initialState: GameState = {
   isPlaying: false,
   gameMode: null,
-  gameBoard: EMPTY_BOARD(),
+  gameBoard: Controller.CLEAR_BOARD,
   blockBoard: false,
   playerMark: Mark.x,
   activePlayer: Mark.x,
@@ -32,7 +30,7 @@ export const gameSlice = createSlice({
   reducers: {
     setBoard: (state: GameState, action) => {
       if (action.payload.clear) {
-        state.gameBoard = EMPTY_BOARD();
+        state.gameBoard = Controller.CLEAR_BOARD;
         return;
       }
 
@@ -58,7 +56,7 @@ export const gameSlice = createSlice({
       state.isPlaying = action.payload.isPlaying;
       state.activePlayer = Mark.x;
       state.blockBoard = false;
-      state.gameBoard = EMPTY_BOARD();
+      state.gameBoard = Controller.CLEAR_BOARD;
       state.showResults = false;
       state.winnerMark = null;
 
@@ -85,17 +83,20 @@ export const gameSlice = createSlice({
   },
 });
 
-export const gameMode = (state: RootState) => state.game.gameMode;
-export const isPlaying = (state: RootState) => state.game.isPlaying;
-export const gameBoard = (state: RootState) => state.game.gameBoard;
-export const blockBoard = (state: RootState) => state.game.blockBoard;
-export const showResults = (state: RootState) => state.game.showResults;
-export const winnerMark = (state: RootState) => state.game.winnerMark;
-export const playerMark = (state: RootState) => state.game.playerMark;
-export const xScore = (state: RootState) => state.game.score.x;
-export const oScore = (state: RootState) => state.game.score.o;
-export const totalTies = (state: RootState) => state.game.score.totalTies;
-export const activePlayer = (state: RootState) => state.game.activePlayer;
+export const gameMode = (state: RootState): string => state.game.gameMode;
+export const isPlaying = (state: RootState): boolean => state.game.isPlaying;
+export const gameBoard = (state: RootState): string[] => state.game.gameBoard;
+export const blockBoard = (state: RootState): boolean => state.game.blockBoard;
+export const showResults = (state: RootState): boolean =>
+  state.game.showResults;
+export const winnerMark = (state: RootState): Mark => state.game.winnerMark;
+export const playerMark = (state: RootState): Mark => state.game.playerMark;
+export const xScore = (state: RootState): number => state.game.score.x;
+export const oScore = (state: RootState): number => state.game.score.o;
+export const totalTies = (state: RootState): number =>
+  state.game.score.totalTies;
+export const activePlayer = (state: RootState): Mark => state.game.activePlayer;
+
 export const { startNewGame, setBoard, setPlayerMark } = gameSlice.actions;
 
 export default gameSlice.reducer;

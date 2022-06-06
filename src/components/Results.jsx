@@ -12,17 +12,18 @@ import {
   winnerMark,
 } from "../reducers/gameSlice";
 import langs from "../langs/langs";
+import { Mark, MarkComponents } from "../types/Mark";
 
 const Results = () => {
   const dispatch = useDispatch();
   const winner = useSelector(winnerMark);
   const player1Mark = useSelector(playerMark);
   const mode = useSelector(gameMode);
-  const markColor = winner === "x" ? getMarkColor("x") : getMarkColor("o");
+  const markColor = winner && getMarkColor(winner, MarkComponents.Results);
 
-  let textColor = "text-silver";
+  let textColorClass = "text-silver";
   if (winner) {
-    textColor = winner === "x" ? "text-blue" : "text-orange";
+    textColorClass = winner === Mark.x ? "text-blue" : "text-orange";
   }
 
   const quitGameHandler = () => {
@@ -68,7 +69,7 @@ const Results = () => {
             />
           )}
           <TextBox
-            classes={`text-sm-custom mb-24px font-bold text-xl-custom ${textColor} mb-0`}
+            classes={`text-sm-custom mb-24px font-bold text-xl-custom ${textColorClass} mb-0`}
           >
             {!winner ? langs.en.roundTied : langs.en.takesRound}
           </TextBox>

@@ -3,12 +3,14 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GameFields from "./GameFields";
 import ScoreBox from "./ScoreBox";
 import Results from "./Results";
+//import {CustomImage} from '@utils';
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 import TextBox from "./utils/TextBox";
 import SubMenu from "./utils/SubMenu";
 import CssVariables from "../utils/cssVariables";
+
 import {
   gameBoard,
   showResults,
@@ -19,6 +21,7 @@ import {
   activePlayer,
 } from "../reducers/gameSlice";
 import langs from "../langs/langs";
+import { Mark } from "../types/Mark";
 
 const GameBoard = () => {
   const dispatch = useDispatch();
@@ -31,6 +34,7 @@ const GameBoard = () => {
 
   const [showRestartMenu, setShowRestartMenu] = useState(false);
   const showGameResults = useSelector(showResults);
+
 
   const backToMenuHandler = () => {
     dispatch(startNewGame({ isPlaying: false, resetScores: true }));
@@ -76,9 +80,9 @@ const GameBoard = () => {
         </Container>
 
         <Container classes="justify-between mx-0 w-full">
-          <ScoreBox bgColor="bg-blue" mark={"x"} score={xTotalScore} />
+          <ScoreBox bgColor="bg-blue" mark={Mark.x} score={xTotalScore} />
           <ScoreBox bgColor="bg-silver" score={tiesScore} />
-          <ScoreBox bgColor="bg-orange" mark={"o"} score={oTotalScore} />
+          <ScoreBox bgColor="bg-orange" mark={Mark.o} score={oTotalScore} />
         </Container>
       </Container>
       {showRestartMenu && (
