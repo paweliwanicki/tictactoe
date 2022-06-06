@@ -1,11 +1,12 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Container from "./utils/Container";
 import Button from "./utils/Button";
 import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
-import { useSelector, useDispatch } from "react-redux";
-import { setPlayerMark, playerMark } from "../reducers/playerSlice";
-import CssVariables from "./utils/cssVariables";
+import { getMarkColor } from "../utils/mixin";
+import { setPlayerMark, playerMark } from "../reducers/gameSlice";
+import langs from "../langs/langs";
 
 const MarkSelector = (props) => {
   const mark = useSelector(playerMark);
@@ -14,7 +15,7 @@ const MarkSelector = (props) => {
   return (
     <Container classes="bg-semi-dark flex-col rounded-10px shadow-md-semi-dark-custom my-40px pt-24px pb-30px px-24px w-full">
       <TextBox classes="text-sm-custom text-silver mb-24px font-bold">
-        PICK PLAYER 1’S MARK
+        {langs.en.pick1PlayerMark}
       </TextBox>
       <Container classes="flex flex-row bg-dark py-9px px-8px rounded-10px mb-17px w-full">
         <Button
@@ -29,7 +30,9 @@ const MarkSelector = (props) => {
               classes="m-auto "
               width={32}
               height={32}
-              color={mark === "x" ? CssVariables.dark : CssVariables.silver}
+              color={
+                mark === "x" ? getMarkColor("x", true) : getMarkColor("o", true)
+              }
             />
           }
         />
@@ -45,13 +48,15 @@ const MarkSelector = (props) => {
               classes="m-auto"
               width={32}
               height={32}
-              color={mark === "o" ? CssVariables.dark : CssVariables.silver}
+              color={
+                mark === "o" ? getMarkColor("x", true) : getMarkColor("o", true)
+              }
             />
           }
         />
       </Container>
       <TextBox classes="text-sm-custom text-silver opacity-50">
-        REMEMBER : X GOES FIRST
+        {langs.en.xGoesFirst}
       </TextBox>
     </Container>
   );

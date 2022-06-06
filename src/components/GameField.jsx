@@ -1,31 +1,25 @@
-import Container from "./utils/Container";
-import React, { useState } from "react";
-import Icon from "./utils/Icon";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { activePlayer, switchPlayer } from "../reducers/playerSlice";
-import CssVariables from "./utils/cssVariables";
+import propTypes from "prop-types";
+import { getMarkColor } from "../utils/mixin";
+import Container from "./utils/Container";
+import Icon from "./utils/Icon";
+import { blockBoard, activePlayer, setBoard } from "../reducers/gameSlice";
 
 const GameField = (props) => {
-  const acitvePlayerMark = useSelector(activePlayer);
   const dispatch = useDispatch();
-  const [mark, setMark] = useState("");
+  const activePlayerMark = useSelector(activePlayer);
+  const boardBlocked = useSelector(blockBoard);
+  const markColor = getMarkColor(props.mark);
 
   const setMarkHandler = () => {
-    const playerMark = acitvePlayerMark;
-    if (!mark) {
-      setMark(playerMark);
-      dispatch(switchPlayer());
+    if (!props.mark && !boardBlocked) {
+      dispatch(setBoard({ index: props.fieldIndex, mark: activePlayerMark }));
     }
   };
 
-  let markColor = "";
-  if (mark) {
-    markColor =
-      mark === "x" ? CssVariables.blueLight : CssVariables.orangeLight;
-  }
-
-  const symbol = mark && (
-    <Icon id={`icon-${mark}`} width={64} height={64} color={markColor} />
+  const symbol = props.mark && (
+    <Icon id={`icon-${props.mark}`} width={64} height={64} color={markColor} />
   );
   return (
     <Container
@@ -35,6 +29,15 @@ const GameField = (props) => {
       {symbol}
     </Container>
   );
+};
+
+GameField.propTypes = {
+  fieldIndex: propTypes.number.isRequired,
+  mark: propTypes.string,
+};
+
+GameField.defaultProps = {
+  mark: "",
 };
 
 export default GameField;

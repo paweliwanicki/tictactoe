@@ -1,105 +1,97 @@
 import React, { useState } from "react";
-import GameField from "./GameField";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import GameFields from "./GameFields";
+import ScoreBox from "./ScoreBox";
+import Results from "./Results";
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 import TextBox from "./utils/TextBox";
-import { useDispatch, useSelector } from "react-redux";
+import SubMenu from "./utils/SubMenu";
+import CssVariables from "../utils/cssVariables";
 import {
+  gameBoard,
+  showResults,
+  xScore,
+  oScore,
+  totalTies,
+  startNewGame,
   activePlayer,
-  setActivePlayer,
-  playerMark,
-} from "../reducers/playerSlice";
-import { setGameMode, setIsPlaying } from "../reducers/gameSlice";
-import { player1Score, player2Score, ties } from "../reducers/scoreSlice";
-import ScoreBox from "./ScoreBox";
-import CssVariables from "./utils/cssVariables";
+} from "../reducers/gameSlice";
+import langs from "../langs/langs";
 
 const GameBoard = (props) => {
   const dispatch = useDispatch();
 
-  const [board, setBoard] = useState([
-    "",
-    "",
-    "", // 0, 1, 2
-    "",
-    "",
-    "", // 3, 4, 5
-    "",
-    "",
-    "", // 6, 7, 8
-  ]);
-
+  const board = useSelector(gameBoard, shallowEqual);
   const activePlayerMark = useSelector(activePlayer);
-  const p1Score = useSelector(player1Score);
-  const p2Score = useSelector(player2Score);
-  const tiesScore = useSelector(ties);
-  const player1Mark = useSelector(playerMark);
-  const xScore = player1Mark === "x" ? p1Score : p2Score;
-  const oScore = player1Mark === "y" ? p1Score : p2Score;
+  const tiesScore = useSelector(totalTies);
+  const xTotalScore = useSelector(xScore);
+  const oTotalScore = useSelector(oScore);
 
-  const setMark = (index) => {
-    const currentBoard = board;
-    currentBoard[index] = activePlayerMark;
-    setBoard(currentBoard);
-  };
+  const [showRestartMenu, setShowRestartMenu] = useState(false);
+  const showGameResults = useSelector(showResults);
 
   const backToMenuHandler = () => {
-    dispatch(setIsPlaying(false));
-    dispatch(setGameMode(null));
-    dispatch(setActivePlayer("x"));
+    dispatch(startNewGame({ isPlaying: false, resetScores: true }));
   };
 
   return (
-    <Container classes="max-w-full flex-wrap h-623px w-460px max-w-460px">
-      <Container classes="w-full gap-20px mb-19px">
-        <Container classes="w-140px justify-start">
-          <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
-        </Container>
-        <Container classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom uppercase justify-center align-center">
-          <Icon
-            id={`icon-${activePlayerMark}`}
-            viewBox="0 0 20 20"
-            width={20}
-            height={20}
-            color={CssVariables.silver}
-            classes="mr-13px"
-          />
-          <TextBox classes="font-bold">TURN</TextBox>
-        </Container>
-        <Button
-          classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom ml-auto rounded-10px"
-          text={
+    <>
+      <Container classes="max-w-full flex-wrap h-623px w-460px max-w-460px">
+        <Container classes="w-full gap-20px mb-19px">
+          <Container classes="w-140px justify-start">
+            <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
+          </Container>
+          <Container classes="bg-semi-dark text-silver w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom justify-center align-center">
             <Icon
-              id="icon-restart"
+              id={`icon-${activePlayerMark}`}
               viewBox="0 0 20 20"
               width={20}
               height={20}
-              classes="mx-auto"
+              color={CssVariables.silver}
+              classes="mr-13px"
             />
-          }
-          icon
-          primary={false}
-          type="button"
-          onClick={backToMenuHandler}
-        />
-      </Container>
-      <Container classes="w-full justify-between mb-19px flex-wrap gap-20px">
-        {board.map((field, ix) => (
-          <GameField
-            mark={field}
-            key={`field_${ix}`}
-            onClick={() => setMark(ix)}
+            <TextBox classes="font-bold">{langs.en.turn}</TextBox>
+          </Container>
+          <Button
+            classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom ml-auto rounded-10px"
+            text={
+              <Icon
+                id="icon-restart"
+                viewBox="0 0 20 20"
+                width={20}
+                height={20}
+                classes="mx-auto"
+              />
+            }
+            icon
+            primary={false}
+            type="button"
+            onClick={() => setShowRestartMenu(true)}
           />
-        ))}
-      </Container>
+        </Container>
+        <Container classes="w-full justify-between mb-19px flex-wrap gap-20px">
+          <GameFields board={board} activePlayerMark={activePlayerMark} />
+        </Container>
 
-      <Container classes="justify-between mx-0 w-full">
-        <ScoreBox bgColor="bg-blue-light" mark={"x"} score={xScore} />
-        <ScoreBox bgColor="bg-silver" score={tiesScore} />
-        <ScoreBox bgColor="bg-orange" mark={"o"} score={oScore} />
+        <Container classes="justify-between mx-0 w-full">
+          <ScoreBox bgColor="bg-blue" mark={"x"} score={xTotalScore} />
+          <ScoreBox bgColor="bg-silver" score={tiesScore} />
+          <ScoreBox bgColor="bg-orange" mark={"o"} score={oTotalScore} />
+        </Container>
       </Container>
-    </Container>
+      {showRestartMenu && (
+        <SubMenu
+          header={langs.en.restartGame}
+          cancelBtnText={langs.en.noCancel}
+          confirmBtnText={langs.en.yesRestart}
+          onConfirm={() => backToMenuHandler()}
+          onCancel={() => setShowRestartMenu(false)}
+        />
+      )}
+      {showGameResults && <Results />}
+    </>
   );
 };
 

@@ -13,7 +13,7 @@ const Button = (props) => {
   }
 
   const classStr = classnames(
-    "font-bold uppercase",
+    "font-bold",
     typeClasses,
     props.classes
   );
