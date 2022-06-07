@@ -6,8 +6,13 @@ import GameState from "../types/GameState";
 import Score from "../types/Score";
 import Move from "../types/Move";
 import { RootState } from "../store/store";
+import { Languages, Language } from "types/Languages";
 
 const GAME_REDUCER_NAME: string = "game";
+const storedLang: Language  = localStorage.getItem("lang");
+const lang: Language = storedLang ? storedLang : Languages.EN;
+//const lang: Language =  Languages.EN;
+localStorage.setItem("lang", lang);
 
 const initialState: GameState = {
   isPlaying: false,
@@ -23,6 +28,7 @@ const initialState: GameState = {
     o: 0,
     totalTies: 0,
   },
+  lang: lang,
 };
 export const gameSlice = createSlice({
   name: GAME_REDUCER_NAME,
@@ -80,6 +86,10 @@ export const gameSlice = createSlice({
     setPlayerMark: (state: GameState, action: PayloadAction<Mark>) => {
       state.playerMark = action.payload;
     },
+    setLang: (state: GameState, action: PayloadAction<Languages>) => {
+      state.lang = action.payload;
+      localStorage.setItem("lang", action.payload);
+    },
   },
 });
 
@@ -96,7 +106,9 @@ export const oScore = (state: RootState): number => state.game.score.o;
 export const totalTies = (state: RootState): number =>
   state.game.score.totalTies;
 export const activePlayer = (state: RootState): Mark => state.game.activePlayer;
+export const gameLanguage = (state: RootState): Language => state.game.lang;
 
-export const { startNewGame, setBoard, setPlayerMark } = gameSlice.actions;
+export const { startNewGame, setBoard, setPlayerMark, setLang } =
+  gameSlice.actions;
 
 export default gameSlice.reducer;

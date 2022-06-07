@@ -98,12 +98,14 @@ module.exports = {
       width: {
         "43px": "43px",
         "52px": "52px",
+        "80px": "80px",
         "140px": "140px",
         "226px": "226px",
         "410px": "410px",
         "460px": "460px",
       },
       height: {
+        "40px": "40px",
         "48px": "48px",
         "52px": "52px",
         "67px": "67px",
@@ -117,6 +119,7 @@ module.exports = {
         "screen" : "100vh",
       },
       padding: {
+        "5px": "5px",
         "8px": "8px",
         "9px": "9px",
         "11px": "11px",

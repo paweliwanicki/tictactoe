@@ -3,7 +3,6 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GameFields from "./GameFields";
 import ScoreBox from "./ScoreBox";
 import Results from "./Results";
-//import {CustomImage} from '@utils';
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
@@ -19,6 +18,7 @@ import {
   totalTies,
   startNewGame,
   activePlayer,
+  gameLanguage,
 } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 import { Mark } from "../types/Mark";
@@ -31,6 +31,7 @@ const GameBoard = () => {
   const tiesScore = useSelector(totalTies);
   const xTotalScore = useSelector(xScore);
   const oTotalScore = useSelector(oScore);
+  const lang = useSelector(gameLanguage);
 
   const [showRestartMenu, setShowRestartMenu] = useState(false);
   const showGameResults = useSelector(showResults);
@@ -56,7 +57,7 @@ const GameBoard = () => {
               color={CssVariables.silver}
               classes="mr-13px"
             />
-            <TextBox classes="font-bold">{langs.en.turn}</TextBox>
+            <TextBox classes="font-bold">{langs[lang].turn}</TextBox>
           </Container>
           <Button
             classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom ml-auto rounded-10px"
@@ -87,9 +88,9 @@ const GameBoard = () => {
       </Container>
       {showRestartMenu && (
         <SubMenu
-          header={langs.en.restartGame}
-          cancelBtnText={langs.en.noCancel}
-          confirmBtnText={langs.en.yesRestart}
+          header={langs[lang].restartGame}
+          cancelBtnText={langs[lang].noCancel}
+          confirmBtnText={langs[lang].yesRestart}
           onConfirm={() => backToMenuHandler()}
           onCancel={() => setShowRestartMenu(false)}
         />

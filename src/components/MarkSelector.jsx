@@ -6,17 +6,18 @@ import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
 import { getMarkColor } from "../utils/mixin";
 import { Mark, MarkComponents } from "../types/Mark";
-import { setPlayerMark, playerMark } from "../reducers/gameSlice";
+import { setPlayerMark, playerMark, gameLanguage } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 
 const MarkSelector = () => {
   const mark = useSelector(playerMark);
+  const lang = useSelector(gameLanguage);
   const dispatch = useDispatch();
 
   return (
     <Container classes="bg-semi-dark flex-col rounded-10px shadow-md-semi-dark-custom my-40px pt-24px pb-30px px-24px w-full">
       <TextBox classes="text-sm-custom text-silver mb-24px font-bold">
-        {langs.en.pick1PlayerMark}
+        {langs[lang].pick1PlayerMark}
       </TextBox>
       <Container classes="flex flex-row bg-dark py-9px px-8px rounded-10px mb-17px w-full">
         <Button
@@ -53,7 +54,7 @@ const MarkSelector = () => {
         />
       </Container>
       <TextBox classes="text-sm-custom text-silver opacity-50">
-        {langs.en.xGoesFirst}
+        {langs[lang].xGoesFirst}
       </TextBox>
     </Container>
   );

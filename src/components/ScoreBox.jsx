@@ -4,7 +4,7 @@ import classnames from "classnames";
 import propTypes from "prop-types";
 import Container from "./utils/Container";
 import { CPU } from "../utils/mixin";
-import { gameMode, playerMark } from "../reducers/gameSlice";
+import { gameLanguage, gameMode, playerMark } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 
 const ScoreBox = (props) => {
@@ -16,16 +16,17 @@ const ScoreBox = (props) => {
 
   const mode = useSelector(gameMode);
   const player1Mark = useSelector(playerMark);
+  const lang = useSelector(gameLanguage);
 
   if (props.mark) {
     if (mode === CPU) {
-      playerInfo = props.mark === player1Mark ? langs.en.you : langs.en.cpu;
+      playerInfo = props.mark === player1Mark ? langs[lang].you : langs[lang].cpu;
     } else {
       playerInfo = props.mark === player1Mark ? "p1" : "p2";
     }
   }
 
-  const text = props.mark ? `${props.mark} (${playerInfo})` : "ties";
+  const text = props.mark ? `${props.mark} (${playerInfo})` : langs[lang].ties;
 
   return (
     <Container classes={classStr}>

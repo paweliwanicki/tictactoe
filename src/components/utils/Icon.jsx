@@ -30,6 +30,7 @@ const Icon = (props) => {
       onMouseLeave={onMouseLeaveHandler}
       data-id={props.id}
       className={props.classes}
+      onClick={props.onClick}
     >
       <use href={Icons + `#${props.id}`} />
     </svg>
@@ -42,6 +43,7 @@ Icon.propTypes = {
   width: propTypes.number,
   color: propTypes.string,
   viewBox: propTypes.string,
+  onClick:propTypes.func
 };
 
 Icon.defaultProps = {
@@ -49,6 +51,7 @@ Icon.defaultProps = {
   width: 20,
   color: "",
   viewBox: "",
+  onClick: null
 };
 
 export default Icon;
