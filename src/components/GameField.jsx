@@ -20,11 +20,11 @@ const GameField = (props) => {
   };
 
   const symbol = props.mark && (
-    <Icon id={`icon-${props.mark}`} width={64} height={64} color={markColor} />
+    <Icon id={`icon-${props.mark}`} color={markColor} classes="w-52px h-52px sm:w-64px sm:h-64px"/>
   );
   return (
     <Container
-      classes="w-140px h-140px bg-semi-dark shadow-md-dark-custom rounded-15px mx-0 justify-center"
+      classes="min-h-110px min-w-110px auto-rows-fr sm:w-140px sm:h-140px bg-semi-dark shadow-md-dark-custom rounded-15px mx-0 justify-center"
       onClick={() => setMarkHandler()}
     >
       {symbol}

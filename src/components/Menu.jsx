@@ -17,7 +17,7 @@ const Menu = () => {
     dispatch(startNewGame({ mode: mode, isPlaying: true }));
   };
   return (
-    <Container classes="flex-col w-460px max-w-460px min-h-470px">
+    <Container classes="flex-col max-w-460px w-92% min-h-470px sm:w-460px ">
       <Container classes="w-full relative">
         <Icon classes="mx-auto" id="logo" viewBox="0 0 72 32" width={72} height={32} />
         <LanguageSelector />

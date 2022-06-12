@@ -51,14 +51,14 @@ const Results = () => {
   return (
     <Container classes="w-full h-full fixed inset-0 align-center">
       <Container classes="w-screen fixed inset-0 opacity-50 bg-black" />
-      <Container classes="w-screen h-266px bg-semi-dark fixed inset-0 justify-center align-center my-auto flex-col">
+      <Container classes="w-screen h-266px bg-semi-dark fixed inset-0 justify-center align-center my-auto flex-col ">
         {winner && (
           <TextBox classes="text-sm-custom text-silver mb-16px font-bold flex ">
             {playerInfoText}
           </TextBox>
         )}
         <Container
-          classes={`text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center align-center`}
+          classes={`xsm:px-15px text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center align-center text-center px-13px`}
         >
           {winner && (
             <Icon
@@ -67,11 +67,11 @@ const Results = () => {
               width={64}
               height={64}
               color={markColor}
-              classes="mr-24px"
+              classes="mx-13px xsm:mr-24px"
             />
           )}
           <TextBox
-            classes={`text-sm-custom mb-24px font-bold text-xl-custom ${textColorClass} mb-0`}
+            classes={`text-l-custom mb-24px font-bold sm:text-xl-custom ${textColorClass} mb-0`}
           >
             {!winner ? langs[lang].roundTied : langs[lang].takesRound}
           </TextBox>
