@@ -36,19 +36,18 @@ const GameBoard = () => {
   const [showRestartMenu, setShowRestartMenu] = useState(false);
   const showGameResults = useSelector(showResults);
 
-
   const backToMenuHandler = () => {
     dispatch(startNewGame({ isPlaying: false, resetScores: true }));
   };
 
   return (
     <>
-      <Container classes="max-w-full flex-wrap h-623px sm:w-460px max-w-460px w-92%">
-        <Container classes="w-full gap-5px sm:gap-20px mb-19px relative">
+      <Container classes="flex items-center max-w-full flex-wrap h-623px sm:w-460px max-w-460px w-92%">
+        <Container classes="flex items-center w-full gap-5px sm:gap-20px mb-19px relative">
           <Container classes="absolute">
             <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
           </Container>
-          <Container classes="bg-semi-dark text-silver mx-auto w-110px sm:w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom justify-center align-center">
+          <Container classes="flex items-center bg-semi-dark text-silver mx-auto w-110px sm:w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom justify-center">
             <Icon
               id={`icon-${activePlayerMark}`}
               viewBox="0 0 20 20"
@@ -60,7 +59,7 @@ const GameBoard = () => {
             <TextBox classes="font-bold">{langs[lang].turn}</TextBox>
           </Container>
           <Button
-            classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom  rounded-10px absolute right-0"
+            classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom rounded-10px absolute right-0"
             text={
               <Icon
                 id="icon-restart"
@@ -76,11 +75,11 @@ const GameBoard = () => {
             onClick={() => setShowRestartMenu(true)}
           />
         </Container>
-        <Container classes="grid grid-cols-3 grid-rows-3 w-full justify-between mb-19px flex-wrap gap-10px sm:gap-20px">
+        <Container classes="grid grid-cols-3 grid-rows-3 gap-10px xsm:gap-20px mx-auto mb-19px">
           <GameFields board={board} activePlayerMark={activePlayerMark} />
         </Container>
 
-        <Container classes="justify-between mx-0 w-full gap-10px">
+        <Container classes="flex items-center justify-between mx-0 w-full gap-10px">
           <ScoreBox bgColor="bg-blue" mark={Mark.x} score={xTotalScore} />
           <ScoreBox bgColor="bg-silver" score={tiesScore} />
           <ScoreBox bgColor="bg-orange" mark={Mark.o} score={oTotalScore} />

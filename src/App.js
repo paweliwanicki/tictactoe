@@ -8,7 +8,7 @@ function App() {
   const play = useSelector(isPlaying);
 
   return (
-    <Container classes="max-w-full min-h-screen bg-dark mx-auto justify-center">
+    <Container classes="flex items-center max-w-full min-h-screen bg-dark mx-auto justify-center">
       {!play && <Menu />}
       {play && <GameBoard />}
     </Container>

@@ -24,7 +24,7 @@ const GameField = (props) => {
   );
   return (
     <Container
-      classes="min-h-110px min-w-110px auto-rows-fr sm:w-140px sm:h-140px bg-semi-dark shadow-md-dark-custom rounded-15px mx-0 justify-center"
+      classes="flex items-center min-h-105px min-w-105px sm:w-140px sm:h-140px bg-semi-dark shadow-md-dark-custom rounded-15px mx-0 justify-center"
       onClick={() => setMarkHandler()}
     >
       {symbol}

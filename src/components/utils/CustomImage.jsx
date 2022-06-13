@@ -10,11 +10,11 @@ const CustomImage = (props) => {
 
 CustomImage.propTypes = {
   image: propTypes.object.isRequired,
-  classes: propTypes.string
+  classes: propTypes.string,
 };
 
 CustomImage.defaultProps = {
-  classes: ''
+  classes: "",
 };
 
 export default CustomImage;

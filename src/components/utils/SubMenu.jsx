@@ -14,20 +14,20 @@ const SubMenu = (props) => {
   };
 
   return (
-    <Container classes="w-full h-full fixed inset-0 align-center">
+    <Container classes="w-full h-full fixed inset-0 ">
       <Container classes="w-screen fixed inset-0 opacity-50 bg-black" />
-      <Container classes="w-screen h-266px bg-semi-dark fixed inset-0 justify-center align-center my-auto flex-col">
+      <Container classes="flex items-center w-screen h-266px bg-semi-dark fixed inset-0 justify-center  my-auto flex-col">
         <Container
-          classes={`text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center align-center`}
+          classes={`flex items-center text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center `}
         >
           <TextBox
-            classes={`text-sm-custom mb-24px font-bold text-xl-custom text-silver mb-0`}
+            classes={`text-ml-custom sm:text-xl-custom mb-24px font-bold  text-silver mb-0`}
           >
             {props.header}
           </TextBox>
         </Container>
 
-        <Container classes="flex justify-center align-center ">
+        <Container classes="flex justify-center  ">
           <Button
             classes={`w-76px h-52px bg-silver hover:bg-silver-light text-dark mr-16px shadow-sm-silver-custom`}
             primary={false}

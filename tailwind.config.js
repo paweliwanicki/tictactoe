@@ -44,6 +44,13 @@ module.exports = {
           letterSpacing: "1.5px",
         },
       ],
+      "ml-custom": [
+        "29px",
+        {
+          lineHeight: "35px",
+          letterSpacing: "2px",
+        },
+      ],
       "l-custom": [
         "32px",
         {
@@ -59,12 +66,17 @@ module.exports = {
         },
       ],
     },
+    minWidth: {
+      "105px": "105px",
+      "110px": "110px",
+    },
     maxWidth: {
       "110px": "110px",
       "460px": "460px",
       "1440px": "1440px",
     },
     minHeight: {
+      "105px": "105px",
       "110px": "110px",
       "470px": "470px",
       screen: "100vh",
@@ -112,7 +124,6 @@ module.exports = {
       },
       width: {
         //px
-
         "43px": "43px",
         "52px": "52px",
         "64px": "64px",

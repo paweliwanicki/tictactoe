@@ -49,35 +49,33 @@ const Results = () => {
   }
 
   return (
-    <Container classes="w-full h-full fixed inset-0 align-center">
+    <Container classes="w-full h-full fixed inset-0 ">
       <Container classes="w-screen fixed inset-0 opacity-50 bg-black" />
-      <Container classes="w-screen h-266px bg-semi-dark fixed inset-0 justify-center align-center my-auto flex-col ">
+      <Container classes="flex items-center w-screen h-266px bg-semi-dark fixed inset-0 justify-center  my-auto flex-col ">
         {winner && (
-          <TextBox classes="text-sm-custom text-silver mb-16px font-bold flex ">
+          <TextBox classes="text-sm-custom text-silver mb-16px font-bold flex">
             {playerInfoText}
           </TextBox>
         )}
         <Container
-          classes={`xsm:px-15px text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center align-center text-center px-13px`}
+          classes={`flex items-center xsm:px-15px text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center  text-center px-13px`}
         >
           {winner && (
             <Icon
               id={`icon-${winner}`}
               viewBox="0 0 64 64"
-              width={64}
-              height={64}
               color={markColor}
-              classes="mx-13px xsm:mr-24px"
+              classes="mx-13px xsm:mr-24px w-52px h-52px sm:w-64px sm:h-64px"
             />
           )}
           <TextBox
-            classes={`text-l-custom mb-24px font-bold sm:text-xl-custom ${textColorClass} mb-0`}
+            classes={`text-ml-custom mb-24px font-bold xsm:text-xl-custom ${textColorClass} mb-0`}
           >
             {!winner ? langs[lang].roundTied : langs[lang].takesRound}
           </TextBox>
         </Container>
 
-        <Container classes="flex justify-center align-center ">
+        <Container classes="flex justify-center  ">
           <Button
             classes={`w-76px h-52px bg-silver hover:bg-silver-light text-dark mr-16px shadow-sm-silver-custom`}
             primary={false}
