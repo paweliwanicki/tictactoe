@@ -1,8 +1,8 @@
+import { useSelector } from "react-redux";
 import Container from "./components/utils/Container";
 import Menu from "./components/Menu";
 import GameBoard from "./components/GameBoard";
 import { isPlaying } from "./reducers/gameSlice";
-import { useSelector } from "react-redux";
 
 function App() {
   const play = useSelector(isPlaying);

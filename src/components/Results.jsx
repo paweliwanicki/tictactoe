@@ -51,7 +51,7 @@ const Results = () => {
   return (
     <Container classes="w-full h-full fixed inset-0 ">
       <Container classes="w-screen fixed inset-0 opacity-50 bg-black" />
-      <Container classes="flex items-center w-screen h-266px bg-semi-dark fixed inset-0 justify-center  my-auto flex-col ">
+      <Container classes="flex items-center w-screen h-266px bg-semi-dark fixed inset-0 justify-center my-auto flex-col ">
         {winner && (
           <TextBox classes="text-sm-custom text-silver mb-16px font-bold flex">
             {playerInfoText}

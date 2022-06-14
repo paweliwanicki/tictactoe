@@ -33,27 +33,3 @@
       <path d="M56.1 0c8.765 0 15.87 7.106 15.87 15.87 0 8.766-7.105 15.871-15.87 15.871-8.765 0-15.87-7.105-15.87-15.87C40.23 7.106 47.334 0 56.1 0Zm0 9.405a6.466 6.466 0 1 0 0 12.931 6.466 6.466 0 0 0 0-12.931Z" fill="#F2B137" fill-rule="nonzero"></path>
   </symbol>
 </svg>
-<svg class="icon" >
-  <use xlink:href="#icon-en" ></use>
-</svg>
-<svg class="icon">
-  <use xlink:href="#icon-o"></use>
-</svg>
-<svg class="icon">
-  <use xlink:href="#icon-o-outline"></use>
-</svg>
-<svg class="icon">
-  <use xlink:href="#icon-pl"></use>
-</svg>
-<svg class="icon">
-  <use xlink:href="#icon-restart"></use>
-</svg>
-<svg class="icon">
-  <use xlink:href="#icon-x"></use>
-</svg>
-<svg class="icon">
-  <use xlink:href="#icon-x-outline"></use>
-</svg>
-<svg class="icon">
-  <use xlink:href="#logo"></use>
-</svg>

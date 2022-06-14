@@ -20,7 +20,8 @@ const ScoreBox = (props) => {
 
   if (props.mark) {
     if (mode === CPU) {
-      playerInfo = props.mark === player1Mark ? langs[lang].you : langs[lang].cpu;
+      playerInfo =
+        props.mark === player1Mark ? langs[lang].you : langs[lang].cpu;
     } else {
       playerInfo = props.mark === player1Mark ? "p1" : "p2";
     }
