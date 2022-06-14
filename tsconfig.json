@@ -8,8 +8,5 @@
     "allowJs": true,
     "moduleResolution": "node",
     "baseUrl": "src",
-    // "paths": {
-    //   "@utils": ["components/utils/*"],
-    // },
   }
 }

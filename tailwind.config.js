@@ -2,7 +2,7 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
-      sm: "480px",
+      sm: "490px",
       md: "768px",
       lg: "976px",
       xl: "1440px",
@@ -44,6 +44,20 @@ module.exports = {
           letterSpacing: "1.5px",
         },
       ],
+      "ml-custom": [
+        "29px",
+        {
+          lineHeight: "35px",
+          letterSpacing: "2px",
+        },
+      ],
+      "l-custom": [
+        "32px",
+        {
+          lineHeight: "40px",
+          letterSpacing: "2.5px",
+        },
+      ],
       "xl-custom": [
         "40px",
         {
@@ -52,12 +66,20 @@ module.exports = {
         },
       ],
     },
+    minWidth: {
+      "105px": "105px",
+      "110px": "110px",
+    },
     maxWidth: {
+      "110px": "110px",
       "460px": "460px",
       "1440px": "1440px",
     },
     minHeight: {
+      "105px": "105px",
+      "110px": "110px",
       "470px": "470px",
+      screen: "100vh",
     },
     colors: {
       dark: "#1A2A33",
@@ -74,9 +96,14 @@ module.exports = {
       sans: ["Outfit", "sans-serif"],
     },
     extend: {
+      screens: {
+        xsm: "420px",
+      },
       spacing: {
         128: "32rem",
         144: "36rem",
+        //%
+        "30%": "30%",
       },
       borderRadius: {
         "10px": "10px",
@@ -96,27 +123,38 @@ module.exports = {
         "sm-dark-custom": "inset 0px -4px 0px #10212A",
       },
       width: {
+        //px
         "43px": "43px",
         "52px": "52px",
+        "64px": "64px",
         "80px": "80px",
+        "105px": "105px",
+        "110px": "110px",
+        "120px": "120px",
         "140px": "140px",
         "226px": "226px",
         "410px": "410px",
         "460px": "460px",
+        //%
+        "33%": "33%",
+        "92%": "92%",
       },
       height: {
         "40px": "40px",
         "48px": "48px",
         "52px": "52px",
+        "64px": "64px",
         "67px": "67px",
         "72px": "72px",
+        "105px": "105px",
+        "110px": "110px",
+        "120px": "120px",
         "140px": "140px",
         "266px": "266px",
         "460px": "460px",
         "623px": "623px",
-      },
-      minHeight: {
-        "screen" : "100vh",
+        //%
+        "33%": "33%",
       },
       padding: {
         "5px": "5px",
@@ -142,8 +180,12 @@ module.exports = {
         "40px": "40px",
       },
       gap: {
-        '20px': '20px',
-      }
+        "5px": "5px",
+        "8px": "8px",
+        "10px": "10px",
+        "14px": "14px",
+        "20px": "20px",
+      },
     },
   },
   plugins: [],

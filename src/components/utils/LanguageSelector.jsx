@@ -19,12 +19,14 @@ const LanguageSelector = () => {
 
   return (
     <Container
-      classes={"text-silver font-bold text-md-custom absolute right-0"}
+      classes={
+        "flex items-center text-silver font-bold text-md-custom absolute right-0"
+      }
     >
       {open && (
         <Container
           classes={
-            "w-fit h-40px bg-semi-dark justify-around rounded-15px mx-2 px-5px text-center"
+            "flex items-center w-fit h-40px bg-semi-dark justify-around rounded-15px mx-2 px-5px text-center"
           }
         >
           <Icon

@@ -10,7 +10,7 @@ import langs from "../langs/langs";
 const ScoreBox = (props) => {
   let playerInfo;
   const classStr = classnames(
-    "rounded-15px w-140px h-72px mx-0 justify-center",
+    "rounded-15px w-140px h-72px mx-0 justify-center flex items-center",
     props.bgColor
   );
 
@@ -20,7 +20,8 @@ const ScoreBox = (props) => {
 
   if (props.mark) {
     if (mode === CPU) {
-      playerInfo = props.mark === player1Mark ? langs[lang].you : langs[lang].cpu;
+      playerInfo =
+        props.mark === player1Mark ? langs[lang].you : langs[lang].cpu;
     } else {
       playerInfo = props.mark === player1Mark ? "p1" : "p2";
     }
@@ -30,7 +31,7 @@ const ScoreBox = (props) => {
 
   return (
     <Container classes={classStr}>
-      <Container classes="w-fit h-48px flex-col justify-between ">
+      <Container classes="flex items-center w-fit h-48px flex-col justify-between ">
         <p className="text-s-custom">{text}</p>
         <p className="text-md-custom text-dark font-bold">{props.score}</p>
       </Container>

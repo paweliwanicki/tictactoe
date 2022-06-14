@@ -3,7 +3,7 @@ import propTypes from "prop-types";
 import classnames from "classnames";
 
 const Container = (props) => {
-  const classStr = classnames("flex items-center", props.classes);
+  const classStr = classnames(props.classes);
 
   return (
     <div className={classStr} onClick={props.onClick}>

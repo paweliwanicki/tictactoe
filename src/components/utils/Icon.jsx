@@ -43,7 +43,7 @@ Icon.propTypes = {
   width: propTypes.number,
   color: propTypes.string,
   viewBox: propTypes.string,
-  onClick:propTypes.func
+  onClick: propTypes.func,
 };
 
 Icon.defaultProps = {
@@ -51,7 +51,7 @@ Icon.defaultProps = {
   width: 20,
   color: "",
   viewBox: "",
-  onClick: null
+  onClick: null,
 };
 
 export default Icon;
