@@ -18,6 +18,7 @@ const langs = {
     turn: "Turn",
     you: "You",
     cpu: "Cpu",
+    ties: "ties",
   },
   pl: {
     restartGame: "Zrestartować grę?",
@@ -38,6 +39,7 @@ const langs = {
     turn: "Tura",
     you: "Ty",
     cpu: "Komp.",
+    ties: "Remis",
   },
 };
 

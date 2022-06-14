@@ -6,23 +6,26 @@ import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 import { CPU, getMarkColor } from "../utils/mixin";
 import {
+  gameLanguage,
   gameMode,
   playerMark,
   startNewGame,
   winnerMark,
 } from "../reducers/gameSlice";
 import langs from "../langs/langs";
+import { Mark, MarkComponents } from "../types/Mark";
 
-const Results = (props) => {
+const Results = () => {
   const dispatch = useDispatch();
   const winner = useSelector(winnerMark);
   const player1Mark = useSelector(playerMark);
   const mode = useSelector(gameMode);
-  const markColor = winner === "x" ? getMarkColor("x") : getMarkColor("o");
+  const markColor = winner && getMarkColor(winner, MarkComponents.Results);
+  const lang = useSelector(gameLanguage);
 
-  let textColor = "text-silver";
+  let textColorClass = "text-silver";
   if (winner) {
-    textColor = winner === "x" ? "text-blue" : "text-orange";
+    textColorClass = winner === Mark.x ? "text-blue" : "text-orange";
   }
 
   const quitGameHandler = () => {
@@ -37,11 +40,11 @@ const Results = (props) => {
   if (winner) {
     if (mode === CPU) {
       playerInfoText =
-        player1Mark === winner ? langs.en.youWon : langs.en.youLost;
+        player1Mark === winner ? langs[lang].youWon : langs[lang].youLost;
     } else {
-      playerInfoText = `${langs.en.player} ${
+      playerInfoText = `${langs[lang].player} ${
         player1Mark === winner ? "1" : "2"
-      } ${langs.en.wins}!`;
+      } ${langs[lang].wins}!`;
     }
   }
 
@@ -68,9 +71,9 @@ const Results = (props) => {
             />
           )}
           <TextBox
-            classes={`text-sm-custom mb-24px font-bold text-xl-custom ${textColor} mb-0`}
+            classes={`text-sm-custom mb-24px font-bold text-xl-custom ${textColorClass} mb-0`}
           >
-            {!winner ? langs.en.roundTied : langs.en.takesRound}
+            {!winner ? langs[lang].roundTied : langs[lang].takesRound}
           </TextBox>
         </Container>
 
@@ -79,14 +82,14 @@ const Results = (props) => {
             classes={`w-76px h-52px bg-silver hover:bg-silver-light text-dark mr-16px shadow-sm-silver-custom`}
             primary={false}
             type="button"
-            text={langs.en.quit}
+            text={langs[lang].quit}
             onClick={quitGameHandler}
           />
           <Button
             classes={`w-146px h-52px bg-orange hover:bg-orange-light text-dark shadow-sm-orange-custom`}
             primary={false}
             type="button"
-            text={langs.en.nextRound}
+            text={langs[lang].nextRound}
             onClick={nextRoundHandler}
           />
         </Container>

@@ -9,6 +9,7 @@ import Button from "./utils/Button";
 import TextBox from "./utils/TextBox";
 import SubMenu from "./utils/SubMenu";
 import CssVariables from "../utils/cssVariables";
+
 import {
   gameBoard,
   showResults,
@@ -17,10 +18,12 @@ import {
   totalTies,
   startNewGame,
   activePlayer,
+  gameLanguage,
 } from "../reducers/gameSlice";
 import langs from "../langs/langs";
+import { Mark } from "../types/Mark";
 
-const GameBoard = (props) => {
+const GameBoard = () => {
   const dispatch = useDispatch();
 
   const board = useSelector(gameBoard, shallowEqual);
@@ -28,9 +31,11 @@ const GameBoard = (props) => {
   const tiesScore = useSelector(totalTies);
   const xTotalScore = useSelector(xScore);
   const oTotalScore = useSelector(oScore);
+  const lang = useSelector(gameLanguage);
 
   const [showRestartMenu, setShowRestartMenu] = useState(false);
   const showGameResults = useSelector(showResults);
+
 
   const backToMenuHandler = () => {
     dispatch(startNewGame({ isPlaying: false, resetScores: true }));
@@ -52,7 +57,7 @@ const GameBoard = (props) => {
               color={CssVariables.silver}
               classes="mr-13px"
             />
-            <TextBox classes="font-bold">{langs.en.turn}</TextBox>
+            <TextBox classes="font-bold">{langs[lang].turn}</TextBox>
           </Container>
           <Button
             classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom ml-auto rounded-10px"
@@ -76,16 +81,16 @@ const GameBoard = (props) => {
         </Container>
 
         <Container classes="justify-between mx-0 w-full">
-          <ScoreBox bgColor="bg-blue" mark={"x"} score={xTotalScore} />
+          <ScoreBox bgColor="bg-blue" mark={Mark.x} score={xTotalScore} />
           <ScoreBox bgColor="bg-silver" score={tiesScore} />
-          <ScoreBox bgColor="bg-orange" mark={"o"} score={oTotalScore} />
+          <ScoreBox bgColor="bg-orange" mark={Mark.o} score={oTotalScore} />
         </Container>
       </Container>
       {showRestartMenu && (
         <SubMenu
-          header={langs.en.restartGame}
-          cancelBtnText={langs.en.noCancel}
-          confirmBtnText={langs.en.yesRestart}
+          header={langs[lang].restartGame}
+          cancelBtnText={langs[lang].noCancel}
+          confirmBtnText={langs[lang].yesRestart}
           onConfirm={() => backToMenuHandler()}
           onCancel={() => setShowRestartMenu(false)}
         />

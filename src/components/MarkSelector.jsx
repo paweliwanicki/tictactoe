@@ -5,42 +5,42 @@ import Button from "./utils/Button";
 import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
 import { getMarkColor } from "../utils/mixin";
-import { setPlayerMark, playerMark } from "../reducers/gameSlice";
+import { Mark, MarkComponents } from "../types/Mark";
+import { setPlayerMark, playerMark, gameLanguage } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 
-const MarkSelector = (props) => {
+const MarkSelector = () => {
   const mark = useSelector(playerMark);
+  const lang = useSelector(gameLanguage);
   const dispatch = useDispatch();
 
   return (
     <Container classes="bg-semi-dark flex-col rounded-10px shadow-md-semi-dark-custom my-40px pt-24px pb-30px px-24px w-full">
       <TextBox classes="text-sm-custom text-silver mb-24px font-bold">
-        {langs.en.pick1PlayerMark}
+        {langs[lang].pick1PlayerMark}
       </TextBox>
       <Container classes="flex flex-row bg-dark py-9px px-8px rounded-10px mb-17px w-full">
         <Button
           classes={`py-11px flex-1 ${
-            mark === "x" ? "bg-silver" : "bg-transparent"
+            mark === Mark.x ? "bg-silver" : "bg-transparent"
           }`}
-          onClick={() => dispatch(setPlayerMark("x"))}
+          onClick={() => dispatch(setPlayerMark(Mark.x))}
           type="button"
           text={
             <Icon
               id="icon-x"
-              classes="m-auto "
+              classes="m-auto"
               width={32}
               height={32}
-              color={
-                mark === "x" ? getMarkColor("x", true) : getMarkColor("o", true)
-              }
+              color={getMarkColor(Mark.x, MarkComponents.Menu, mark)}
             />
           }
         />
         <Button
           classes={`py-11px flex-1 ${
-            mark === "o" ? "bg-silver" : "bg-transparent"
+            mark === Mark.o ? "bg-silver" : "bg-transparent"
           }`}
-          onClick={() => dispatch(setPlayerMark("o"))}
+          onClick={() => dispatch(setPlayerMark(Mark.o))}
           type="button"
           text={
             <Icon
@@ -48,15 +48,13 @@ const MarkSelector = (props) => {
               classes="m-auto"
               width={32}
               height={32}
-              color={
-                mark === "o" ? getMarkColor("x", true) : getMarkColor("o", true)
-              }
+              color={getMarkColor(Mark.o, MarkComponents.Menu, mark)}
             />
           }
         />
       </Container>
       <TextBox classes="text-sm-custom text-silver opacity-50">
-        {langs.en.xGoesFirst}
+        {langs[lang].xGoesFirst}
       </TextBox>
     </Container>
   );
