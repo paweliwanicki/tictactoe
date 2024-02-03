@@ -3,11 +3,11 @@ export enum Mark {
   o = "o",
 }
 
-export interface MarkColors {
+export type MarkColors = {
   x: string;
   o: string;
   active?: string;
-}
+};
 
 export enum MarkComponents {
   Menu = "menu",

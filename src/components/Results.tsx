@@ -1,10 +1,8 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Container from "./utils/Container";
 import TextBox from "./utils/TextBox";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
-import { CPU, getMarkColor } from "../utils/mixin";
+import langs from "../langs/langs";
 import {
   gameLanguage,
   gameMode,
@@ -12,7 +10,8 @@ import {
   startNewGame,
   winnerMark,
 } from "../reducers/gameSlice";
-import langs from "../langs/langs";
+import { CPU, getMarkColor } from "../utils/mixin";
+import { useDispatch, useSelector } from "react-redux";
 import { Mark, MarkComponents } from "../types/Mark";
 
 const Results = () => {

@@ -1,21 +1,24 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import MarkSelector from "./MarkSelector";
 import Container from "./utils/Container";
 import Button from "./utils/Button";
 import Icon from "./utils/Icon";
-import { GameMode } from "../types/GameMode";
-import { gameLanguage, startNewGame } from "../reducers/gameSlice";
 import langs from "../langs/langs";
 import LanguageSelector from "./utils/LanguageSelector";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GameMode } from "../types/GameMode";
+import { gameLanguage, startNewGame } from "../reducers/gameSlice";
 
 const Menu = () => {
   const dispatch = useDispatch();
   const lang = useSelector(gameLanguage);
 
-  const startGameHandler = (mode) => {
-    dispatch(startNewGame({ mode: mode, isPlaying: true }));
-  };
+  const startGameHandler = useCallback(
+    (mode: GameMode) => {
+      dispatch(startNewGame({ mode: mode, isPlaying: true }));
+    },
+    [dispatch]
+  );
   return (
     <Container classes="max-w-460px w-92% min-h-470px sm:w-460px ">
       <Container classes="flex items-center w-full relative">

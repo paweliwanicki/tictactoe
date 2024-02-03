@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import GameFields from "./GameFields";
 import ScoreBox from "./ScoreBox";
@@ -36,9 +36,13 @@ const GameBoard = () => {
   const [showRestartMenu, setShowRestartMenu] = useState(false);
   const showGameResults = useSelector(showResults);
 
-  const backToMenuHandler = () => {
+  const backToMenuHandler = useCallback(() => {
     dispatch(startNewGame({ isPlaying: false, resetScores: true }));
-  };
+  }, [dispatch]);
+
+  const showRestartMenuHandler = useCallback(() => {
+    setShowRestartMenu((isShowing) => !isShowing);
+  }, []);
 
   return (
     <>
@@ -76,7 +80,7 @@ const GameBoard = () => {
           />
         </Container>
         <Container classes="grid grid-cols-3 grid-rows-3 gap-10px xsm:gap-20px mx-auto mb-19px">
-          <GameFields board={board} activePlayerMark={activePlayerMark} />
+          <GameFields board={board} />
         </Container>
 
         <Container classes="flex items-center justify-between mx-0 w-full gap-10px">
@@ -90,8 +94,8 @@ const GameBoard = () => {
           header={langs[lang].restartGame}
           cancelBtnText={langs[lang].noCancel}
           confirmBtnText={langs[lang].yesRestart}
-          onConfirm={() => backToMenuHandler()}
-          onCancel={() => setShowRestartMenu(false)}
+          onConfirm={backToMenuHandler}
+          onCancel={showRestartMenuHandler}
         />
       )}
       {showGameResults && <Results />}

@@ -3,14 +3,14 @@ import Computer from "../controllers/Computer";
 import Controller from "../controllers/Controller";
 import { Mark } from "../types/Mark";
 import GameState from "../types/GameState";
-import Score from "../types/Score";
+import {Score} from "../types/Score";
 import Move from "../types/Move";
 import { RootState } from "../store/store";
-import { Languages, Language } from "types/Languages";
+import { Language } from "types/Languages";
 
 const GAME_REDUCER_NAME: string = "game";
-const storedLang: Language  = localStorage.getItem("lang");
-const lang: Language = storedLang ? storedLang : Languages.EN;
+const storedLang: Language  = localStorage.getItem("lang") as Language;
+const lang: Language = storedLang ? storedLang : Language.EN;
 //const lang: Language =  Languages.EN;
 localStorage.setItem("lang", lang);
 
@@ -26,7 +26,7 @@ const initialState: GameState = {
   score: {
     x: 0,
     o: 0,
-    totalTies: 0,
+    ties: 0,
   },
   lang: lang,
 };
@@ -70,7 +70,7 @@ export const gameSlice = createSlice({
         const score: Score = {
           x: 0,
           o: 0,
-          totalTies: 0,
+          ties: 0,
         };
         state.score = score;
       }
@@ -86,7 +86,7 @@ export const gameSlice = createSlice({
     setPlayerMark: (state: GameState, action: PayloadAction<Mark>) => {
       state.playerMark = action.payload;
     },
-    setLang: (state: GameState, action: PayloadAction<Languages>) => {
+    setLang: (state: GameState, action: PayloadAction<Language>) => {
       state.lang = action.payload;
       localStorage.setItem("lang", action.payload);
     },
@@ -104,7 +104,7 @@ export const playerMark = (state: RootState): Mark => state.game.playerMark;
 export const xScore = (state: RootState): number => state.game.score.x;
 export const oScore = (state: RootState): number => state.game.score.o;
 export const totalTies = (state: RootState): number =>
-  state.game.score.totalTies;
+  state.game.score.ties;
 export const activePlayer = (state: RootState): Mark => state.game.activePlayer;
 export const gameLanguage = (state: RootState): Language => state.game.lang;
 

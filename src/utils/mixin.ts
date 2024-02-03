@@ -9,7 +9,7 @@ export const PLAYER = "player";
 export const getMarkColor = (
   mark: Mark,
   component: MarkComponents,
-  activeMark: Mark
+  activeMark?: Mark
 ): string => {
   let colors: MarkColors;
 

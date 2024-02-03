@@ -1,17 +1,30 @@
-import React from "react";
-import propTypes from "prop-types";
 import Container from "./Container";
 import TextBox from "./TextBox";
 import Button from "./Button";
+import { useCallback } from "react";
 
-const SubMenu = (props) => {
-  const confirmBtnHandler = () => {
-    props.onConfirm();
-  };
+type SubMenuProps = {
+  header: string;
+  cancelBtnText: string;
+  confirmBtnText: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+};
 
-  const cancelBtnHandler = () => {
-    props.onCancel();
-  };
+const SubMenu = ({
+  header,
+  cancelBtnText,
+  confirmBtnText,
+  onCancel,
+  onConfirm,
+}: SubMenuProps) => {
+  const confirmBtnHandler = useCallback(() => {
+    onConfirm();
+  }, [onConfirm]);
+
+  const cancelBtnHandler = useCallback(() => {
+    onCancel();
+  }, [onCancel]);
 
   return (
     <Container classes="w-full h-full fixed inset-0 ">
@@ -23,7 +36,7 @@ const SubMenu = (props) => {
           <TextBox
             classes={`text-ml-custom sm:text-xl-custom mb-24px font-bold text-silver mb-0`}
           >
-            {props.header}
+            {header}
           </TextBox>
         </Container>
 
@@ -32,30 +45,20 @@ const SubMenu = (props) => {
             classes={`w-76px h-52px bg-silver hover:bg-silver-light text-dark mr-16px shadow-sm-silver-custom`}
             primary={false}
             type="button"
-            text={props.cancelBtnText}
+            text={cancelBtnText}
             onClick={cancelBtnHandler}
           />
           <Button
             classes={`w-146px h-52px bg-orange hover:bg-orange-light text-dark shadow-sm-orange-custom`}
             primary={false}
             type="button"
-            text={props.confirmBtnText}
+            text={confirmBtnText}
             onClick={confirmBtnHandler}
           />
         </Container>
       </Container>
     </Container>
   );
-};
-
-SubMenu.propTypes = {
-  onConfirm: propTypes.func.isRequired,
-  onCancel: propTypes.func.isRequired,
-  header: propTypes.string,
-};
-
-SubMenu.defaultProps = {
-  header: "",
 };
 
 export default SubMenu;

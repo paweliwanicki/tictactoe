@@ -1,6 +1,6 @@
 import { Language } from "./Languages";
 import { Mark } from "./Mark";
-import Score from "./Score";
+import {Score} from "./Score";
 
 export default interface GameState {
   gameBoard: string[];

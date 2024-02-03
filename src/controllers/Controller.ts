@@ -1,6 +1,6 @@
 import GameState from "../types/GameState";
 import Move from "../types/Move";
-import Score from "../types/Score";
+import {Score} from "../types/Score";
 import { Mark } from "../types/Mark";
 import { GameResults } from "../types/GameResults";
 import Computer from "./Computer";
@@ -64,7 +64,7 @@ class Controller {
     if (win) {
       const currentScore: Score = { ...state.score };
       if (win === GAME_STATE_TIE) {
-        currentScore.totalTies++;
+        currentScore.ties++;
         newState.score = currentScore;
       } else {
         const markKey = move.mark as keyof typeof currentScore;

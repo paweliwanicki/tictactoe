@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Languages } from "types/Languages";
+import { Language } from "types/Languages";
 import { gameLanguage, setLang } from "../../reducers/gameSlice";
 import Container from "./Container";
 import Icon from "./Icon";
@@ -12,10 +12,10 @@ const LanguageSelector = () => {
   const lang = useSelector(gameLanguage);
   const dispatch = useDispatch();
 
-  const changeLangHandler = (lang) => {
+  const changeLangHandler = useCallback((language: Language) => {
     setOpen(false);
-    dispatch(setLang(lang));
-  };
+    dispatch(setLang(language));
+  }, [dispatch]);
 
   return (
     <Container
@@ -30,17 +30,17 @@ const LanguageSelector = () => {
           }
         >
           <Icon
-            id={`icon-${Languages.EN}`}
+            id={`icon-${Language.EN}`}
             width={40}
             height={36}
-            onClick={() => changeLangHandler(Languages.EN)}
+            onClick={() => changeLangHandler(Language.EN)}
             classes={`px-1`}
           />
           <Icon
-            id={`icon-${Languages.PL}`}
+            id={`icon-${Language.PL}`}
             width={40}
             height={36}
-            onClick={() => changeLangHandler(Languages.PL)}
+            onClick={() => changeLangHandler(Language.PL)}
             classes={`px-1`}
           />
         </Container>

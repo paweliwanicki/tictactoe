@@ -1,26 +1,33 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import propTypes from "prop-types";
 import { getMarkColor } from "../utils/mixin";
 import Container from "./utils/Container";
 import Icon from "./utils/Icon";
 import { blockBoard, activePlayer, setBoard } from "../reducers/gameSlice";
-import { MarkComponents } from "../types/Mark";
+import { Mark, MarkComponents } from "../types/Mark";
 
-const GameField = (props) => {
+type GameFieldProps = {
+  fieldIndex: number;
+  mark?: Mark;
+};
+
+const GameField = ({ mark, fieldIndex }: GameFieldProps) => {
   const dispatch = useDispatch();
   const activePlayerMark = useSelector(activePlayer);
   const boardBlocked = useSelector(blockBoard);
-  const markColor = getMarkColor(props.mark, MarkComponents.Field);
+  const markColor = getMarkColor(mark, MarkComponents.Field);
 
   const setMarkHandler = () => {
-    if (!props.mark && !boardBlocked) {
-      dispatch(setBoard({ index: props.fieldIndex, mark: activePlayerMark }));
+    if (!mark && !boardBlocked) {
+      dispatch(setBoard({ index: fieldIndex, mark: activePlayerMark }));
     }
   };
 
-  const symbol = props.mark && (
-    <Icon id={`icon-${props.mark}`} color={markColor} classes="w-52px h-52px sm:w-64px sm:h-64px"/>
+  const symbol = mark && (
+    <Icon
+      id={`icon-${mark}`}
+      color={markColor}
+      classes="w-52px h-52px sm:w-64px sm:h-64px"
+    />
   );
   return (
     <Container
@@ -30,15 +37,6 @@ const GameField = (props) => {
       {symbol}
     </Container>
   );
-};
-
-GameField.propTypes = {
-  fieldIndex: propTypes.number.isRequired,
-  mark: propTypes.string,
-};
-
-GameField.defaultProps = {
-  mark: "",
 };
 
 export default GameField;

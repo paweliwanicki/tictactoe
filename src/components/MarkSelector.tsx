@@ -1,13 +1,12 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import Container from "./utils/Container";
 import Button from "./utils/Button";
 import Icon from "./utils/Icon";
 import TextBox from "./utils/TextBox";
+import langs from "../langs/langs";
+import { useSelector, useDispatch } from "react-redux";
 import { getMarkColor } from "../utils/mixin";
 import { Mark, MarkComponents } from "../types/Mark";
 import { setPlayerMark, playerMark, gameLanguage } from "../reducers/gameSlice";
-import langs from "../langs/langs";
 
 const MarkSelector = () => {
   const mark = useSelector(playerMark);

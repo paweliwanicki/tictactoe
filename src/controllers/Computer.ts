@@ -1,6 +1,6 @@
 import Controller from "./Controller";
 import Move from "../types/Move";
-import Score from "../types/Score";
+import {Score} from "../types/Score";
 import { CPU } from "../utils/mixin";
 import { GameMode } from "../types/GameMode";
 import { Mark } from "../types/Mark";
@@ -53,7 +53,7 @@ class Computer extends Controller {
     newBoard: string[],
     computerMark: Mark,
     actPlayer: Mark
-  ): Score | Move => {
+  ): {score: number, index?: number} | Move => {
     const possibleMoves = Computer.getPossibleMoves(newBoard);
     if (possibleMoves.length === 0) return { score: 0 };
 

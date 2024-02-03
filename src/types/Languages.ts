@@ -1,6 +1,6 @@
-export enum Languages {
+export enum Language {
   PL = "pl",
   EN = "en",
 }
 
-export type Language = string | Languages;
+// export type Language = string | Languages;
