@@ -1,7 +1,7 @@
-import Container from "./utils/Container";
-import TextBox from "./utils/TextBox";
-import Icon from "./utils/Icon";
-import Button from "./utils/Button";
+import Container from "./common/Container";
+import TextBox from "./common/TextBox";
+import Icon from "./common/Icon";
+import Button from "./common/Button";
 import langs from "../langs/langs";
 import { getMarkColor } from "../utils/mixin";
 import { Mark, MarkComponents } from "../types/Mark";

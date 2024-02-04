@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import { getMarkColor } from "../utils/mixin";
 import { Mark, MarkComponents } from "../types/Mark";
-import Container from "./utils/Container";
-import Icon from "./utils/Icon";
+import Container from "./common/Container";
+import Icon from "./common/Icon";
 import { useGame } from "contexts/GameContext";
 import { usePlayer } from "hooks/usePlayer";
 import { useGameBoard } from "hooks/useGameBoard";

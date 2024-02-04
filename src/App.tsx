@@ -1,4 +1,4 @@
-import Container from "./components/utils/Container";
+import Container from "./components/common/Container";
 import Menu from "./components/Menu";
 import GameBoard from "./components/GameBoard";
 import { useGame } from "contexts/GameContext";

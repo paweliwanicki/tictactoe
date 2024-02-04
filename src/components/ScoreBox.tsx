@@ -1,5 +1,5 @@
 import langs from "../langs/langs";
-import Container from "./utils/Container";
+import Container from "./common/Container";
 import { ReactNode } from "react";
 import type { Mark } from "types/Mark";
 import { useGame } from "contexts/GameContext";

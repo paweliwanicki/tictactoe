@@ -4,11 +4,11 @@ import { useGame } from "contexts/GameContext";
 import GameFields from "./GameFields";
 import ScoreBox from "./ScoreBox";
 import Results from "./Results";
-import Container from "./utils/Container";
-import Icon from "./utils/Icon";
-import Button from "./utils/Button";
-import TextBox from "./utils/TextBox";
-import SubMenu from "./utils/SubMenu";
+import Container from "./common/Container";
+import Icon from "./common/Icon";
+import Button from "./common/Button";
+import TextBox from "./common/TextBox";
+import SubMenu from "./common/SubMenu";
 import CssVariables from "../utils/cssVariables";
 import langs from "../langs/langs";
 

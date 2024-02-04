@@ -1,9 +1,9 @@
 import MarkSelector from "./MarkSelector";
-import Container from "./utils/Container";
-import Button from "./utils/Button";
-import Icon from "./utils/Icon";
+import Container from "./common/Container";
+import Button from "./common/Button";
+import Icon from "./common/Icon";
 import langs from "../langs/langs";
-import LanguageSelector from "./utils/LanguageSelector";
+import LanguageSelector from "./common/LanguageSelector";
 import { useCallback } from "react";
 import { GameMode } from "../types/GameMode";
 import { useGame } from "contexts/GameContext";
