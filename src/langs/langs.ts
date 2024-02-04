@@ -1,4 +1,28 @@
-const langs = {
+type Languages = "en" | "pl";
+
+type LangugeKeys = {
+  restartGame: string;
+  yesRestart: string;
+  noCancel: string;
+  vsCpu: string;
+  vsPlayer: string;
+  quit: string;
+  nextRound: string;
+  roundTied: string;
+  youWon: string;
+  youLost: string;
+  player: string;
+  wins: string;
+  takesRound: string;
+  xGoesFirst: string;
+  pick1PlayerMark: string;
+  turn: string;
+  you: string;
+  cpu: string;
+  ties: string;
+};
+
+const LANGUAGES: Record<Languages, LangugeKeys> = {
   en: {
     restartGame: "Restart game?",
     yesRestart: "Yes, restart",
@@ -41,6 +65,6 @@ const langs = {
     cpu: "Komp.",
     ties: "Remis",
   },
-};
+} as const;
 
-export default langs;
+export default LANGUAGES;

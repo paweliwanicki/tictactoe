@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { Mark } from "../types/Mark";
+import { useGame } from "contexts/GameContext";
 import GameFields from "./GameFields";
 import ScoreBox from "./ScoreBox";
 import Results from "./Results";
@@ -9,36 +10,17 @@ import Button from "./utils/Button";
 import TextBox from "./utils/TextBox";
 import SubMenu from "./utils/SubMenu";
 import CssVariables from "../utils/cssVariables";
-
-import {
-  gameBoard,
-  showResults,
-  xScore,
-  oScore,
-  totalTies,
-  startNewGame,
-  activePlayer,
-  gameLanguage,
-} from "../reducers/gameSlice";
 import langs from "../langs/langs";
-import { Mark } from "../types/Mark";
 
 const GameBoard = () => {
-  const dispatch = useDispatch();
-
-  const board = useSelector(gameBoard, shallowEqual);
-  const activePlayerMark = useSelector(activePlayer);
-  const tiesScore = useSelector(totalTies);
-  const xTotalScore = useSelector(xScore);
-  const oTotalScore = useSelector(oScore);
-  const lang = useSelector(gameLanguage);
-
-  const [showRestartMenu, setShowRestartMenu] = useState(false);
-  const showGameResults = useSelector(showResults);
+  const { gameBoard, activePlayer, showResults, language, score, quitGame } =
+    useGame();
+  const { x, o, ties } = score;
+  const [showRestartMenu, setShowRestartMenu] = useState<boolean>(false);
 
   const backToMenuHandler = useCallback(() => {
-    dispatch(startNewGame({ isPlaying: false, resetScores: true }));
-  }, [dispatch]);
+    quitGame();
+  }, [quitGame]);
 
   const showRestartMenuHandler = useCallback(() => {
     setShowRestartMenu((isShowing) => !isShowing);
@@ -53,14 +35,14 @@ const GameBoard = () => {
           </Container>
           <Container classes="flex items-center bg-semi-dark text-silver mx-auto w-110px sm:w-140px text-center text-sm-custom pt-13px pb-19px rounded-10px shadow-sm-dark-custom justify-center">
             <Icon
-              id={`icon-${activePlayerMark}`}
+              id={`icon-${activePlayer}`}
               viewBox="0 0 20 20"
               width={20}
               height={20}
               color={CssVariables.silver}
               classes="mr-13px"
             />
-            <TextBox classes="font-bold">{langs[lang].turn}</TextBox>
+            <TextBox classes="font-bold">{langs[language].turn}</TextBox>
           </Container>
           <Button
             classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom rounded-10px absolute right-0"
@@ -76,29 +58,29 @@ const GameBoard = () => {
             icon
             primary={false}
             type="button"
-            onClick={() => setShowRestartMenu(true)}
+            onClick={showRestartMenuHandler}
           />
         </Container>
         <Container classes="grid grid-cols-3 grid-rows-3 gap-10px xsm:gap-20px mx-auto mb-19px">
-          <GameFields board={board} />
+          <GameFields board={gameBoard} />
         </Container>
 
         <Container classes="flex items-center justify-between mx-0 w-full gap-10px">
-          <ScoreBox bgColor="bg-blue" mark={Mark.x} score={xTotalScore} />
-          <ScoreBox bgColor="bg-silver" score={tiesScore} />
-          <ScoreBox bgColor="bg-orange" mark={Mark.o} score={oTotalScore} />
+          <ScoreBox bgColor="bg-blue" mark={Mark.x} score={x} />
+          <ScoreBox bgColor="bg-silver" score={ties} />
+          <ScoreBox bgColor="bg-orange" mark={Mark.o} score={o} />
         </Container>
       </Container>
       {showRestartMenu && (
         <SubMenu
-          header={langs[lang].restartGame}
-          cancelBtnText={langs[lang].noCancel}
-          confirmBtnText={langs[lang].yesRestart}
+          header={langs[language].restartGame}
+          cancelBtnText={langs[language].noCancel}
+          confirmBtnText={langs[language].yesRestart}
           onConfirm={backToMenuHandler}
           onCancel={showRestartMenuHandler}
         />
       )}
-      {showGameResults && <Results />}
+      {showResults && <Results />}
     </>
   );
 };

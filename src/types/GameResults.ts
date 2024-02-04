@@ -1,5 +1,3 @@
+export type TieResult = "tie";
 
-type Tie = "tie";
-
-
-export type GameResults = Tie | boolean;
+export type GameResults = TieResult | boolean;

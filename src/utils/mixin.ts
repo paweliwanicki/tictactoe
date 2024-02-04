@@ -1,8 +1,9 @@
 import CssVariables from "./cssVariables";
 import { Mark, MarkColors, MarkComponents } from "../types/Mark";
+import { TieResult } from "types/GameResults";
 
 // const
-export const GAME_STATE_TIE = "tie";
+export const GAME_STATE_TIE: TieResult = "tie";
 export const CPU = "cpu";
 export const PLAYER = "player";
 

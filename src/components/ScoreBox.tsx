@@ -1,10 +1,9 @@
 import langs from "../langs/langs";
 import Container from "./utils/Container";
 import { ReactNode } from "react";
-import { useSelector } from "react-redux";
-import { CPU } from "../utils/mixin";
-import { gameLanguage, gameMode, playerMark } from "../reducers/gameSlice";
 import type { Mark } from "types/Mark";
+import { useGame } from "contexts/GameContext";
+import { GameMode } from "types/GameMode";
 
 type ScoreBoxProps = {
   bgColor: string;
@@ -13,21 +12,20 @@ type ScoreBoxProps = {
 };
 
 const ScoreBox = ({ bgColor, score, mark }: ScoreBoxProps) => {
-  let playerInfo;
+  const { gameMode, language, playerMark } = useGame();
 
-  const mode = useSelector(gameMode);
-  const player1Mark = useSelector(playerMark);
-  const lang = useSelector(gameLanguage);
+  let playerInfo = "";
 
   if (mark) {
-    if (mode === CPU) {
-      playerInfo = mark === player1Mark ? langs[lang].you : langs[lang].cpu;
+    if (gameMode === GameMode.CPU) {
+      playerInfo =
+        mark === playerMark ? langs[language].you : langs[language].cpu;
     } else {
-      playerInfo = mark === player1Mark ? "p1" : "p2";
+      playerInfo = `p${mark === playerMark ? "1" : "2"}`;
     }
   }
 
-  const text = mark ? `${mark} (${playerInfo})` : langs[lang].ties;
+  const text = mark ? `${mark} (${playerInfo})` : langs[language].ties;
 
   return (
     <Container

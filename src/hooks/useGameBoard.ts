@@ -1,8 +1,7 @@
-import { GameBoard } from "contexts/GameContext";
+import { GameBoard, useGame } from "contexts/GameContext";
 import { useCallback } from "react";
 import { GameResults } from "types/GameResults";
 import { Mark } from "types/Mark";
-import { GAME_STATE_TIE } from "utils/mixin";
 
 const WIN_COMBINATIONS: number[][] = [
   [0, 1, 2],
@@ -18,10 +17,11 @@ const WIN_COMBINATIONS: number[][] = [
 type UseGameBoard = {
   getFieldIndexes: (board: GameBoard, mark?: Mark) => number[];
   checkIfWin: (board: GameBoard, player: Mark) => GameResults;
-  switchPlayer: (activePlayer: Mark) => Mark;
 };
 
 export const useGameBoard = (): UseGameBoard => {
+  const { setWinner } = useGame();
+
   const getFieldIndexes = useCallback(
     (board: GameBoard, mark: Mark | string = ""): number[] => {
       return board
@@ -38,24 +38,20 @@ export const useGameBoard = (): UseGameBoard => {
       const playerBoard: number[] = getFieldIndexes(board, player);
       for (const combination of WIN_COMBINATIONS) {
         if (combination.every((index) => playerBoard.indexOf(index) > -1)) {
+          setWinner(player);
           return true;
         }
       }
       if (getFieldIndexes(board).length === 0) {
-        return GAME_STATE_TIE;
+        setWinner();
       }
       return false;
     },
-    [getFieldIndexes]
+    [getFieldIndexes, setWinner]
   );
-
-  const switchPlayer = useCallback((activePlayer: Mark): Mark => {
-    return activePlayer === Mark.x ? Mark.o : Mark.x;
-  }, []);
 
   return {
     getFieldIndexes,
     checkIfWin,
-    switchPlayer,
   };
 };

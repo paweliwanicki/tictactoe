@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import Icons from "../../images/svg-sprite.svg";
+import Icons from "../../assets/svg-sprite.svg";
 
 type IconProps = {
   id: string;
@@ -34,7 +34,6 @@ const Icon = ({
     setFillColor(color);
   }, [color]);
 
-  // set color if props.color has been changed
   useEffect(() => {
     setFillColor(color);
   }, [color]);

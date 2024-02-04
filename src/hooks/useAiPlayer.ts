@@ -1,8 +1,8 @@
-import { GameBoard } from "contexts/GameContext";
+import { GameBoard, useGame } from "contexts/GameContext";
 import { useCallback } from "react";
 import { Mark } from "types/Mark";
-import Move from "types/Move";
 import { useGameBoard } from "./useGameBoard";
+import Move from "types/Move";
 
 type UsePlayerProps = {
   aiMark: Mark;
@@ -13,7 +13,8 @@ type UseGameBoard = {
 };
 
 export const useAiPlayer = ({ aiMark }: UsePlayerProps): UseGameBoard => {
-  const { checkIfWin, getFieldIndexes, switchPlayer } = useGameBoard();
+  const { switchPlayer } = useGame();
+  const { checkIfWin, getFieldIndexes } = useGameBoard();
 
   const getBestComputerMove = useCallback(
     (moves: Move[], bestScore: number): Move => {
@@ -53,7 +54,7 @@ export const useAiPlayer = ({ aiMark }: UsePlayerProps): UseGameBoard => {
 
       possibleMoves.reduce((acc: Move[], val: number) => {
         board[val] = actPlayer;
-        const nextPlayerMark = switchPlayer(actPlayer);
+        const nextPlayerMark = switchPlayer();
         const result = minimax(board, nextPlayerMark);
         const move: Move = {
           index: val,

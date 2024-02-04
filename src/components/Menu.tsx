@@ -5,19 +5,17 @@ import Icon from "./utils/Icon";
 import langs from "../langs/langs";
 import LanguageSelector from "./utils/LanguageSelector";
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { GameMode } from "../types/GameMode";
-import { gameLanguage, startNewGame } from "../reducers/gameSlice";
+import { useGame } from "contexts/GameContext";
 
 const Menu = () => {
-  const dispatch = useDispatch();
-  const lang = useSelector(gameLanguage);
+  const { language, startNewGame } = useGame();
 
   const startGameHandler = useCallback(
     (mode: GameMode) => {
-      dispatch(startNewGame({ mode: mode, isPlaying: true }));
+      startNewGame(mode);
     },
-    [dispatch]
+    [startNewGame]
   );
   return (
     <Container classes="max-w-460px w-92% min-h-470px sm:w-460px ">
@@ -25,7 +23,6 @@ const Menu = () => {
         <Icon
           classes="mx-auto"
           id="logo"
-          viewBox="0 0 72 32"
           width={72}
           height={32}
         />
@@ -34,14 +31,14 @@ const Menu = () => {
       <MarkSelector />
       <Button
         classes="pt-11px pb-18px w-full h-67px mb-20px bg-orange hover:bg-orange-light shadow-md-orange-custom"
-        text={langs[lang].vsCpu}
+        text={langs[language].vsCpu}
         primary
         type="button"
         onClick={() => startGameHandler(GameMode.CPU)}
       />
       <Button
         classes="pt-11px pb-18px w-full h-67px bg-blue hover:bg-blue-light shadow-md-blue-custom"
-        text={langs[lang].vsPlayer}
+        text={langs[language].vsPlayer}
         primary
         type="button"
         onClick={() => startGameHandler(GameMode.PLAYER)}

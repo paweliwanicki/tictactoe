@@ -1,26 +1,30 @@
 import { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Language } from "types/Languages";
-import { gameLanguage, setLang } from "../../reducers/gameSlice";
+import { useGame } from "contexts/GameContext";
 import Container from "./Container";
 import Icon from "./Icon";
 import TextBox from "./TextBox";
 
 const LanguageSelector = () => {
-  const [open, setOpen] = useState(false);
+  const { setLanguage, language } = useGame();
+  const [open, setOpen] = useState<boolean>(false);
 
-  const lang = useSelector(gameLanguage);
-  const dispatch = useDispatch();
+  const toggleLanguageSelector = useCallback(() => {
+    setOpen((isOpen) => !isOpen);
+  }, []);
 
-  const changeLangHandler = useCallback((language: Language) => {
-    setOpen(false);
-    dispatch(setLang(language));
-  }, [dispatch]);
+  const changeLangHandler = useCallback(
+    (language: Language) => {
+      toggleLanguageSelector();
+      setLanguage(language);
+    },
+    [setLanguage, toggleLanguageSelector]
+  );
 
   return (
     <Container
       classes={
-        "flex items-center text-silver font-bold text-md-custom absolute right-0"
+        "flex items-center text-silver font-bold text-md-custom absolute right-0 cursor-pointer"
       }
     >
       {open && (
@@ -46,8 +50,8 @@ const LanguageSelector = () => {
         </Container>
       )}
 
-      <TextBox onClick={() => setOpen(open ? false : true)}>
-        <Icon id={`icon-${lang}`} width={36} height={30} />
+      <TextBox onClick={toggleLanguageSelector}>
+        <Icon id={`icon-${language}`} width={36} height={30} />
       </TextBox>
     </Container>
   );

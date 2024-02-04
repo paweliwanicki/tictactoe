@@ -3,55 +3,48 @@ import TextBox from "./utils/TextBox";
 import Icon from "./utils/Icon";
 import Button from "./utils/Button";
 import langs from "../langs/langs";
-import {
-  gameLanguage,
-  gameMode,
-  playerMark,
-  startNewGame,
-  winnerMark,
-} from "../reducers/gameSlice";
-import { CPU, getMarkColor } from "../utils/mixin";
-import { useDispatch, useSelector } from "react-redux";
+import { getMarkColor } from "../utils/mixin";
 import { Mark, MarkComponents } from "../types/Mark";
+import { useCallback } from "react";
+import { useGame } from "contexts/GameContext";
+import { GameMode } from "types/GameMode";
 
 const Results = () => {
-  const dispatch = useDispatch();
-  const winner = useSelector(winnerMark);
-  const player1Mark = useSelector(playerMark);
-  const mode = useSelector(gameMode);
-  const markColor = winner && getMarkColor(winner, MarkComponents.Results);
-  const lang = useSelector(gameLanguage);
+  const { gameMode, winnerMark, playerMark, language, startNewGame, quitGame } =
+    useGame();
+  const markColor =
+    winnerMark && getMarkColor(winnerMark, MarkComponents.Results);
 
   let textColorClass = "text-silver";
-  if (winner) {
-    textColorClass = winner === Mark.x ? "text-blue" : "text-orange";
-  }
-
-  const quitGameHandler = () => {
-    dispatch(startNewGame({ isPlaying: false, resetScores: true }));
-  };
-
-  const nextRoundHandler = () => {
-    dispatch(startNewGame({ isPlaying: true, resetScores: false, mode: mode }));
-  };
-
   let playerInfoText = "";
-  if (winner) {
-    if (mode === CPU) {
+  if (winnerMark) {
+    textColorClass = winnerMark === Mark.x ? "text-blue" : "text-orange";
+
+    if (gameMode === GameMode.CPU) {
       playerInfoText =
-        player1Mark === winner ? langs[lang].youWon : langs[lang].youLost;
+        playerMark === winnerMark
+          ? langs[language].youWon
+          : langs[language].youLost;
     } else {
-      playerInfoText = `${langs[lang].player} ${
-        player1Mark === winner ? "1" : "2"
-      } ${langs[lang].wins}!`;
+      playerInfoText = `${langs[language].player} ${
+        playerMark === winnerMark ? "1" : "2"
+      } ${langs[language].wins}!`;
     }
   }
+
+  const quitGameHandler = useCallback(() => {
+    quitGame();
+  }, [quitGame]);
+
+  const nextRoundHandler = useCallback(() => {
+    startNewGame(gameMode);
+  }, [gameMode, startNewGame]);
 
   return (
     <Container classes="w-full h-full fixed inset-0 ">
       <Container classes="w-screen fixed inset-0 opacity-50 bg-black" />
       <Container classes="flex items-center w-screen h-266px bg-semi-dark fixed inset-0 justify-center my-auto flex-col ">
-        {winner && (
+        {winnerMark && (
           <TextBox classes="text-sm-custom text-silver mb-16px font-bold flex">
             {playerInfoText}
           </TextBox>
@@ -59,9 +52,9 @@ const Results = () => {
         <Container
           classes={`flex items-center xsm:px-15px text-sm-custom text-silver mb-24px font-bold text-xl-custom justify-center  text-center px-13px`}
         >
-          {winner && (
+          {winnerMark && (
             <Icon
-              id={`icon-${winner}`}
+              id={`icon-${winnerMark}`}
               viewBox="0 0 64 64"
               color={markColor}
               classes="mx-13px xsm:mr-24px w-52px h-52px sm:w-64px sm:h-64px"
@@ -70,7 +63,9 @@ const Results = () => {
           <TextBox
             classes={`text-ml-custom mb-24px font-bold xsm:text-xl-custom ${textColorClass} mb-0`}
           >
-            {!winner ? langs[lang].roundTied : langs[lang].takesRound}
+            {!winnerMark
+              ? langs[language].roundTied
+              : langs[language].takesRound}
           </TextBox>
         </Container>
 
@@ -79,14 +74,14 @@ const Results = () => {
             classes={`w-76px h-52px bg-silver hover:bg-silver-light text-dark mr-16px shadow-sm-silver-custom`}
             primary={false}
             type="button"
-            text={langs[lang].quit}
+            text={langs[language].quit}
             onClick={quitGameHandler}
           />
           <Button
             classes={`w-146px h-52px bg-orange hover:bg-orange-light text-dark shadow-sm-orange-custom`}
             primary={false}
             type="button"
-            text={langs[lang].nextRound}
+            text={langs[language].nextRound}
             onClick={nextRoundHandler}
           />
         </Container>
