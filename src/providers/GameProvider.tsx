@@ -27,6 +27,7 @@ const PLAYER_INIT_STATE: PlayerStateTypes = {
   playerMark: Mark.x,
   activePlayer: undefined,
   winnerMark: undefined,
+  aiIsMoving: false,
 } as const;
 
 const GAME_INIT_STATE: GameStateTypes = {
@@ -90,6 +91,11 @@ const GameProvider = ({ children }: GameProviderProps) => {
     setPlayersState((state) => ({ ...state, playerMark }));
   }, []);
 
+  const setAiIsMoving = useCallback((aiIsMoving: boolean) => {
+    setPlayersState((state) => ({ ...state, aiIsMoving }));
+    setGameBoardState((state) => ({ ...state, blockBoard: aiIsMoving }));
+  }, []);
+
   const switchPlayer = useCallback((): Mark => {
     const { activePlayer } = playersState;
     const nextPlayer = activePlayer === Mark.x ? Mark.o : Mark.x;
@@ -102,7 +108,7 @@ const GameProvider = ({ children }: GameProviderProps) => {
 
   const setWinner = useCallback(
     (winnerMark?: Mark) => {
-      const { score: newScore } = gameState;
+      const newScore = { ...gameState.score };
       winnerMark ? ++newScore[winnerMark] : ++newScore.ties;
       setPlayersState((state) => ({
         ...state,
@@ -112,8 +118,11 @@ const GameProvider = ({ children }: GameProviderProps) => {
       setGameState((state) => ({
         ...state,
         score: newScore,
-        isPlaying: false,
         showResults: true,
+      }));
+      setGameBoardState((state) => ({
+        ...state,
+        blockBoard: true,
       }));
     },
     [gameState]
@@ -128,6 +137,7 @@ const GameProvider = ({ children }: GameProviderProps) => {
       setLanguage,
       setGameBoard,
       setPlayerMark,
+      setAiIsMoving,
       switchPlayer,
       setWinner,
       setScore,
@@ -140,6 +150,7 @@ const GameProvider = ({ children }: GameProviderProps) => {
       startNewGame,
       setGameBoard,
       setPlayerMark,
+      setAiIsMoving,
       switchPlayer,
       setLanguage,
       setWinner,

@@ -13,8 +13,15 @@ import CssVariables from "../utils/cssVariables";
 import langs from "../langs/langs";
 
 const GameBoard = () => {
-  const { gameBoard, activePlayer, showResults, language, score, quitGame } =
-    useGame();
+  const {
+    gameBoard,
+    activePlayer,
+    showResults,
+    language,
+    score,
+    aiIsMoving,
+    quitGame,
+  } = useGame();
   const { x, o, ties } = score;
   const [showRestartMenu, setShowRestartMenu] = useState<boolean>(false);
 
@@ -70,6 +77,7 @@ const GameBoard = () => {
           <ScoreBox bgColor="bg-silver" score={ties} />
           <ScoreBox bgColor="bg-orange" mark={Mark.o} score={o} />
         </Container>
+        {aiIsMoving && 'isMoving'}
       </Container>
       {showRestartMenu && (
         <SubMenu

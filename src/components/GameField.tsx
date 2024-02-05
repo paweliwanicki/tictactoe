@@ -1,11 +1,10 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getMarkColor } from "../utils/mixin";
 import { Mark, MarkComponents } from "../types/Mark";
 import Container from "./common/Container";
 import Icon from "./common/Icon";
 import { useGame } from "contexts/GameContext";
 import { usePlayer } from "hooks/usePlayer";
-import { useGameBoard } from "hooks/useGameBoard";
 
 type GameFieldProps = {
   fieldIndex: number;
@@ -13,8 +12,7 @@ type GameFieldProps = {
 };
 
 const GameField = ({ mark, fieldIndex }: GameFieldProps) => {
-  const { gameBoard, blockBoard, activePlayer, setGameBoard } = useGame();
-  const { checkIfWin } = useGameBoard();
+  const { gameBoard, blockBoard, activePlayer, showResults } = useGame();
   const { move } = usePlayer({ playerMark: activePlayer });
 
   const [markPreview, setMarkPreview] = useState<boolean>(false);
@@ -22,20 +20,9 @@ const GameField = ({ mark, fieldIndex }: GameFieldProps) => {
 
   const setMarkHandler = useCallback(() => {
     if (!mark && !blockBoard) {
-      const newBoard = move(fieldIndex, gameBoard);
-      setGameBoard(newBoard);
-      return checkIfWin(newBoard, activePlayer);
+      move(fieldIndex, gameBoard);
     }
-  }, [
-    setGameBoard,
-    move,
-    checkIfWin,
-    gameBoard,
-    blockBoard,
-    activePlayer,
-    fieldIndex,
-    mark,
-  ]);
+  }, [move, gameBoard, blockBoard, fieldIndex, mark]);
 
   const setMarkPreviewOnMouseEnterHandler = useCallback(() => {
     setMarkPreview(true);
@@ -44,6 +31,11 @@ const GameField = ({ mark, fieldIndex }: GameFieldProps) => {
   const setMarkPreviewOnMouseLeaveHandler = useCallback(() => {
     setMarkPreview(false);
   }, []);
+
+  // workaround for markpreview when round is ended
+  useEffect(() => {
+    showResults && setMarkPreview(false);
+  }, [showResults]);
 
   return (
     <Container

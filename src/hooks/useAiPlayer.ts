@@ -1,5 +1,5 @@
-import { GameBoard, useGame } from "contexts/GameContext";
 import { useCallback } from "react";
+import { GameBoard, useGame } from "contexts/GameContext";
 import { Mark } from "types/Mark";
 import { useGameBoard } from "./useGameBoard";
 import Move from "types/Move";
@@ -9,11 +9,11 @@ type UsePlayerProps = {
 };
 
 type UseGameBoard = {
-  move: (board: GameBoard) => GameBoard;
+  move: (board: GameBoard) => Promise<GameBoard>;
 };
 
 export const useAiPlayer = ({ aiMark }: UsePlayerProps): UseGameBoard => {
-  const { switchPlayer } = useGame();
+  const { switchPlayer, setGameBoard, setAiIsMoving } = useGame();
   const { checkIfWin, getFieldIndexes } = useGameBoard();
 
   const getBestComputerMove = useCallback(
@@ -73,13 +73,16 @@ export const useAiPlayer = ({ aiMark }: UsePlayerProps): UseGameBoard => {
   );
 
   const move = useCallback(
-    (board: GameBoard): GameBoard => {
+    async (board: GameBoard): Promise<GameBoard> => {
+      setAiIsMoving(true);
       const newBoard = [...board];
-      const { index } = minimax(board, aiMark);
+      const { index } = minimax(newBoard, aiMark);
       newBoard[index] = aiMark;
+      setGameBoard(newBoard);
+      setAiIsMoving(false);
       return newBoard;
     },
-    [aiMark, minimax]
+    [aiMark, minimax, setGameBoard, setAiIsMoving]
   );
 
   return {

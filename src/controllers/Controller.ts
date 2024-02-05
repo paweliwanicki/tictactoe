@@ -25,13 +25,13 @@ class Controller {
     for (let i = 0; i < Controller.winCombinations.length; i++) {
       const combination: number[] = Controller.winCombinations[i];
       if (combination.every((index) => playerBoard.indexOf(index) > -1)) {
-        return true;
+        return player;
       }
     }
     if (Controller.getPossibleMoves(board).length === 0) {
       return GAME_STATE_TIE;
     }
-    return false;
+    return;
   };
 
   static getFieldIndexes = (board: string[], mark: Mark): number[] => {

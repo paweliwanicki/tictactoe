@@ -15,6 +15,7 @@ export type PlayerStateTypes = {
   playerMark: Mark | undefined;
   activePlayer: Mark | undefined;
   winnerMark: Mark | undefined;
+  aiIsMoving: boolean;
 };
 
 export type GameStateTypes = {
@@ -30,6 +31,7 @@ type GameActions = {
   setLanguage: (language: Language) => void;
   setGameBoard: (board: GameBoard) => void;
   setPlayerMark: (mark: Mark) => void;
+  setAiIsMoving: (aiIsMoving: boolean) => void;
   setWinner: (mark?: Mark) => void;
   setScore: (score: Score) => void;
   switchPlayer: () => Mark;
@@ -56,10 +58,12 @@ export const GameContext = createContext<GameContextType>({
     ties: 0,
   },
   language: Language.EN,
+  aiIsMoving: false,
   startNewGame: () => undefined,
   setLanguage: () => undefined,
   setGameBoard: () => undefined,
   setPlayerMark: () => undefined,
+  setAiIsMoving: () => undefined,
   setWinner: () => undefined,
   setScore: () => undefined,
   switchPlayer: () => undefined,
