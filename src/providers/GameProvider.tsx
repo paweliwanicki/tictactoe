@@ -1,17 +1,18 @@
-import { ReactNode, useState, useMemo, useCallback } from "react";
+import { ReactNode, useState, useMemo, useCallback } from 'react';
 import {
   GameBoard,
   GameBoardStateTypes,
   GameContext,
   GameStateTypes,
   PlayerStateTypes,
-} from "../contexts/GameContext";
-import { GameMode } from "types/GameMode";
-import { Mark } from "types/Mark";
-import { Score } from "types/Score";
-import { Language } from "types/Languages";
+} from '../contexts/GameContext';
+import { GameMode } from 'types/GameMode';
+import { Mark } from 'types/Mark';
+import { Score } from 'types/Score';
+import { Language } from 'types/Languages';
+import { GameResults } from 'hooks/useGameBoardUtils';
 
-const CLEAR_GAMEBOARD: GameBoard = ["", "", "", "", "", "", "", "", ""];
+const CLEAR_GAMEBOARD: GameBoard = ['', '', '', '', '', '', '', '', ''];
 const INIT_SCORE: Score = {
   x: 0,
   o: 0,
@@ -91,30 +92,29 @@ const GameProvider = ({ children }: GameProviderProps) => {
     setPlayersState((state) => ({ ...state, playerMark }));
   }, []);
 
+  const switchPlayer = useCallback((nextPlayer: Mark) => {
+    setPlayersState((state) => ({
+      ...state,
+      activePlayer: nextPlayer,
+    }));
+  }, []);
+
   const setAiIsMoving = useCallback((aiIsMoving: boolean) => {
     setPlayersState((state) => ({ ...state, aiIsMoving }));
     setGameBoardState((state) => ({ ...state, blockBoard: aiIsMoving }));
   }, []);
 
-  const switchPlayer = useCallback((): Mark => {
-    const { activePlayer } = playersState;
-    const nextPlayer = activePlayer === Mark.x ? Mark.o : Mark.x;
-    setPlayersState((state) => ({
-      ...state,
-      activePlayer: nextPlayer,
-    }));
-    return nextPlayer;
-  }, [playersState]);
-
   const setWinner = useCallback(
-    (winnerMark?: Mark) => {
+    (result: GameResults) => {
       const newScore = { ...gameState.score };
-      winnerMark ? ++newScore[winnerMark] : ++newScore.ties;
-      setPlayersState((state) => ({
-        ...state,
-        winnerMark,
-        activePlayer: undefined,
-      }));
+      const isTie = result === 'TIE';
+      isTie ? ++newScore.ties : ++newScore[result];
+      if (!isTie) {
+        setPlayersState((state) => ({
+          ...state,
+          winnerMark: result,
+        }));
+      }
       setGameState((state) => ({
         ...state,
         score: newScore,

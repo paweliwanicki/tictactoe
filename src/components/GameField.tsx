@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
-import { getMarkColor } from "../utils/mixin";
-import { Mark, MarkComponents } from "../types/Mark";
-import Container from "./common/Container";
-import Icon from "./common/Icon";
-import { useGame } from "contexts/GameContext";
-import { usePlayer } from "hooks/usePlayer";
+import { useCallback, useEffect, useState } from 'react';
+import { getMarkColor } from '../utils/utils';
+import { Mark, MarkComponents } from '../types/Mark';
+import Container from './common/Container';
+import Icon from './common/Icon';
+import { useGame } from 'contexts/GameContext';
+import { usePlayer } from 'hooks/usePlayer';
 
 type GameFieldProps = {
   fieldIndex: number;
@@ -32,7 +32,7 @@ const GameField = ({ mark, fieldIndex }: GameFieldProps) => {
     setMarkPreview(false);
   }, []);
 
-  // workaround for markpreview when round is ended
+  // workaround for markpreview when round is over
   useEffect(() => {
     showResults && setMarkPreview(false);
   }, [showResults]);
@@ -51,7 +51,7 @@ const GameField = ({ mark, fieldIndex }: GameFieldProps) => {
           classes="w-52px h-52px sm:w-64px sm:h-64px"
         />
       )}
-      {!mark && markPreview && (
+      {!mark && markPreview && !blockBoard && (
         <Icon
           id={`icon-${activePlayer}-outline`}
           color={markColor}

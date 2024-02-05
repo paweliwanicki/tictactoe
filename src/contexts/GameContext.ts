@@ -1,8 +1,9 @@
-import { createContext, useContext } from "react";
-import { GameMode } from "types/GameMode";
-import { Language } from "types/Languages";
-import { Mark } from "types/Mark";
-import { Score } from "types/Score";
+import { GameResults } from 'hooks/useGameBoardUtils';
+import { createContext, useContext } from 'react';
+import { GameMode } from 'types/GameMode';
+import { Language } from 'types/Languages';
+import { Mark } from 'types/Mark';
+import { Score } from 'types/Score';
 
 export type GameBoard = (Mark | string)[];
 
@@ -32,9 +33,9 @@ type GameActions = {
   setGameBoard: (board: GameBoard) => void;
   setPlayerMark: (mark: Mark) => void;
   setAiIsMoving: (aiIsMoving: boolean) => void;
-  setWinner: (mark?: Mark) => void;
+  setWinner: (result: GameResults) => void;
   setScore: (score: Score) => void;
-  switchPlayer: () => Mark;
+  switchPlayer: (nextPlayer: Mark) => void;
   quitGame: () => void;
 };
 

@@ -1,16 +1,16 @@
-import { useCallback, useState } from "react";
-import { Mark } from "../types/Mark";
-import { useGame } from "contexts/GameContext";
-import GameFields from "./GameFields";
-import ScoreBox from "./ScoreBox";
-import Results from "./Results";
-import Container from "./common/Container";
-import Icon from "./common/Icon";
-import Button from "./common/Button";
-import TextBox from "./common/TextBox";
-import SubMenu from "./common/SubMenu";
-import CssVariables from "../utils/cssVariables";
-import langs from "../langs/langs";
+import { useCallback, useState } from 'react';
+import { Mark } from '../types/Mark';
+import { useGame } from 'contexts/GameContext';
+import GameFields from './GameFields';
+import ScoreBox from './ScoreBox';
+import Results from './Results';
+import Container from './common/Container';
+import Icon from './common/Icon';
+import Button from './common/Button';
+import TextBox from './common/TextBox';
+import SubMenu from './common/SubMenu';
+import CssVariables from '../utils/cssVariables';
+import langs from '../langs/langs';
 
 const GameBoard = () => {
   const {
@@ -49,7 +49,9 @@ const GameBoard = () => {
               color={CssVariables.silver}
               classes="mr-13px"
             />
-            <TextBox classes="font-bold">{langs[language].turn}</TextBox>
+            <TextBox classes={`font-bold ${aiIsMoving ? 'loading' : ''}`}>
+              {langs[language].turn}
+            </TextBox>
           </Container>
           <Button
             classes="h-52px w-52px bg-silver hover:bg-silver-light shadow-sm-silver-custom rounded-10px absolute right-0"
@@ -77,7 +79,6 @@ const GameBoard = () => {
           <ScoreBox bgColor="bg-silver" score={ties} />
           <ScoreBox bgColor="bg-orange" mark={Mark.o} score={o} />
         </Container>
-        {aiIsMoving && 'isMoving'}
       </Container>
       {showRestartMenu && (
         <SubMenu

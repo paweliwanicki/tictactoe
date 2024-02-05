@@ -1,13 +1,13 @@
-import Container from "./common/Container";
-import TextBox from "./common/TextBox";
-import Icon from "./common/Icon";
-import Button from "./common/Button";
-import langs from "../langs/langs";
-import { getMarkColor } from "../utils/mixin";
-import { Mark, MarkComponents } from "../types/Mark";
-import { useCallback } from "react";
-import { useGame } from "contexts/GameContext";
-import { GameMode } from "types/GameMode";
+import Container from './common/Container';
+import TextBox from './common/TextBox';
+import Icon from './common/Icon';
+import Button from './common/Button';
+import langs from '../langs/langs';
+import { getMarkColor } from '../utils/utils';
+import { Mark, MarkComponents } from '../types/Mark';
+import { useCallback } from 'react';
+import { useGame } from 'contexts/GameContext';
+import { GameMode } from 'types/GameMode';
 
 const Results = () => {
   const { gameMode, winnerMark, playerMark, language, startNewGame, quitGame } =
@@ -15,10 +15,10 @@ const Results = () => {
   const markColor =
     winnerMark && getMarkColor(winnerMark, MarkComponents.Results);
 
-  let textColorClass = "text-silver";
-  let playerInfoText = "";
+  let textColorClass = 'text-silver';
+  let playerInfoText = '';
   if (winnerMark) {
-    textColorClass = winnerMark === Mark.x ? "text-blue" : "text-orange";
+    textColorClass = winnerMark === Mark.x ? 'text-blue' : 'text-orange';
 
     if (gameMode === GameMode.CPU) {
       playerInfoText =
@@ -27,7 +27,7 @@ const Results = () => {
           : langs[language].youLost;
     } else {
       playerInfoText = `${langs[language].player} ${
-        playerMark === winnerMark ? "1" : "2"
+        playerMark === winnerMark ? '1' : '2'
       } ${langs[language].wins}!`;
     }
   }

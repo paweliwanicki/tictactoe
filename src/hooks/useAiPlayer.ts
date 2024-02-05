@@ -1,20 +1,20 @@
-import { useCallback } from "react";
-import { GameBoard, useGame } from "contexts/GameContext";
-import { Mark } from "types/Mark";
-import { useGameBoard } from "./useGameBoard";
-import Move from "types/Move";
+import { useCallback } from 'react';
+import { GameBoard, useGame } from 'contexts/GameContext';
+import { Mark } from 'types/Mark';
+import { useGameBoardUtils } from './useGameBoardUtils';
+import Move from 'types/Move';
 
 type UsePlayerProps = {
   aiMark: Mark;
 };
 
-type UseGameBoard = {
+type UseAiPlayer = {
   move: (board: GameBoard) => Promise<GameBoard>;
 };
 
-export const useAiPlayer = ({ aiMark }: UsePlayerProps): UseGameBoard => {
-  const { switchPlayer, setGameBoard, setAiIsMoving } = useGame();
-  const { checkIfWin, getFieldIndexes } = useGameBoard();
+export const useAiPlayer = ({ aiMark }: UsePlayerProps): UseAiPlayer => {
+  const { switchPlayer, setGameBoard, setAiIsMoving, playerMark } = useGame();
+  const { checkIfWin, getFieldIndexes } = useGameBoardUtils();
 
   const getBestComputerMove = useCallback(
     (moves: Move[], bestScore: number): Move => {
@@ -42,47 +42,62 @@ export const useAiPlayer = ({ aiMark }: UsePlayerProps): UseGameBoard => {
   const minimax = useCallback(
     (
       board: GameBoard,
-      actPlayer: Mark
+      player: Mark
     ): { score: number; index?: number } | Move => {
       const possibleMoves = getFieldIndexes(board);
       if (possibleMoves.length === 0) return { score: 0 };
 
       const miniMoves: Move[] = [];
-      const playerMark = aiMark === Mark.x ? Mark.o : Mark.x;
       if (checkIfWin(board, playerMark)) return { score: -10 };
       if (checkIfWin(board, aiMark)) return { score: 10 };
 
       possibleMoves.reduce((acc: Move[], val: number) => {
-        board[val] = actPlayer;
-        const nextPlayerMark = switchPlayer();
-        const result = minimax(board, nextPlayerMark);
+        board[val] = player;
+        const nextPlayer = player === Mark.x ? Mark.o : Mark.x;
+        const result = minimax(board, nextPlayer);
         const move: Move = {
           index: val,
-          mark: actPlayer,
+          mark: aiMark,
           score: result.score,
         };
-        board[val] = "";
+        board[val] = '';
         miniMoves.push(move);
         return acc;
       }, miniMoves);
 
-      let bestScore = actPlayer === aiMark ? -100 : 100;
+      let bestScore = player === aiMark ? -100 : 100;
       return getBestComputerMove(miniMoves, bestScore);
     },
-    [aiMark, checkIfWin, switchPlayer, getFieldIndexes, getBestComputerMove]
+    [aiMark, playerMark, checkIfWin, getFieldIndexes, getBestComputerMove]
   );
 
   const move = useCallback(
     async (board: GameBoard): Promise<GameBoard> => {
       setAiIsMoving(true);
       const newBoard = [...board];
+      const moveTime = getFieldIndexes(board).length > 4 ? 1000 : 500;
       const { index } = minimax(newBoard, aiMark);
       newBoard[index] = aiMark;
-      setGameBoard(newBoard);
-      setAiIsMoving(false);
+      await new Promise(() =>
+        setTimeout(() => {
+          setGameBoard(newBoard);
+          setAiIsMoving(false);
+          if (checkIfWin(newBoard, aiMark)) return;
+          switchPlayer(playerMark);
+        }, moveTime)
+      );
       return newBoard;
     },
-    [aiMark, minimax, setGameBoard, setAiIsMoving]
+    [
+      aiMark,
+      playerMark,
+      minimax,
+      setGameBoard,
+      setAiIsMoving,
+      switchPlayer,
+      getFieldIndexes,
+      checkIfWin,
+    ]
   );
 
   return {
