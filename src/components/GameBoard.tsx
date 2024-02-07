@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Mark } from '../types/Mark';
 import { useGame } from 'contexts/GameContext';
 import GameFields from './GameFields';
@@ -9,21 +9,24 @@ import Icon from './common/Icon';
 import Button from './common/Button';
 import TextBox from './common/TextBox';
 import SubMenu from './common/SubMenu';
-import CssVariables from '../utils/cssVariables';
+import CssVariables from '../cssVariables';
 import langs from '../langs/langs';
+import { useMotionAnimate } from 'motion-hooks';
 
 const GameBoard = () => {
-  const {
-    gameBoard,
-    activePlayer,
-    showResults,
-    language,
-    score,
-    aiIsMoving,
-    quitGame,
-  } = useGame();
+  const { gameBoard, activePlayer, language, score, aiIsMoving, quitGame } =
+    useGame();
   const { x, o, ties } = score;
   const [showRestartMenu, setShowRestartMenu] = useState<boolean>(false);
+
+  const { play } = useMotionAnimate(
+    `#gameboard`,
+    { opacity: 1 },
+    {
+      duration: 0.5,
+      easing: 'linear',
+    }
+  );
 
   const backToMenuHandler = useCallback(() => {
     quitGame();
@@ -33,9 +36,17 @@ const GameBoard = () => {
     setShowRestartMenu((isShowing) => !isShowing);
   }, []);
 
+  useEffect(() => {
+    void play();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
-      <Container classes="flex items-center max-w-full flex-wrap h-623px sm:w-460px max-w-460px w-92%">
+      <Container
+        id="gameboard"
+        classes="flex items-center max-w-full flex-wrap h-623px sm:w-460px max-w-460px w-92% opacity-0"
+      >
         <Container classes="flex items-center w-full gap-5px sm:gap-20px mb-19px relative">
           <Container classes="absolute">
             <Icon id="logo" viewBox="0 0 72 32" width={72} height={32} />
@@ -80,16 +91,15 @@ const GameBoard = () => {
           <ScoreBox bgColor="bg-orange" mark={Mark.o} score={o} />
         </Container>
       </Container>
-      {showRestartMenu && (
-        <SubMenu
-          header={langs[language].restartGame}
-          cancelBtnText={langs[language].noCancel}
-          confirmBtnText={langs[language].yesRestart}
-          onConfirm={backToMenuHandler}
-          onCancel={showRestartMenuHandler}
-        />
-      )}
-      {showResults && <Results />}
+      <SubMenu
+        header={langs[language].restartGame}
+        cancelBtnText={langs[language].noCancel}
+        confirmBtnText={langs[language].yesRestart}
+        onConfirm={backToMenuHandler}
+        onCancel={showRestartMenuHandler}
+        isShowing={showRestartMenu}
+      />
+      <Results />
     </>
   );
 };

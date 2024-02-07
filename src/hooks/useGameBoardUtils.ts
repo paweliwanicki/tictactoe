@@ -22,7 +22,6 @@ type UseGameBoardUtils = {
 };
 
 export const useGameBoardUtils = (): UseGameBoardUtils => {
-  const { setWinner } = useGame();
   const getFieldIndexes = useCallback(
     (board: GameBoard, mark: Mark | string = ''): number[] => {
       return board
@@ -39,16 +38,14 @@ export const useGameBoardUtils = (): UseGameBoardUtils => {
       const playerBoard: number[] = getFieldIndexes(board, player);
       for (let combination of WIN_COMBINATIONS) {
         if (combination.every((index) => playerBoard.indexOf(index) > -1)) {
-          setWinner(player);
           return player;
         }
       }
       if (getFieldIndexes(board).length === 0) {
-        setWinner('TIE');
         return 'TIE';
       }
     },
-    [setWinner, getFieldIndexes]
+    [getFieldIndexes]
   );
 
   return {

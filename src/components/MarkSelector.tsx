@@ -3,8 +3,8 @@ import Button from './common/Button';
 import Icon from './common/Icon';
 import TextBox from './common/TextBox';
 import langs from '../langs/langs';
-import { getMarkColor } from '../utils/utils';
-import { Mark, MarkComponents } from '../types/Mark';
+import { MARK_COLORS } from '../types/Mark';
+import { Mark, ComponentWithMark } from '../types/Mark';
 import { useGame } from 'contexts/GameContext';
 import { useCallback } from 'react';
 
@@ -24,38 +24,29 @@ const MarkSelector = () => {
         {langs[language].pick1PlayerMark}
       </TextBox>
       <Container classes="flex flex-row bg-dark py-9px px-8px rounded-10px mb-17px w-full">
-        <Button
-          classes={`py-11px flex-1 ${
-            playerMark === Mark.x ? 'bg-silver' : 'bg-transparent'
-          }`}
-          onClick={() => setPlayerMarkHandler(Mark.x)}
-          type="button"
-          text={
-            <Icon
-              id="icon-x"
-              classes="m-auto"
-              width={32}
-              height={32}
-              color={getMarkColor(Mark.x, MarkComponents.Menu, playerMark)}
-            />
-          }
-        />
-        <Button
-          classes={`py-11px flex-1 ${
-            playerMark === Mark.o ? 'bg-silver' : 'bg-transparent'
-          }`}
-          onClick={() => setPlayerMarkHandler(Mark.o)}
-          type="button"
-          text={
-            <Icon
-              id="icon-o"
-              classes="m-auto"
-              width={32}
-              height={32}
-              color={getMarkColor(Mark.o, MarkComponents.Menu, playerMark)}
-            />
-          }
-        />
+        {[Mark.x, Mark.o].map((mark: Mark) => (
+          <Button
+            key={`mark-${mark}`}
+            classes={`py-11px flex-1 ${
+              playerMark === mark ? 'bg-silver' : 'bg-transparent'
+            }`}
+            onClick={() => setPlayerMarkHandler(mark)}
+            type="button"
+            text={
+              <Icon
+                id={`icon-${mark}`}
+                classes="m-auto"
+                width={32}
+                height={32}
+                color={
+                  MARK_COLORS[ComponentWithMark.Menu][
+                    mark === playerMark ? 'active' : mark
+                  ]
+                }
+              />
+            }
+          />
+        ))}
       </Container>
       <TextBox classes="text-sm-custom text-silver opacity-50">
         {langs[language].xGoesFirst}

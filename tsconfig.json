@@ -7,6 +7,6 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "moduleResolution": "node",
-    "baseUrl": "src",
+    "baseUrl": "src"
   }
 }

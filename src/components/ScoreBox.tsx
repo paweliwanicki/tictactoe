@@ -1,9 +1,9 @@
-import langs from "../langs/langs";
-import Container from "./common/Container";
-import { ReactNode } from "react";
-import type { Mark } from "types/Mark";
-import { useGame } from "contexts/GameContext";
-import { GameMode } from "types/GameMode";
+import langs from '../langs/langs';
+import Container from './common/Container';
+import { ReactNode } from 'react';
+import type { Mark } from 'types/Mark';
+import { useGame } from 'contexts/GameContext';
+import { GameMode } from 'types/GameMode';
 
 type ScoreBoxProps = {
   bgColor: string;
@@ -14,15 +14,11 @@ type ScoreBoxProps = {
 const ScoreBox = ({ bgColor, score, mark }: ScoreBoxProps) => {
   const { gameMode, language, playerMark } = useGame();
 
-  let playerInfo = "";
+  let playerInfo = mark ? `p${mark === playerMark ? '1' : '2'}` : '';
 
-  if (mark) {
-    if (gameMode === GameMode.CPU) {
-      playerInfo =
-        mark === playerMark ? langs[language].you : langs[language].cpu;
-    } else {
-      playerInfo = `p${mark === playerMark ? "1" : "2"}`;
-    }
+  if (gameMode === GameMode.CPU) {
+    playerInfo =
+      mark === playerMark ? langs[language].you : langs[language].cpu;
   }
 
   const text = mark ? `${mark} (${playerInfo})` : langs[language].ties;

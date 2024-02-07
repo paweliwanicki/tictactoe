@@ -1,4 +1,4 @@
-type Languages = 'en' | 'pl';
+import { Language } from 'types/Languages';
 
 type LangugeKeys = {
   restartGame: string;
@@ -22,7 +22,7 @@ type LangugeKeys = {
   ties: string;
 };
 
-const LANGUAGES: Record<Languages, LangugeKeys> = {
+const LANGUAGES: Record<Language, LangugeKeys> = {
   en: {
     restartGame: 'Restart game?',
     yesRestart: 'Yes, restart',

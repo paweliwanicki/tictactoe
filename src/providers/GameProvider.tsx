@@ -26,7 +26,8 @@ const GAMEBOARD_INIT_STATE: GameBoardStateTypes = {
 
 const PLAYER_INIT_STATE: PlayerStateTypes = {
   playerMark: Mark.x,
-  activePlayer: undefined,
+  player2Mark: Mark.o,
+  activePlayer: Mark.x,
   winnerMark: undefined,
   aiIsMoving: false,
 } as const;
@@ -37,6 +38,7 @@ const GAME_INIT_STATE: GameStateTypes = {
   language: Language.EN,
   gameMode: undefined,
   showResults: false,
+  showSubMenu: false,
 } as const;
 
 type GameProviderProps = {
@@ -65,7 +67,6 @@ const GameProvider = ({ children }: GameProviderProps) => {
     });
     setPlayersState((state) => ({
       ...state,
-      activePlayer: Mark.x,
       winnerMark: undefined,
     }));
   }, []);
@@ -89,7 +90,8 @@ const GameProvider = ({ children }: GameProviderProps) => {
   }, []);
 
   const setPlayerMark = useCallback((playerMark: Mark) => {
-    setPlayersState((state) => ({ ...state, playerMark }));
+    const player2Mark = playerMark === Mark.x ? Mark.o : Mark.x;
+    setPlayersState((state) => ({ ...state, playerMark, player2Mark }));
   }, []);
 
   const switchPlayer = useCallback((nextPlayer: Mark) => {
@@ -104,7 +106,7 @@ const GameProvider = ({ children }: GameProviderProps) => {
     setGameBoardState((state) => ({ ...state, blockBoard: aiIsMoving }));
   }, []);
 
-  const setWinner = useCallback(
+  const setGameResult = useCallback(
     (result: GameResults) => {
       const newScore = { ...gameState.score };
       const isTie = result === 'TIE';
@@ -139,7 +141,7 @@ const GameProvider = ({ children }: GameProviderProps) => {
       setPlayerMark,
       setAiIsMoving,
       switchPlayer,
-      setWinner,
+      setGameResult,
       setScore,
       quitGame,
     }),
@@ -153,7 +155,7 @@ const GameProvider = ({ children }: GameProviderProps) => {
       setAiIsMoving,
       switchPlayer,
       setLanguage,
-      setWinner,
+      setGameResult,
       setScore,
       quitGame,
     ]

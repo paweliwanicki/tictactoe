@@ -1,10 +1,12 @@
+import { HTMLProps } from 'react';
+
 type CustomImageProps = {
+  classes: string;
   image: {
     src: string;
     alt: string;
   };
-  classes: string;
-};
+} & HTMLProps<HTMLImageElement>;
 
 const CustomImage = ({ image, classes }: CustomImageProps) => {
   const { src, alt } = image;

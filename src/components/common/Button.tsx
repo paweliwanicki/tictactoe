@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode, ButtonHTMLAttributes } from 'react';
 
-type ButtonType = "button" | "submit";
+type ButtonType = 'button' | 'submit';
 
 type ButtonProps = {
   classes: string;
@@ -10,7 +10,7 @@ type ButtonProps = {
   icon?: ReactNode;
   disabled?: boolean;
   onClick: () => void;
-};
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({
   primary,
@@ -20,26 +20,19 @@ const Button = ({
   disabled,
   text,
   onClick,
-}: ButtonProps) => {
-  let typeClasses = "px-4 text-sm-custom rounded-10px";
-
-  if (primary) {
-    typeClasses = "text-md rounded-15px";
-  }
-  if (icon) {
-    typeClasses = "p-4";
-  }
-
-  return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={`font-bold uppercase ${typeClasses} ${classes}`}
-    >
-      {text}
-    </button>
-  );
-};
+}: ButtonProps) => (
+  <button
+    type={type}
+    onClick={onClick}
+    disabled={disabled}
+    className={`font-bold uppercase px-4 text-sm-custom rounded-10px ${
+      primary ? 'text-md rounded-15px' : ''
+    } 
+      ${icon ? 'p-4' : ''} 
+      ${classes}`}
+  >
+    {text}
+  </button>
+);
 
 export default Button;

@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getMarkColor } from '../utils/utils';
-import { Mark, MarkComponents } from '../types/Mark';
-import Container from './common/Container';
-import Icon from './common/Icon';
+import { MARK_COLORS } from '../types/Mark';
+import { Mark, ComponentWithMark } from '../types/Mark';
 import { useGame } from 'contexts/GameContext';
 import { usePlayer } from 'hooks/usePlayer';
+import { useMotionAnimate } from 'motion-hooks';
+import Container from './common/Container';
+import Icon from './common/Icon';
 
 type GameFieldProps = {
   fieldIndex: number;
@@ -13,10 +14,21 @@ type GameFieldProps = {
 
 const GameField = ({ mark, fieldIndex }: GameFieldProps) => {
   const { gameBoard, blockBoard, activePlayer, showResults } = useGame();
-  const { move } = usePlayer({ playerMark: activePlayer });
+  const { move } = usePlayer();
+
+  const { play: markPreviewAnimation } = useMotionAnimate(
+    `.mark-preview-icon`,
+    { opacity: 1 },
+    {
+      duration: 0.3,
+      easing: 'linear',
+    }
+  );
 
   const [markPreview, setMarkPreview] = useState<boolean>(false);
-  const markColor = getMarkColor(mark, MarkComponents.Field);
+  const markColor = MARK_COLORS[ComponentWithMark.Field][mark];
+
+  const showMarkPreview = !mark && markPreview && !blockBoard;
 
   const setMarkHandler = useCallback(() => {
     if (!mark && !blockBoard) {
@@ -37,9 +49,15 @@ const GameField = ({ mark, fieldIndex }: GameFieldProps) => {
     showResults && setMarkPreview(false);
   }, [showResults]);
 
+  useEffect(() => {
+    showMarkPreview && void markPreviewAnimation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showMarkPreview]);
+
   return (
     <Container
-      classes="flex items-center min-h-105px min-w-105px sm:w-140px sm:h-140px bg-semi-dark shadow-md-dark-custom rounded-15px mx-0 justify-center cursor-pointer"
+      id={`gamefield-${fieldIndex}`}
+      classes="relative flex items-center min-h-105px min-w-105px sm:w-140px sm:h-140px bg-semi-dark shadow-md-dark-custom rounded-15px mx-0 justify-center cursor-pointer translate-y-0"
       onClick={setMarkHandler}
       onMouseEnter={setMarkPreviewOnMouseEnterHandler}
       onMouseLeave={setMarkPreviewOnMouseLeaveHandler}
@@ -48,14 +66,14 @@ const GameField = ({ mark, fieldIndex }: GameFieldProps) => {
         <Icon
           id={`icon-${mark}`}
           color={markColor}
-          classes="w-52px h-52px sm:w-64px sm:h-64px"
+          classes="mark-icon w-52px h-52px sm:w-64px sm:h-64px"
         />
       )}
-      {!mark && markPreview && !blockBoard && (
+      {showMarkPreview && (
         <Icon
           id={`icon-${activePlayer}-outline`}
           color={markColor}
-          classes="w-52px h-52px sm:w-64px sm:h-64px"
+          classes="mark-preview-icon w-52px h-52px sm:w-64px sm:h-64px opacity-0"
         />
       )}
     </Container>
