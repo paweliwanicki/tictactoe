@@ -3,14 +3,16 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Outfit Bold";
-  src: local("Outfit Bold"), url("./fonts/Outfit-Bold.ttf") format("truetype");
+  font-family: 'Outfit Bold';
+  src: local('Outfit Bold'),
+    url('./assets/fonts/Outfit-Bold.ttf') format('truetype');
   font-weight: bold;
 }
 
 @font-face {
-  font-family: "Outfit";
-  src: local("Outfit"), url("./fonts/Outfit-Medium.ttf") format("truetype");
+  font-family: 'Outfit';
+  src: local('Outfit'),
+    url('./assets/fonts/Outfit-Medium.ttf') format('truetype');
   font-weight: normal;
 }
 
@@ -27,7 +29,32 @@
 
 body {
   -webkit-font-smoothing: antialiased;
-  font-family: "Outfit", sans-serif;
+  font-family: 'Outfit', sans-serif;
   height: 100%;
   text-transform: uppercase;
+}
+
+/* For animate dots when computer make move */
+.loading:after {
+  content: '.';
+  animation: dots 1s steps(5, end) infinite;
+}
+
+@keyframes dots {
+  0%,
+  20% {
+    color: #a8bfc9;
+    text-shadow: 0.25em 0 0 #a8bfc9, 0.5em 0 0 #a8bfc9;
+  }
+  40% {
+    color: #1f3641;
+    text-shadow: 0.25em 0 0 #a8bfc9, 0.5em 0 0 #a8bfc9;
+  }
+  60% {
+    text-shadow: 0.25em 0 0 #1f3641, 0.5em 0 0 #a8bfc9;
+  }
+  80%,
+  100% {
+    text-shadow: 0.25em 0 0 #1f3641, 0.5em 0 0 #1f3641;
+  }
 }

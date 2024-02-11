@@ -1,8 +1,7 @@
-import { Mark } from "./Mark";
+import { Mark } from './Mark';
 
-export default interface Move {
+export type Move = {
   index: number;
   mark: Mark;
-  score?: number;
-  moveTime?: number;
-}
+  score: number;
+};
