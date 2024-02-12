@@ -1,4 +1,4 @@
-import { GameBoard, useGame } from 'contexts/GameContext';
+import { GameBoard } from 'contexts/GameContext';
 import { useCallback } from 'react';
 import { Mark } from 'types/Mark';
 

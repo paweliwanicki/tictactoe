@@ -88,7 +88,6 @@ export const useAiPlayer = (): UseAiPlayer => {
           switchPlayer(playerMark);
         }, moveTime)
       );
-
       return newBoard;
     },
     [

@@ -9,6 +9,8 @@ import { useCallback, useEffect } from 'react';
 import { useGame } from 'contexts/GameContext';
 import { GameMode } from 'types/GameMode';
 import { useMotionAnimate } from 'motion-hooks';
+import { useAiPlayer } from 'hooks/useAiPlayer';
+import { CLEAR_GAMEBOARD } from 'providers/GameProvider';
 
 const Results = () => {
   const {
@@ -20,6 +22,8 @@ const Results = () => {
     startNewGame,
     quitGame,
   } = useGame();
+
+  const { aiMove } = useAiPlayer();
 
   const markColor = MARK_COLORS[ComponentWithMark.Results][winnerMark];
 
@@ -69,8 +73,12 @@ const Results = () => {
   }, [quitGame, closeAnimation]);
 
   const nextRoundHandler = useCallback(() => {
-    closeAnimation().then(() => startNewGame(gameMode));
-  }, [gameMode, startNewGame, closeAnimation]);
+    closeAnimation().then(() => {
+      startNewGame(gameMode);
+      if (gameMode === GameMode.CPU && playerMark !== Mark.x)
+        aiMove(CLEAR_GAMEBOARD);
+    });
+  }, [gameMode, playerMark, startNewGame, closeAnimation, aiMove]);
 
   return (
     showResults && (

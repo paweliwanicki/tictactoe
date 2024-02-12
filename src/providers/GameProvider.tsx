@@ -12,7 +12,7 @@ import { Score } from 'types/Score';
 import { Language } from 'types/Languages';
 import { GameResults } from 'hooks/useGameBoardUtils';
 
-const CLEAR_GAMEBOARD: GameBoard = ['', '', '', '', '', '', '', '', ''];
+export const CLEAR_GAMEBOARD: GameBoard = ['', '', '', '', '', '', '', '', ''];
 const INIT_SCORE: Score = {
   x: 0,
   o: 0,
@@ -68,6 +68,7 @@ const GameProvider = ({ children }: GameProviderProps) => {
     setPlayersState((state) => ({
       ...state,
       winnerMark: undefined,
+      activePlayer: Mark.x,
     }));
   }, []);
 
